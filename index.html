@@ -97,6 +97,358 @@
 <div class="featured-container">
     <button class="b-nav b-prev" onclick="moveSlide(-1)">❮</button>
     <button class="b-nav b-next" onclick="moveSlide(1)">❯</button>
+    <div class="banner-track" id="bannerTrack"></div>
+</div>
+
+<div class="filters">
+    <div class="filter-btn" onclick="renderByCategory('tenis')"><img src="tenis.webp"><span>Tênis</span></div>
+    <div class="filter-btn" onclick="renderByCategory('camisas')"><img src="roupas.jfif"><span>Camisas</span></div>
+    <div class="filter-btn" onclick="renderByCategory('shorts')"><img src="roupas.jfif"><span>Shorts</span></div>
+    <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
+    <div class="filter-btn" onclick="renderByBrand('rolex')"><img src="rolex1.jpg"><span>Rolex</span></div>
+    <div class="filter-btn" onclick="renderByBrand('patek philippe')"><img src="patek philippe logo.jpg"><span>Patek</span></div>
+    <div class="filter-btn" onclick="renderByBrand('tag heuer')"><img src="tag heuer1.jpg"><span>Tag Heuer</span></div>
+    <div class="filter-btn" onclick="renderByBrand('cartier')"><img src="cartier1.jpg"><span>Cartier</span></div>
+    <div class="filter-btn" onclick="renderAll()"><div class="filter-all-icon">ALL</div><span>Todos</span></div>
+</div>
+
+<div id="main-content"></div>
+
+<a href="https://wa.me/5519989620949" class="whats-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<div class="cart" id="cart">
+    <button onclick="toggleCart()" style="background:none; border:none; color:#fff; font-size:1.5rem; float:right;">✕</button>
+    <h2 style="margin-bottom:20px;">Carrinho</h2>
+    <div id="cartItems"></div>
+    <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
+        <h3 id="cartTotal" style="margin-bottom:15px;">Total: R$ 0,00</h3>
+        <button onclick="checkout()" style="width:100%; padding:15px; background:var(--accent); border:none; color:#fff; font-weight:800; border-radius:10px;">Finalizar Pedido</button>
+    </div>
+</div>
+
+<script>
+const WHATS = "5519989620949";
+
+const pastas = {
+    destaques: [
+        ["destaques/rolex daytona 3.jpg", "Rolex daytona", 599.90],
+        ["destaques/lacosteslide.jpg", "Lacoste Slide Sport", 199.90],
+        ["destaques/conjunto syna amarelo.png", "Conjunto Syna Amarelo", 129.90]
+    ],
+    tenis: [
+        ["tenis/nocta hot step 2.jpg","Nike NOCTA Hot Step 2 White",630.00],
+        ["tenis/air max95 x corteiz.jpg","Air max 95 x Corteiz",349.90],
+        ["tenis/nike DN white.jpg","Nike DN white",354.90],
+        ["tenis/nike-dn-preto.jpg","Nike DN black",354.90],
+        ["tenis/nocta glide.jpg","Nike nocta glide",359.90],
+        ["tenis/lacosteslide.jpg","Lacoste Slide Sport",199.90],
+        ["tenis/nike-air-force.jpg","Nike air force black",249.90],
+        ["tenis/bota timberland.jpg","Bota Timberland",359.90],
+        ["tenis/Asics gel NYC.jpg","Asics gel NYC",449.90],
+        ["tenis/Nike TN.jpg","Nike TN",329.90]
+    ],
+    camisas: [
+        ["camisas/nike tech flecee branca 1.jpg","nike tech flecee branca",384.90],
+        ["camisas/nike tech flecee gray 1.jpg","nike tech flecee cinza",384.90],
+        ["camisas/nike tech flecee preta 1.jpg","nike tech flecee preta",384.90],
+        ["camisas/regata corteiz.jpg","Regatas Corteiz",94.90],
+        ["camisas/camisa corteiz basica.jpg","Camisa Corteiz Básica",89.90],
+        ["camisas/camisa corteiz brasil.jpg","Camisa Corteiz Brasil",89.90],
+        ["camisas/camisa corteiz oversized.jpg","Camisa Corteiz Oversized",89.90],
+        ["camisas/corteiz rules the world.jpg","Corteiz Rules The World",76.90],
+        ["camisas/conjunto syna amarelo.png","conjunto syna amarelo",129.90],
+        ["camisas/moletom nocta.png","moletom nocta",94.90],
+        ["camisas/moletom syna.png","moletom syna",129.90]
+    ],
+    calças: [
+        ["calcas/calça cargo corteiz 1.jpg","calça cargo corteiz",249.90],
+        ["calcas/calça cargo corteiz 2.jpg","calça cargo corteiz grey",249.90],
+        ["calcas/nike tech flecee branca 2.jpg","nike tech flecee calça branca",325.90],
+        ["calcas/nike tech flecee gray 2.jpg","nike tech flecee calça cinza",325.90],
+        ["calcas/nike tech flecee preta 2.jpg","nike tech flecee calça preta",325.90],
+        ["calcas/syna x nike tech fleece 2.jpg","syna x nike tech fleece calça",329.90],
+        ["calcas/minus two1.jpg","minus two blue",225.90],
+        ["calcas/minus two 2.jpg","minus two yellow",225.90],
+        ["calcas/minus two 3.jpg","minus two pink",225.90],
+        ["calcas/minus two 4.jpg","minus two red",225.90]
+    ],
+    shorts: [
+        ["shorts/hellstar 1.jpg","hellstar black",285.90],
+        ["shorts/hellstar 2.jpg","hellstar white",285.90],
+        ["shorts/hellstar 3.jpg","hellstar red",285.90],   
+        ["shorts/shorts cargo corteiz 1.jpg","shorts cargo corteiz",199.90],
+        ["shorts/shorts cargo corteiz 2.jpg","shorts cargo corteiz green",199.90],
+        ["shorts/shorts cargo corteiz 3.jpg","shorts cargo corteiz blue",199.90],
+        ["shorts/syna shorts 1.jpg","syna shorts pink",284.90],
+        ["shorts/syna shorts 2.jpg","syna shorts black",284.90],
+        ["shorts/shorts corteiz moletom basico.jpg","Shorts Corteiz Moletom Básico",74.90],
+        ["shorts/denim tears 1.jpg","denim tears black",269.90],
+        ["shorts/denim tears 2.jpg","denim tears grey",269.90],
+        ["shorts/conjunto denim tears preto.jpg","conjunto denim tears preto",119.90],
+        ["shorts/conjunto denim tears cinza.jpg","conjunto denim tears cinza",119.90]
+    ],
+    relogios: [
+        // PATEK PHILIPPE
+        ["patek philippe/patek philippe 1.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 2.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 3.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 4.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 5.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 6.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 7.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 8.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 9.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 10.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 11.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 12.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 13.jpg", "Patek Philippe", 180.00],
+        
+        // ROLEX
+        ["rolex/rolex datejust 1.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 2.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 3.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 5.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 6.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 7.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 8.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust 9.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex datejust4.jpg", "Rolex Datejust", 199.90],
+        ["rolex/rolex daytona 2.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona 3.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona 4.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona 5.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona 6.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona 7.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona 8.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex daytona.jpg", "Rolex Daytona", 199.90],
+        ["rolex/rolex oyster perpetual 2.jpg", "Rolex Oyster Perpetual", 199.90],
+        ["rolex/rolex oyster perpetual 3.jpg", "Rolex Oyster Perpetual", 199.90],
+        ["rolex/rolex oyster perpetual 4.jpg", "Rolex Oyster Perpetual", 199.90],
+        ["rolex/rolex oyster perpetual 5.jpg", "Rolex Oyster Perpetual", 199.90],
+        ["rolex/rolex oyster perpetual.jpg", "Rolex Oyster Perpetual", 199.90],
+        ["rolex/rolex submariner 2.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 3.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 4.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 5.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 6.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 7.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 8.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 9.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 10.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 11.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 12.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner 13.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex submariner.jpg", "Rolex Submariner", 199.90],
+        ["rolex/rolex daydate 3.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 4.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 5.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 6.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 7.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 8.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 9.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate 10.jpg", "Rolex Daydate", 199.90],
+        ["rolex/rolex daydate.jpg", "Rolex Daydate", 199.90],
+        
+        // TAG HEUER
+        ["tag heuer/tag heuer 2.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 3.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 4.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 5.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 6.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 7.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 8.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer.jpg", "Tag Heuer", 199.90],
+
+        // CARTIER
+        ["cartier/cartier funcional 2.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional 3.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional 4.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional 5.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional 6.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional 7.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional 8.jpg", "Cartier Funcional", 199.90],
+        ["cartier/cartier funcional.jpg", "Cartier Funcional", 199.90]
+    ]
+};
+
+function renderBanners() {
+    const track = document.getElementById('bannerTrack');
+    track.innerHTML = pastas.destaques.map(p => `
+        <div class="banner-slide">
+            <div class="banner-info">
+                <h2>${p[1]}</h2>
+                <span class="b-price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
+                <a href="#" class="b-btn" onclick="buyNowByName('${p[1]}')">COMPRAR AGORA</a>
+            </div>
+            <img src="${p[0]}">
+        </div>
+    `).join('');
+}
+
+const products = [];
+Object.keys(pastas).forEach(cat => {
+    if(cat !== 'destaques') {
+        pastas[cat].forEach(p => products.push([...p, cat]));
+    }
+});
+
+let cart = [];
+let currentSlide = 0;
+
+function moveSlide(dir) {
+    const track = document.getElementById('bannerTrack');
+    const slides = document.querySelectorAll('.banner-slide');
+    if(!slides.length) return;
+    currentSlide = (currentSlide + dir + slides.length) % slides.length;
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+setInterval(() => moveSlide(1), 6000);
+
+function createProductCard(p) {
+    const originalIdx = products.findIndex(item => item[1] === p[1] && item[0] === p[0]);
+    const sizes = p[3] === 'tenis' ? ['38','40','42','44'] : 
+                  p[3] === 'relogios' ? ['Ajustável'] : ['P','M','G','GG'];
+    
+    return `<div class="product">
+        <div class="product-img-container"><img src="${p[0]}" loading="lazy"></div>
+        <h3>${p[1]}</h3><span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
+        <div class="size-selector">${sizes.map(s => `<input type="radio" name="sz-${originalIdx}" id="sz-${originalIdx}-${s}" value="${s}"><label for="sz-${originalIdx}-${s}">${s}</label>`).join('')}</div>
+        <div class="actions"><button class="add" onclick="addToCart(${originalIdx})">ADD</button><button class="buy" onclick="buyNow(${originalIdx})">BUY</button></div>
+    </div>`;
+}
+
+function renderSection(title, list, isScroll) {
+    if (list.length === 0) return;
+    const container = document.getElementById("main-content");
+    container.innerHTML += `<div class="category-row"><h2 class="category-title">${title}</h2><div class="${isScroll ? 'grid-scroll' : 'grid-fixed'}">${list.map(p => createProductCard(p)).join('')}</div></div>`;
+}
+
+function renderAll() {
+    const container = document.getElementById("main-content");
+    container.innerHTML = "";
+    renderSection("Tênis", products.filter(p => p[3] === 'tenis'), true);
+    renderSection("Camisas e Conjuntos", products.filter(p => p[3] === 'camisas'), true);
+    renderSection("Calças", products.filter(p => p[3] === 'calças'), true);
+    renderSection("Shorts", products.filter(p => p[3] === 'shorts'), true);
+    
+    // Relógios por Marca
+    renderSection("Rolex", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('rolex/')), true);
+    renderSection("Patek Philippe", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('patek philippe/')), true);
+    renderSection("Tag Heuer", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('tag heuer/')), true);
+    renderSection("Cartier", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('cartier/')), true);
+}
+
+function renderByCategory(cat) {
+    const container = document.getElementById("main-content");
+    container.innerHTML = "";
+    if(cat === 'relogios') {
+        renderSection("Rolex", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('rolex/')), false);
+        renderSection("Patek Philippe", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('patek philippe/')), false);
+        renderSection("Tag Heuer", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('tag heuer/')), false);
+        renderSection("Cartier", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('cartier/')), false);
+    } else {
+        const filtered = products.filter(p => p[3] === cat);
+        renderSection(cat.toUpperCase(), filtered, false);
+    }
+}
+
+function renderByBrand(brand) {
+    const container = document.getElementById("main-content");
+    container.innerHTML = "";
+    const filtered = products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes(brand.toLowerCase() + '/'));
+    renderSection(brand.toUpperCase(), filtered, false);
+}
+
+function search() {
+    const term = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = products.filter(p => p[1].toLowerCase().includes(term));
+    const container = document.getElementById("main-content");
+    container.innerHTML = "";
+    renderSection("Resultados", filtered, false);
+}
+
+function toggleCart() { document.getElementById("cart").classList.toggle("show"); }
+
+function addToCart(i) {
+    const radio = document.querySelector(`input[name="sz-${i}"]:checked`);
+    if(!radio && products[i][3] !== 'relogios') { alert("Escolha o tamanho!"); return; }
+    const tam = radio ? radio.value : "Ajustável";
+    cart.push({ nome: products[i][1], preco: products[i][2], tamanho: tam });
+    renderCart(); toggleCart();
+}
+
+function renderCart() {
+    const box = document.getElementById("cartItems");
+    let total = 0; box.innerHTML = "";
+    cart.forEach((item, idx) => {
+        total += item.preco;
+        box.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid #222; padding-bottom:10px;">
+            <div><p style="font-size:0.85rem;"><b>${item.nome}</b></p><small>Tam: ${item.tamanho} | R$ ${item.preco.toFixed(2)}</small></div>
+            <button onclick="cart.splice(${idx},1); renderCart();" style="background:none; border:none; color:red; font-weight:800;">X</button>
+        </div>`;
+    });
+    document.getElementById("count").innerText = cart.length;
+    document.getElementById("cartTotal").innerText = `Total: R$ ${total.toFixed(2).replace('.',',')}`;
+}
+
+function checkout() {
+    if(cart.length === 0) return;
+    let msg = "🚀 *PEDIDO B2 STREET*:%0A";
+    cart.forEach(item => msg += `• ${item.nome} (${item.tamanho})%0A`);
+    window.open(`https://wa.me/${WHATS}?text=${msg}`, "_blank");
+}
+
+function buyNow(i) {
+    const radio = document.querySelector(`input[name="sz-${i}"]:checked`);
+    const tam = radio ? radio.value : (products[i][3] === 'relogios' ? "Ajustável" : "N/A");
+    window.open(`https://wa.me/${WHATS}?text=Quero comprar: ${products[i][1]} (Tam: ${tam})`, "_blank");
+}
+
+function buyNowByName(name) {
+    const pIndex = products.findIndex(p => p[1].toLowerCase() === name.toLowerCase());
+    if(pIndex !== -1) buyNow(pIndex);
+}
+
+renderBanners();
+renderAll();
+</script>
+</body>
+</html>        .size-selector { display: flex; gap: 3px; margin-bottom: 10px; }
+        .size-selector label { flex: 1; text-align: center; padding: 5px 0; border: 1px solid #333; border-radius: 6px; font-size: 0.55rem; background: #222; cursor: pointer; color: #fff; }
+        .size-selector input { display: none; }
+        .size-selector input:checked + label { background: #fff; color: #000; }
+
+        .actions { display: flex; gap: 4px; margin-top: auto; }
+        .actions button { flex: 1; padding: 9px 0; border: none; font-weight: 800; border-radius: 8px; font-size: 0.6rem; cursor: pointer; }
+        .add { background: #333; color: #fff; }
+        .buy { background: #fff; color: #000; }
+
+        .whats-float { position: fixed; bottom: 20px; left: 20px; background: #25D366; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; color: white; font-size: 24px; text-decoration: none; }
+        .cart { position: fixed; right: -100%; top: 0; width: 100%; max-width: 350px; height: 100%; background: #000; padding: 25px; transition: 0.4s; z-index: 2000; border-left: 1px solid #333; }
+        .cart.show { right: 0; }
+
+        @media (max-width: 600px) {
+            .banner-slide { height: 400px; flex-direction: column; text-align: center; }
+            .banner-slide img { width: 100%; height: 60%; order: 1; }
+            .banner-info { width: 100%; height: 40%; order: 2; padding: 20px; }
+            .banner-info h2 { font-size: 1.4rem; }
+            .grid-fixed { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <img src="logo.jpg" alt="B2 STREET">
+        <button class="cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
+    </div>
+    <div class="search-box"><input type="text" id="searchInput" placeholder="Buscar..." onkeyup="search()"></div>
+</header>
+
+<div class="featured-container">
+    <button class="b-nav b-prev" onclick="moveSlide(-1)">❮</button>
+    <button class="b-nav b-next" onclick="moveSlide(1)">❯</button>
     <div class="banner-track" id="bannerTrack">
         <div class="banner-slide">
             <div class="banner-info"><h2>Nocta Glide<br></h2><span class="b-price">R$ 590,90</span><a href="#" class="b-btn" onclick="buyNowByName('Nike nocta glide')">COMPRAR AGORA</a></div>
@@ -407,3 +759,4 @@ renderAll();
 </script>
 </body>
 </html>
+
