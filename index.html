@@ -29,7 +29,6 @@
         .search-box::before { content: '🔍'; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
         .cart-btn { background: var(--primary); color: #000; border:none; padding: 6px 12px; font-weight:800; border-radius:8px; font-size: 0.75rem; cursor: pointer;}
 
-        /* --- BANNER --- */
         .featured-container { width: 90%; max-width: 1100px; margin: 25px auto; position: relative; overflow: hidden; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
         .banner-track { display: flex; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
         .banner-slide { min-width: 100%; height: 380px; display: flex; background: #111; align-items: center; }
@@ -41,7 +40,6 @@
         .b-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; }
         .b-prev { left: 15px; } .b-next { right: 15px; }
 
-        /* --- FILTROS E GRIDS --- */
         .filters { display: flex; justify-content: flex-start; gap: 12px; padding: 15px 5%; overflow-x: auto; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
         .filter-btn { flex: 0 0 70px; cursor: pointer; text-align: center; }
@@ -103,6 +101,7 @@
 <div class="filters">
     <div class="filter-btn" onclick="renderByCategory('tenis')"><img src="tenis.webp"><span>Tênis</span></div>
     <div class="filter-btn" onclick="renderByCategory('camisas')"><img src="roupas.jfif"><span>Camisas</span></div>
+    <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
     <div class="filter-btn" onclick="renderByCategory('shorts')"><img src="roupas.jfif"><span>Shorts</span></div>
     <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
     <div class="filter-btn" onclick="renderByBrand('rolex')"><img src="rolex1.jpg"><span>Rolex</span></div>
@@ -148,6 +147,14 @@ const pastas = {
         ["tenis/Nike TN.jpg","Nike TN",329.90]
     ],
     camisas: [
+        ["camisas/camisa canelada preta.jpg","Camisa Canelada Preta",79.90],
+        ["camisas/camisa canelada branca.jpg","Camisa Canelada Branca",79.90],
+        ["camisas/regata canelada preta.jpg","Regata Canelada Preta",79.90],
+        ["camisas/regata canelada branca.jpg","Regata Canelada Branca",79.90],
+        ["camisas/kit syna world.jpg","Kit Syna World",149.90],
+        ["camisas/kit corteiz.jpg","Kit Corteiz",159.90],
+        ["shorts/conjunto denim tears preto.jpg","conjunto denim tears preto",119.90],
+        ["shorts/conjunto denim tears cinza.jpg","conjunto denim tears cinza",119.90],
         ["camisas/nike tech flecee branca 1.jpg","nike tech flecee branca",384.90],
         ["camisas/nike tech flecee gray 1.jpg","nike tech flecee cinza",384.90],
         ["camisas/nike tech flecee preta 1.jpg","nike tech flecee preta",384.90],
@@ -159,6 +166,18 @@ const pastas = {
         ["camisas/conjunto syna amarelo.png","conjunto syna amarelo",129.90],
         ["camisas/moletom nocta.png","moletom nocta",94.90],
         ["camisas/moletom syna.png","moletom syna",129.90]
+    ],
+    joias: [
+        ["brincos e joias/brinco argola cravejada.jpg", "Brinco Argola Cravejada", 49.90],
+        ["brincos e joias/brinco cravejado quadrado.jpg", "Brinco Cravejado Quadrado", 59.90],
+        ["brincos e joias/brinco ice cravejado.jpg", "Brinco Ice Cravejado", 49.90],
+        ["brincos e joias/brinco ponto de luz.jpg", "Brinco Ponto de Luz", 24.90],
+        ["brincos e joias/brinco ponto de luz quadrado.jpg", "Brinco Ponto de Luz Quadrado", 49.90],
+        ["brincos e joias/colar van cleef.jpg", "Colar Van Cleef", 89.90],
+        ["brincos e joias/corrente ice cravejada.jpg", "Corrente Ice Cravejada", 84.90],
+        ["brincos e joias/corrente ice.jpg", "Corrente Ice", 66.90],
+        ["brincos e joias/pulseira ice cravejada.jpg", "Pulseira Ice Cravejada", 49.90],
+        ["brincos e joias/pulseira van cleef.jpg", "Pulseira Van Cleef", 64.90]
     ],
     calças: [
         ["calcas/calça cargo corteiz 1.jpg","calça cargo corteiz",249.90],
@@ -184,8 +203,6 @@ const pastas = {
         ["shorts/shorts corteiz moletom basico.jpg","Shorts Corteiz Moletom Básico",74.90],
         ["shorts/denim tears 1.jpg","denim tears black",269.90],
         ["shorts/denim tears 2.jpg","denim tears grey",269.90],
-        ["shorts/conjunto denim tears preto.jpg","conjunto denim tears preto",119.90],
-        ["shorts/conjunto denim tears cinza.jpg","conjunto denim tears cinza",119.90]
     ],
     relogios: [
         // PATEK PHILIPPE
@@ -307,7 +324,7 @@ setInterval(() => moveSlide(1), 6000);
 function createProductCard(p) {
     const originalIdx = products.findIndex(item => item[1] === p[1] && item[0] === p[0]);
     const sizes = p[3] === 'tenis' ? ['38','40','42','44'] : 
-                  p[3] === 'relogios' ? ['Ajustável'] : ['P','M','G','GG'];
+                  (p[3] === 'relogios' || p[3] === 'joias') ? ['Ajustável'] : ['P','M','G','GG'];
     
     return `<div class="product">
         <div class="product-img-container"><img src="${p[0]}" loading="lazy"></div>
@@ -328,14 +345,10 @@ function renderAll() {
     container.innerHTML = "";
     renderSection("Tênis", products.filter(p => p[3] === 'tenis'), true);
     renderSection("Camisas e Conjuntos", products.filter(p => p[3] === 'camisas'), true);
+    renderSection("Brincos e Joias", products.filter(p => p[3] === 'joias'), true);
     renderSection("Calças", products.filter(p => p[3] === 'calças'), true);
     renderSection("Shorts", products.filter(p => p[3] === 'shorts'), true);
-    
-    // Relógios por Marca
     renderSection("Rolex", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('rolex/')), true);
-    renderSection("Patek Philippe", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('patek philippe/')), true);
-    renderSection("Tag Heuer", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('tag heuer/')), true);
-    renderSection("Cartier", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('cartier/')), true);
 }
 
 function renderByCategory(cat) {
@@ -344,11 +357,10 @@ function renderByCategory(cat) {
     if(cat === 'relogios') {
         renderSection("Rolex", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('rolex/')), false);
         renderSection("Patek Philippe", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('patek philippe/')), false);
-        renderSection("Tag Heuer", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('tag heuer/')), false);
-        renderSection("Cartier", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('cartier/')), false);
     } else {
         const filtered = products.filter(p => p[3] === cat);
-        renderSection(cat.toUpperCase(), filtered, false);
+        const titles = { 'tenis': 'Tênis', 'camisas': 'Camisas e Conjuntos', 'joias': 'Brincos e Joias', 'calças': 'Calças', 'shorts': 'Shorts' };
+        renderSection(titles[cat] || cat.toUpperCase(), filtered, false);
     }
 }
 
@@ -371,7 +383,7 @@ function toggleCart() { document.getElementById("cart").classList.toggle("show")
 
 function addToCart(i) {
     const radio = document.querySelector(`input[name="sz-${i}"]:checked`);
-    if(!radio && products[i][3] !== 'relogios') { alert("Escolha o tamanho!"); return; }
+    if(!radio && products[i][3] !== 'relogios' && products[i][3] !== 'joias') { alert("Escolha o tamanho!"); return; }
     const tam = radio ? radio.value : "Ajustável";
     cart.push({ nome: products[i][1], preco: products[i][2], tamanho: tam });
     renderCart(); toggleCart();
@@ -400,7 +412,7 @@ function checkout() {
 
 function buyNow(i) {
     const radio = document.querySelector(`input[name="sz-${i}"]:checked`);
-    const tam = radio ? radio.value : (products[i][3] === 'relogios' ? "Ajustável" : "N/A");
+    const tam = radio ? radio.value : (products[i][3] === 'relogios' || products[i][3] === 'joias' ? "Ajustável" : "N/A");
     window.open(`https://wa.me/${WHATS}?text=Quero comprar: ${products[i][1]} (Tam: ${tam})`, "_blank");
 }
 
