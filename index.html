@@ -13,121 +13,174 @@
             --primary: #fff;
             --accent: #25D366;
             --bg-dark: #000;
-            --card-bg: #1a1a1a;
-            --transition: all 0.3s ease;
+            --card-bg: #111;
+            --border-val: 4px;
         }
 
         *{margin:0;padding:0;box-sizing:border-box;font-family: 'Plus Jakarta Sans', sans-serif}
         body{ background: var(--bg-dark); color: #fff; overflow-x: hidden; }
-        body::before{ content:""; position:fixed; inset:0; background: url('fundo.jpg') center/cover no-repeat; filter: brightness(0.15); z-index:-1; }
+        
+        /* Header */
+        header { background: #000; padding: 15px 5%; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
+        .header-main { display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .menu-toggle { font-size: 1.3rem; cursor: pointer; color: #fff; z-index: 10; }
+        header .logo-centrada { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 28px; }
 
-        header { background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); padding: 12px 5%; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 1000; }
-        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        header img { height: 26px; }
-        .search-box { position: relative; width: 100%; }
-        .search-box input { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 10px 15px 10px 40px; border-radius: 10px; color: #fff; outline: none; font-size: 0.9rem; }
-        .search-box::before { content: '🔍'; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
-        .cart-btn { background: var(--primary); color: #000; border:none; padding: 6px 12px; font-weight:800; border-radius:8px; font-size: 0.75rem; cursor: pointer;}
+        /* Banner de Vídeo */
+        .video-banner { width: 100%; height: 65vh; overflow: hidden; position: relative; background: #000; }
+        .video-banner video { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .video-content { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.4), #000); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; z-index: 2; }
+        .video-content h1 { font-size: 2.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
 
-        .featured-container { width: 90%; max-width: 1100px; margin: 25px auto; position: relative; overflow: hidden; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); }
-        .banner-track { display: flex; transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .banner-slide { min-width: 100%; height: 380px; display: flex; background: #111; align-items: center; }
-        .banner-info { flex: 1; padding: 40px; z-index: 2; }
-        .banner-info h2 { font-size: 2rem; font-weight: 800; text-transform: uppercase; line-height: 1.1; margin-bottom: 10px; }
-        .banner-info .b-price { font-size: 1.6rem; color: var(--accent); font-weight: 800; margin-bottom: 20px; display: block; }
-        .b-btn { background: #fff; color: #000; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-weight: 800; transition: 0.3s; display: inline-block; }
-        .banner-slide img { flex: 1; width: 50%; height: 100%; object-fit: cover; }
-        .b-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); border: none; color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; }
-        .b-prev { left: 15px; } .b-next { right: 15px; }
+        /* Banner de Destaques */
+        .featured-container { width: 100%; margin: 40px 0; position: relative; overflow: hidden; }
+        .banner-track { display: flex; transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1); }
+        .banner-slide { min-width: 100%; height: 450px; display: flex; align-items: center; background: #080808; overflow: hidden; }
+        .banner-img-horiz { flex: 0 0 45%; height: 100%; display: flex; align-items: center; justify-content: center; background: #080808; }
+        .banner-img-horiz img { width: 100%; height: 100%; object-fit: cover; mask-image: linear-gradient(to right, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%); }
+        .banner-info-horiz { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .banner-info-horiz h2 { font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+        .banner-info-horiz .b-price { font-size: 1.5rem; color: var(--accent); font-weight: 800; margin-bottom: 25px; display: block; }
+        .banner-info-horiz .b-btn { background: #fff; color: #000; padding: 15px 30px; text-decoration: none; font-weight: 800; text-transform: uppercase; align-self: flex-start; font-size: 0.75rem; }
 
-        .filters { display: flex; justify-content: flex-start; gap: 12px; padding: 15px 5%; overflow-x: auto; scrollbar-width: none; }
+        /* Filtros */
+        .filters { display: flex; gap: 15px; padding: 25px 5%; overflow-x: auto; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
-        .filter-btn { flex: 0 0 70px; cursor: pointer; text-align: center; }
-        .filter-btn img, .filter-all-icon { width: 52px; height: 52px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.2); margin-bottom: 5px; object-fit: cover; }
-        .filter-all-icon { display: flex; align-items: center; justify-content: center; background: #fff; color: #000; font-weight: 900; font-size: 0.7rem; margin: 0 auto 5px auto; }
-        .filter-btn span { font-size: 0.55rem; text-transform: uppercase; color: #fff; font-weight: 700; display: block; }
+        .filter-btn { flex: 0 0 auto; cursor: pointer; text-align: center; width: 65px; }
+        .filter-btn img, .filter-all-icon { width: 60px; height: 60px; border-radius: 8px; border: 1px solid #222; object-fit: cover; margin-bottom: 8px; }
+        .filter-btn span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; display: block; color: #888; }
 
+        /* Grid de Produtos */
         .category-row { margin-bottom: 40px; }
-        .category-title { font-size: 1rem; font-weight: 800; margin: 0 5% 15px 5%; border-left: 3px solid var(--accent); padding-left: 10px; text-transform: uppercase; }
-        .grid-scroll { display: flex; overflow-x: auto; gap: 15px; padding: 0 5% 15px 5%; scrollbar-width: none; scroll-snap-type: x mandatory; }
-        .grid-fixed { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; padding: 0 5%; }
-
-        .product { background: var(--card-bg); padding: 10px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; scroll-snap-align: start; }
-        .grid-scroll .product { flex: 0 0 200px; }
-        .product-img-container { width: 100%; height: 200px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+        .category-title { font-size: 0.9rem; margin: 0 5% 15px 5%; text-transform: uppercase; border-left: 4px solid var(--accent); padding-left: 10px; font-weight: 800; }
+        .grid-fixed { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 5%; }
+        .product { background: var(--card-bg); border: 1px solid #1a1a1a; padding: 10px; border-radius: var(--border-val); cursor: pointer; position: relative; }
+        .product-img-container { width: 100%; aspect-ratio: 1/1; overflow: hidden; margin-bottom: 8px; }
         .product img { width: 100%; height: 100%; object-fit: cover; }
+        .product h3 { font-size: 0.7rem; color: #888; margin-bottom: 5px; height: 32px; overflow: hidden; }
+        .price { font-weight: 800; font-size: 0.85rem; color: #fff; display: block; margin-bottom: 10px; }
+        .btn-add-cart-card { width: 100%; background: #222; color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; }
 
-        .product h3 { font-size: 0.75rem; margin-bottom: 4px; height: 32px; overflow: hidden; color: #eee; }
-        .price { font-weight: 800; font-size: 1rem; margin-bottom: 10px; display: block; }
-        .size-selector { display: flex; gap: 3px; margin-bottom: 10px; }
-        .size-selector label { flex: 1; text-align: center; padding: 5px 0; border: 1px solid #333; border-radius: 6px; font-size: 0.55rem; background: #222; cursor: pointer; color: #fff; }
-        .size-selector input { display: none; }
-        .size-selector input:checked + label { background: #fff; color: #000; }
+        /* MODAL (POP-UP) */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: #111; width: 100%; max-width: 400px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; display: flex; flex-direction: column; }
+        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #fff; z-index: 10; cursor: pointer; background: rgba(0,0,0,0.5); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        
+        .modal-img-container { width: 100%; height: 350px; background: #000; display: flex; align-items: center; justify-content: center; }
+        .modal-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .actions { display: flex; gap: 4px; margin-top: auto; }
-        .actions button { flex: 1; padding: 9px 0; border: none; font-weight: 800; border-radius: 8px; font-size: 0.6rem; cursor: pointer; }
-        .add { background: #333; color: #fff; }
-        .buy { background: #fff; color: #000; }
+        .modal-body { padding: 25px; background: #111; text-align: center; }
+        .modal-body h2 { font-size: 1.2rem; margin-bottom: 5px; text-transform: uppercase; }
+        .modal-sizes { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; justify-content: center; }
+        .modal-sizes input { display: none; }
+        .modal-sizes label { padding: 10px 15px; border: 1px solid #333; cursor: pointer; font-size: 0.8rem; border-radius: 4px; min-width: 45px; }
+        .modal-sizes input:checked + label { background: #fff; color: #000; border-color: #fff; }
+        
+        .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+        .btn-buy { width: 100%; padding: 18px; background: #fff; color: #000; border: none; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+        .btn-cart-modal { width: 100%; padding: 15px; background: #222; color: #fff; border: 1px solid #333; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
 
-        .whats-float { position: fixed; bottom: 20px; left: 20px; background: #25D366; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; color: white; font-size: 24px; text-decoration: none; }
-        .cart { position: fixed; right: -100%; top: 0; width: 100%; max-width: 350px; height: 100%; background: #000; padding: 25px; transition: 0.4s; z-index: 2000; border-left: 1px solid #333; }
+        /* Sidebar & Cart */
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #000; z-index: 2001; transition: 0.4s; padding: 40px 20px; border-right: 1px solid #222; }
+        .sidebar.active { left: 0; }
+        .sidebar a { display: block; color: #ccc; text-decoration: none; padding: 15px 0; font-weight: 600; border-bottom: 1px solid #111; }
+        .cart { position: fixed; right: -100%; top: 0; width: 300px; height: 100%; background: #000; z-index: 4000; transition: 0.4s; padding: 20px; border-left: 1px solid #222; }
         .cart.show { right: 0; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 2000; }
+        .overlay.active { display: block; }
 
-        @media (max-width: 600px) {
-            .banner-slide { height: 400px; flex-direction: column; text-align: center; }
-            .banner-slide img { width: 100%; height: 60%; order: 1; }
-            .banner-info { width: 100%; height: 40%; order: 2; padding: 20px; }
-            .banner-info h2 { font-size: 1.4rem; }
-            .grid-fixed { grid-template-columns: 1fr 1fr; }
+        @media (min-width: 1024px) {
+            .grid-fixed { grid-template-columns: repeat(4, 1fr); }
+            .modal-content { max-width: 800px; flex-direction: row; height: 500px; }
+            .modal-img-container { width: 50%; height: 100%; border-right: 1px solid #222; }
+            .modal-body { width: 50%; justify-content: center; text-align: left; }
+            .modal-sizes { justify-content: flex-start; }
         }
     </style>
 </head>
 <body>
 
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
 <header>
-    <div class="header-top">
-        <img src="logo.jpg" alt="B2 STREET">
-        <button class="cart-btn" onclick="toggleCart()">🛒 <span id="count">0</span></button>
+    <div class="header-main">
+        <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <img src="logo.jpg" class="logo-centrada" alt="B2 STREET">
+        <div onclick="toggleCart()" style="cursor:pointer; position:relative; font-size: 1.1rem; z-index: 10;">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="count" style="position:absolute; top:-7px; right:-9px; background:var(--accent); font-size:0.55rem; padding:2px 5px; border-radius:10px; font-weight:800;">0</span>
+        </div>
     </div>
-    <div class="search-box"><input type="text" id="searchInput" placeholder="Buscar..." onkeyup="search()"></div>
 </header>
 
-<div class="featured-container">
-    <button class="b-nav b-prev" onclick="moveSlide(-1)">❮</button>
-    <button class="b-nav b-next" onclick="moveSlide(1)">❯</button>
-    <div class="banner-track" id="bannerTrack"></div>
+<nav class="sidebar" id="sidebar">
+    <h2>CATEGORIAS</h2>
+    <a href="#" onclick="renderAll(); toggleSidebar()">🏠 Home</a>
+    <a href="#" onclick="renderByCategory('tenis'); toggleSidebar()">👟 Tênis</a>
+    <a href="#" onclick="renderByCategory('camisas'); toggleSidebar()">👕 Camisas</a>
+    <a href="#" onclick="renderByCategory('calcas'); toggleSidebar()">👖 Calças</a>
+    <a href="#" onclick="renderByCategory('shorts'); toggleSidebar()">🩳 Shorts</a>
+    <a href="#" onclick="renderByCategory('joias'); toggleSidebar()">💎 Joias</a>
+    <a href="#" onclick="renderByCategory('relogios'); toggleSidebar()">⌚ Relógios</a>
+</nav>
+
+<div class="video-banner">
+    <video autoplay loop muted playsinline>
+        <source src="YTDown.com_YouTube_Central-Cee-x-Dave-Sprinter-Music-Video_Media_pSY3i5XHHXo_001_1080p.mp4" type="video/mp4">
+    </video>
+    <div class="video-content">
+        <h1>B2 STREET</h1>
+        <p>O estilo das ruas elevado ao topo.</p>
+        <a href="https://wa.me/5519989620949" target="_blank" class="b-btn" style="background:var(--accent); color:#fff; text-decoration:none; padding: 12px 25px; border-radius:2px; font-weight:800; font-size: 0.7rem;">CHAMAR NO WHATS</a>
+    </div>
 </div>
 
 <div class="filters">
+    <div class="filter-btn" onclick="renderAll()"><div class="filter-all-icon" style="background:#fff; color:#000; font-weight:800; font-size:0.7rem; display:flex; align-items:center; justify-content:center;">ALL</div><span>Todos</span></div>
     <div class="filter-btn" onclick="renderByCategory('tenis')"><img src="tenis.webp"><span>Tênis</span></div>
     <div class="filter-btn" onclick="renderByCategory('camisas')"><img src="roupas.jfif"><span>Camisas</span></div>
-    <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
+    <div class="filter-btn" onclick="renderByCategory('calcas')"><img src="roupas.jfif"><span>Calças</span></div>
     <div class="filter-btn" onclick="renderByCategory('shorts')"><img src="roupas.jfif"><span>Shorts</span></div>
+    <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
     <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
     <div class="filter-btn" onclick="renderByBrand('rolex')"><img src="rolex1.jpg"><span>Rolex</span></div>
     <div class="filter-btn" onclick="renderByBrand('patek philippe')"><img src="patek philippe logo.jpg"><span>Patek</span></div>
-    <div class="filter-btn" onclick="renderByBrand('tag heuer')"><img src="tag heuer1.jpg"><span>Tag Heuer</span></div>
     <div class="filter-btn" onclick="renderByBrand('cartier')"><img src="cartier1.jpg"><span>Cartier</span></div>
-    <div class="filter-btn" onclick="renderAll()"><div class="filter-all-icon">ALL</div><span>Todos</span></div>
+    <div class="filter-btn" onclick="renderByBrand('tag heuer')"><img src="tag heuer1.jpg"><span>Tag Heuer</span></div>
 </div>
 
 <div id="main-content"></div>
 
-<a href="https://wa.me/5519989620949" class="whats-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<div class="modal" id="productModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-img-container">
+            <img src="" id="modalImg" class="modal-img">
+        </div>
+        <div class="modal-body">
+            <h2 id="modalTitle"></h2>
+            <span id="modalPrice" style="color:var(--accent); font-weight:800; font-size:1.5rem; margin:10px 0; display:block;"></span>
+            <div class="modal-sizes" id="modalSizes"></div>
+            <div class="modal-actions">
+                <button class="btn-buy" id="modalBuyBtn">GARANTIR NO WHATSAPP</button>
+                <button class="btn-cart-modal" id="modalAddCartBtn">ADICIONAR AO CARRINHO</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="cart" id="cart">
-    <button onclick="toggleCart()" style="background:none; border:none; color:#fff; font-size:1.5rem; float:right;">✕</button>
-    <h2 style="margin-bottom:20px;">Carrinho</h2>
+    <h2 style="margin-bottom:20px">CARRINHO</h2>
     <div id="cartItems"></div>
-    <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
-        <h3 id="cartTotal" style="margin-bottom:15px;">Total: R$ 0,00</h3>
-        <button onclick="checkout()" style="width:100%; padding:15px; background:var(--accent); border:none; color:#fff; font-weight:800; border-radius:10px;">Finalizar Pedido</button>
+    <div style="margin-top:20px; border-top:1px solid #222; padding-top:15px">
+        <p>Total: <span id="cartTotal">R$ 0,00</span></p>
+        <button onclick="checkout()" class="btn-buy" style="margin-top:15px; background:var(--accent); color:#fff;">FINALIZAR PEDIDO</button>
     </div>
 </div>
 
 <script>
 const WHATS = "5519989620949";
-
 const pastas = {
     destaques: [
         ["destaques/rolex daytona 3.jpg", "Rolex daytona", 599.90],
@@ -288,141 +341,134 @@ const pastas = {
     ]
 };
 
-function renderBanners() {
-    const track = document.getElementById('bannerTrack');
-    track.innerHTML = pastas.destaques.map(p => `
-        <div class="banner-slide">
-            <div class="banner-info">
-                <h2>${p[1]}</h2>
-                <span class="b-price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
-                <a href="#" class="b-btn" onclick="buyNowByName('${p[1]}')">COMPRAR AGORA</a>
-            </div>
-            <img src="${p[0]}">
+let products = [];
+Object.keys(pastas).forEach(cat => { if(cat !== 'destaques') pastas[cat].forEach(p => products.push([...p, cat])); });
+
+let cartItems = [];
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+function toggleCart() { document.getElementById('cart').classList.toggle('show'); document.getElementById('overlay').classList.toggle('active'); }
+function closeAll() { document.getElementById('sidebar').classList.remove('active'); document.getElementById('cart').classList.remove('show'); document.getElementById('productModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+
+function openModal(index) {
+    const p = products[index];
+    document.getElementById('modalImg').src = p[0];
+    document.getElementById('modalTitle').innerText = p[1];
+    document.getElementById('modalPrice').innerText = `R$ ${p[2].toFixed(2).replace('.',',')}`;
+    
+    let sizes = (p[3] === 'tenis' || p[3] === 'calcas') ? ['38','39','40','41','42','43'] : (['joias','relogios'].includes(p[3]) ? ['Único'] : ['P','M','G','GG']);
+    document.getElementById('modalSizes').innerHTML = sizes.map(s => `<input type="radio" name="sz" id="s${s}" value="${s}"><label for="s${s}">${s}</label>`).join('');
+    
+    document.getElementById('modalBuyBtn').onclick = () => {
+        const sz = document.querySelector('input[name="sz"]:checked');
+        if(!sz) return alert("Selecione o tamanho");
+        window.open(`https://wa.me/${WHATS}?text=Quero o ${p[1]} tam ${sz.value}`, "_blank");
+    };
+
+    document.getElementById('modalAddCartBtn').onclick = () => addToCart(index);
+    
+    document.getElementById('productModal').classList.add('active');
+    document.getElementById('overlay').classList.add('active');
+}
+
+function addToCart(index) {
+    const p = products[index];
+    const sz = document.querySelector('input[name="sz"]:checked');
+    if(!sz && document.getElementById('productModal').classList.contains('active')) return alert("Selecione o tamanho primeiro!");
+    
+    const sizeValue = sz ? sz.value : "Padrão";
+    cartItems.push({ name: p[1], price: p[2], size: sizeValue });
+    updateCart();
+    if(document.getElementById('productModal').classList.contains('active')) closeModal();
+}
+
+function updateCart() {
+    const container = document.getElementById('cartItems');
+    container.innerHTML = cartItems.map((item, i) => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.8rem; border-bottom:1px solid #111; padding-bottom:5px;">
+            <span>${item.name} (${item.size})</span>
+            <span>R$ ${item.price.toFixed(2)} <i class="fas fa-trash" onclick="removeItem(${i})" style="margin-left:10px; cursor:pointer; color:#ff4444"></i></span>
         </div>
     `).join('');
-}
-
-const products = [];
-Object.keys(pastas).forEach(cat => {
-    if(cat !== 'destaques') {
-        pastas[cat].forEach(p => products.push([...p, cat]));
-    }
-});
-
-let cart = [];
-let currentSlide = 0;
-
-function moveSlide(dir) {
-    const track = document.getElementById('bannerTrack');
-    const slides = document.querySelectorAll('.banner-slide');
-    if(!slides.length) return;
-    currentSlide = (currentSlide + dir + slides.length) % slides.length;
-    track.style.transform = `translateX(-${currentSlide * 100}%)`;
-}
-setInterval(() => moveSlide(1), 6000);
-
-function createProductCard(p) {
-    const originalIdx = products.findIndex(item => item[1] === p[1] && item[0] === p[0]);
-    const sizes = p[3] === 'tenis' ? ['38','40','42','44'] : 
-                  (p[3] === 'relogios' || p[3] === 'joias') ? ['Ajustável'] : ['P','M','G','GG'];
     
-    return `<div class="product">
-        <div class="product-img-container"><img src="${p[0]}" loading="lazy"></div>
-        <h3>${p[1]}</h3><span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
-        <div class="size-selector">${sizes.map(s => `<input type="radio" name="sz-${originalIdx}" id="sz-${originalIdx}-${s}" value="${s}"><label for="sz-${originalIdx}-${s}">${s}</label>`).join('')}</div>
-        <div class="actions"><button class="add" onclick="addToCart(${originalIdx})">ADD</button><button class="buy" onclick="buyNow(${originalIdx})">BUY</button></div>
-    </div>`;
+    const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+    document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2).replace('.',',')}`;
+    document.getElementById('count').innerText = cartItems.length;
 }
 
-function renderSection(title, list, isScroll) {
-    if (list.length === 0) return;
-    const container = document.getElementById("main-content");
-    container.innerHTML += `<div class="category-row"><h2 class="category-title">${title}</h2><div class="${isScroll ? 'grid-scroll' : 'grid-fixed'}">${list.map(p => createProductCard(p)).join('')}</div></div>`;
+function removeItem(i) { cartItems.splice(i, 1); updateCart(); }
+
+function checkout() {
+    if(cartItems.length === 0) return alert("Carrinho vazio!");
+    let text = "Novo Pedido:\n";
+    cartItems.forEach(item => text += `- ${item.name} (Tam: ${item.size}) - R$ ${item.price.toFixed(2)}\n`);
+    const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+    text += `\nTotal: R$ ${total.toFixed(2)}`;
+    window.open(`https://wa.me/${WHATS}?text=${encodeURIComponent(text)}`, "_blank");
+}
+
+function openModalByName(name) {
+    const idx = products.findIndex(p => p[1] === name);
+    if(idx !== -1) openModal(idx);
+}
+
+function closeModal() { document.getElementById('productModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+
+function renderSection(title, list) {
+    if(list.length === 0) return "";
+    return `
+        <div class="category-row">
+            <h2 class="category-title">${title}</h2>
+            <div class="grid-fixed">
+                ${list.map(p => {
+                    const idx = products.findIndex(pr => pr[1] === p[1] && pr[0] === p[0]);
+                    return `<div class="product">
+                        <div onclick="openModal(${idx})">
+                            <div class="product-img-container"><img src="${p[0]}"></div>
+                            <h3>${p[1]}</h3>
+                            <span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
+                        </div>
+                        <button class="btn-add-cart-card" onclick="openModal(${idx})">🛒 ADICIONAR</button>
+                    </div>`;
+                }).join('')}
+            </div>
+        </div>`;
 }
 
 function renderAll() {
-    const container = document.getElementById("main-content");
-    container.innerHTML = "";
-    renderSection("Tênis", products.filter(p => p[3] === 'tenis'), true);
-    renderSection("Camisas e Conjuntos", products.filter(p => p[3] === 'camisas'), true);
-    renderSection("Brincos e Joias", products.filter(p => p[3] === 'joias'), true);
-    renderSection("Calças", products.filter(p => p[3] === 'calças'), true);
-    renderSection("Shorts", products.filter(p => p[3] === 'shorts'), true);
-    renderSection("Rolex", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('rolex/')), true);
+    const content = document.getElementById('main-content');
+    content.innerHTML = renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
+    content.innerHTML += `
+    <div class="featured-container">
+        <div class="banner-track">
+            ${pastas.destaques.map(b => `
+                <div class="banner-slide">
+                    <div class="banner-img-horiz"><img src="${b[0]}"></div>
+                    <div class="banner-info-horiz">
+                        <h2>${b[1]}</h2>
+                        <span class="b-price">R$ ${b[2].toFixed(2).replace('.',',')}</span>
+                        <a href="#" class="b-btn" onclick="openModalByName('${b[1]}')">GARANTIR</a>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    </div>`;
+    content.innerHTML += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
+    content.innerHTML += renderSection("Calças", products.filter(p => p[3] === 'calças'));
+    content.innerHTML += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
+    content.innerHTML += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
 }
 
-function renderByCategory(cat) {
-    const container = document.getElementById("main-content");
-    container.innerHTML = "";
-    if(cat === 'relogios') {
-        renderSection("Rolex", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('rolex/')), false);
-        renderSection("Patek Philippe", products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes('patek philippe/')), false);
-    } else {
-        const filtered = products.filter(p => p[3] === cat);
-        const titles = { 'tenis': 'Tênis', 'camisas': 'Camisas e Conjuntos', 'joias': 'Brincos e Joias', 'calças': 'Calças', 'shorts': 'Shorts' };
-        renderSection(titles[cat] || cat.toUpperCase(), filtered, false);
-    }
-}
+function renderByCategory(cat) { document.getElementById('main-content').innerHTML = renderSection(cat.toUpperCase(), products.filter(p => p[3] === cat)); }
+function renderByBrand(brand) { document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), products.filter(p => p[0].toLowerCase().includes(brand.toLowerCase()))); }
 
-function renderByBrand(brand) {
-    const container = document.getElementById("main-content");
-    container.innerHTML = "";
-    const filtered = products.filter(p => p[3] === 'relogios' && p[0].toLowerCase().includes(brand.toLowerCase() + '/'));
-    renderSection(brand.toUpperCase(), filtered, false);
-}
-
-function search() {
-    const term = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = products.filter(p => p[1].toLowerCase().includes(term));
-    const container = document.getElementById("main-content");
-    container.innerHTML = "";
-    renderSection("Resultados", filtered, false);
-}
-
-function toggleCart() { document.getElementById("cart").classList.toggle("show"); }
-
-function addToCart(i) {
-    const radio = document.querySelector(`input[name="sz-${i}"]:checked`);
-    if(!radio && products[i][3] !== 'relogios' && products[i][3] !== 'joias') { alert("Escolha o tamanho!"); return; }
-    const tam = radio ? radio.value : "Ajustável";
-    cart.push({ nome: products[i][1], preco: products[i][2], tamanho: tam });
-    renderCart(); toggleCart();
-}
-
-function renderCart() {
-    const box = document.getElementById("cartItems");
-    let total = 0; box.innerHTML = "";
-    cart.forEach((item, idx) => {
-        total += item.preco;
-        box.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid #222; padding-bottom:10px;">
-            <div><p style="font-size:0.85rem;"><b>${item.nome}</b></p><small>Tam: ${item.tamanho} | R$ ${item.preco.toFixed(2)}</small></div>
-            <button onclick="cart.splice(${idx},1); renderCart();" style="background:none; border:none; color:red; font-weight:800;">X</button>
-        </div>`;
-    });
-    document.getElementById("count").innerText = cart.length;
-    document.getElementById("cartTotal").innerText = `Total: R$ ${total.toFixed(2).replace('.',',')}`;
-}
-
-function checkout() {
-    if(cart.length === 0) return;
-    let msg = "🚀 *PEDIDO B2 STREET*:%0A";
-    cart.forEach(item => msg += `• ${item.nome} (${item.tamanho})%0A`);
-    window.open(`https://wa.me/${WHATS}?text=${msg}`, "_blank");
-}
-
-function buyNow(i) {
-    const radio = document.querySelector(`input[name="sz-${i}"]:checked`);
-    const tam = radio ? radio.value : (products[i][3] === 'relogios' || products[i][3] === 'joias' ? "Ajustável" : "N/A");
-    window.open(`https://wa.me/${WHATS}?text=Quero comprar: ${products[i][1]} (Tam: ${tam})`, "_blank");
-}
-
-function buyNowByName(name) {
-    const pIndex = products.findIndex(p => p[1].toLowerCase() === name.toLowerCase());
-    if(pIndex !== -1) buyNow(pIndex);
-}
-
-renderBanners();
 renderAll();
+
+let cur = 0;
+setInterval(() => {
+    const track = document.querySelector('.banner-track');
+    if(track) { cur = (cur + 1) % pastas.destaques.length; track.style.transform = `translateX(-${cur * 100}%)`; }
+}, 5000);
 </script>
 </body>
 </html>
