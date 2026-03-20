@@ -20,18 +20,15 @@
         *{margin:0;padding:0;box-sizing:border-box;font-family: 'Plus Jakarta Sans', sans-serif}
         body{ background: var(--bg-dark); color: #fff; overflow-x: hidden; }
         
-        /* Header */
         header { background: #000; padding: 15px 5%; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
         .header-main { display: flex; align-items: center; justify-content: space-between; position: relative; }
         .menu-toggle { font-size: 1.3rem; cursor: pointer; color: #fff; z-index: 10; }
         header .logo-centrada { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 28px; }
 
-        /* Banner de Vídeo */
         .video-banner { width: 100%; height: 65vh; overflow: hidden; position: relative; background: #000; }
         .video-banner video { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
         .video-content { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.4), #000); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; z-index: 2; }
 
-        /* Banner de Destaques */
         .featured-container { width: 100%; margin: 40px 0; position: relative; overflow: hidden; }
         .banner-track { display: flex; transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1); }
         .banner-slide { min-width: 100%; height: 450px; display: flex; align-items: center; background: #080808; overflow: hidden; }
@@ -42,14 +39,12 @@
         .banner-info-horiz .b-price { font-size: 1.5rem; color: var(--accent); font-weight: 800; margin-bottom: 25px; display: block; }
         .banner-info-horiz .b-btn { background: #fff; color: #000; padding: 15px 30px; text-decoration: none; font-weight: 800; text-transform: uppercase; align-self: flex-start; font-size: 0.75rem; border:none; cursor:pointer;}
 
-        /* Filtros */
         .filters { display: flex; gap: 15px; padding: 25px 5%; overflow-x: auto; scrollbar-width: none; }
         .filters::-webkit-scrollbar { display: none; }
         .filter-btn { flex: 0 0 auto; cursor: pointer; text-align: center; width: 65px; }
         .filter-btn img, .filter-all-icon { width: 60px; height: 60px; border-radius: 8px; border: 1px solid #222; object-fit: cover; margin-bottom: 8px; }
         .filter-btn span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; display: block; color: #888; }
 
-        /* Grid de Produtos */
         .category-row { margin-bottom: 40px; }
         .category-title { font-size: 0.9rem; margin: 0 5% 15px 5%; text-transform: uppercase; border-left: 4px solid var(--accent); padding-left: 10px; font-weight: 800; }
         .grid-fixed { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 5%; }
@@ -62,12 +57,10 @@
         .btn-add-cart-card { width: 100%; background: #222; color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; margin-bottom: 5px; }
         .btn-order-card { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; }
 
-        /* MODAIS */
         .modal, .popup-form, .modal-pix, .modal-thanks { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
         .modal.active, .modal-pix.active, .modal-thanks.active { display: flex; }
         .modal-content, .form-content { background: #111; width: 100%; max-width: 400px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; display: flex; flex-direction: column; }
         
-        /* Estilos específicos para o PIX e Agradecimento */
         .modal-body-pix { padding: 30px; text-align: center; }
         .qr-code-img { width: 200px; height: 200px; margin: 20px auto; background: #fff; padding: 10px; border-radius: 8px; }
         .pix-key { background: #222; padding: 10px; border-radius: 4px; font-size: 0.75rem; word-break: break-all; margin: 10px 0; border: 1px dashed #444; }
@@ -89,7 +82,6 @@
         .btn-cart-modal { width: 100%; padding: 15px; background: #222; color: #fff; border: 1px solid #333; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
         .btn-whatsapp-modal { width: 100%; padding: 15px; background: transparent; color: #fff; border: 1px solid #25D366; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
 
-        /* Sidebar & Cart */
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #000; z-index: 2001; transition: 0.4s; padding: 40px 20px; border-right: 1px solid #222; }
         .sidebar.active { left: 0; }
         .sidebar a { display: block; color: #ccc; text-decoration: none; padding: 15px 0; font-weight: 600; border-bottom: 1px solid #111; }
@@ -98,7 +90,6 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 2000; }
         .overlay.active { display: block; }
 
-        /* Formulario de Dados */
         .popup-form { display: none; }
         .popup-form.active { display: flex; }
         .form-content input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; }
@@ -239,7 +230,7 @@ const pastas = {
         ["destaques/lacosteslide.jpg", "Lacoste Slide Sport", 199.90],
         ["destaques/conjunto syna amarelo.png", "Conjunto Syna Amarelo", 129.90]
     ],
-    tenis: [
+     tenis: [
         ["tenis/nocta hot step 2.jpg","Nike NOCTA Hot Step 2 White",630.00],
         ["tenis/air max95 x corteiz.jpg","Air max 95 x Corteiz",379.90],
         ["tenis/nike DN white.jpg","Nike DN white",354.90],
@@ -393,9 +384,14 @@ const pastas = {
     ]
 };
 
+// Reconstrói a lista global de produtos e associa cada um à sua categoria correta
 let products = [];
 Object.keys(pastas).forEach(cat => { 
-    if(cat !== 'destaques') pastas[cat].forEach(p => products.push([...p, cat])); 
+    if(cat !== 'destaques') {
+        pastas[cat].forEach(p => {
+            products.push([...p, cat]); // Salva [imagem, nome, preco, categoria]
+        });
+    }
 });
 
 let cartItems = [];
@@ -415,13 +411,27 @@ function closeAll() {
 
 function openModal(index) {
     const p = products[index];
+    const categoria = p[3]; // Pega a categoria injetada na linha 283
+
     document.getElementById('modalImg').src = p[0];
     document.getElementById('modalTitle').innerText = p[1];
     document.getElementById('modalPrice').innerText = `R$ ${p[2].toFixed(2).replace('.',',')}`;
     
-    // CORREÇÃO DOS TAMANHOS: Calças agora usam P,M,G,GG
-    let sizes = (p[3] === 'tenis') ? ['38','39','40','41','42','43'] : (['joias','relogios'].includes(p[3]) ? ['Único'] : ['P','M','G','GG']);
-    document.getElementById('modalSizes').innerHTML = sizes.map(s => `<input type="radio" name="sz" id="s${s}" value="${s}"><label for="s${s}">${s}</label>`).join('');
+    // LOGICA DE TAMANHOS CORRIGIDA
+    let sizes = [];
+    if(categoria === 'tenis') {
+        sizes = ['38','39','40','41','42','43'];
+    } else if (['joias', 'relogios'].includes(categoria)) {
+        sizes = ['Único'];
+    } else {
+        // Calças, Camisas e Shorts usam P, M, G, GG
+        sizes = ['P','M','G','GG'];
+    }
+
+    document.getElementById('modalSizes').innerHTML = sizes.map(s => `
+        <input type="radio" name="sz" id="s${s}" value="${s}">
+        <label for="s${s}">${s}</label>
+    `).join('');
     
     document.getElementById('modalWhatsAppBtn').onclick = () => {
         const sz = document.querySelector('input[name="sz"]:checked');
@@ -486,13 +496,12 @@ async function finalizarPedidoPlanilha() {
     };
     if(!dados.nome || !dados.endereco) return alert("Preencha os campos!");
     
-    // Mostra o PIX antes de tudo
     document.getElementById('popupCheckout').classList.remove('active');
     document.getElementById('modalPix').classList.add('active');
 
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
-    } catch (e) { console.log("Erro ao enviar para planilha."); }
+    } catch (e) { console.log("Erro na planilha."); }
 }
 
 function abrirAgradecimento() {
@@ -504,21 +513,37 @@ function abrirAgradecimento() {
 
 function renderSection(title, list) {
     if(list.length === 0) return "";
-    return `<div class="category-row"><h2 class="category-title">${title}</h2><div class="grid-fixed">${list.map(p => {
-        const idx = products.findIndex(pr => pr[1] === p[1] && pr[0] === p[0]);
-        return `<div class="product"><div onclick="openModal(${idx})"><div class="product-img-container"><img src="${p[0]}"></div><h3>${p[1]}</h3><span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span></div><button class="btn-add-cart-card" onclick="addToCart(${idx})">🛒 CARRINHO</button><button class="btn-order-card" onclick="openModal(${idx})">📦 PEDIDO</button></div>`;
-    }).join('')}</div></div>`;
+    return `
+        <div class="category-row">
+            <h2 class="category-title">${title}</h2>
+            <div class="grid-fixed">
+                ${list.map(p => {
+                    const idx = products.findIndex(pr => pr[1] === p[1] && pr[0] === p[0]);
+                    return `
+                        <div class="product">
+                            <div onclick="openModal(${idx})">
+                                <div class="product-img-container"><img src="${p[0]}"></div>
+                                <h3>${p[1]}</h3>
+                                <span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
+                            </div>
+                            <button class="btn-add-cart-card" onclick="addToCart(${idx})">🛒 CARRINHO</button>
+                            <button class="btn-order-card" onclick="openModal(${idx})">📦 PEDIDO</button>
+                        </div>`;
+                }).join('')}
+            </div>
+        </div>`;
 }
 
 function renderAll() {
     const content = document.getElementById('main-content');
-    content.innerHTML = renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
-    content.innerHTML += `<div class="featured-container"><div class="banner-track">${pastas.destaques.map(b => `<div class="banner-slide"><div class="banner-img-horiz"><img src="${b[0]}"></div><div class="banner-info-horiz"><h2>${b[1]}</h2><span class="b-price">R$ ${b[2].toFixed(2).replace('.',',')}</span><button class="b-btn" onclick="openModalByName('${b[1]}')">GARANTIR</button></div></div>`).join('')}</div></div>`;
-    content.innerHTML += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
-    content.innerHTML += renderSection("Calças", products.filter(p => p[3] === 'calcas'));
-    content.innerHTML += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
-    content.innerHTML += renderSection("Joias", products.filter(p => p[3] === 'joias'));
-    content.innerHTML += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
+    let html = "";
+    html += renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
+    html += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
+    html += renderSection("Calças", products.filter(p => p[3] === 'calcas'));
+    html += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
+    html += renderSection("Joias", products.filter(p => p[3] === 'joias'));
+    html += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
+    content.innerHTML = html;
 }
 
 function renderByCategory(cat) { 
@@ -526,7 +551,7 @@ function renderByCategory(cat) {
 }
 
 function renderByBrand(brand) { 
-    const filtered = products.filter(p => p[1].toLowerCase().includes(brand.toLowerCase()) || p[0].toLowerCase().includes(brand.toLowerCase()));
+    const filtered = products.filter(p => p[1].toLowerCase().includes(brand.toLowerCase()));
     document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), filtered); 
 }
 
@@ -538,12 +563,11 @@ renderAll();
 let cur = 0;
 setInterval(() => {
     const track = document.querySelector('.banner-track');
-    if(track) {
+    if(track && track.children.length > 0) {
         cur = (cur + 1) % pastas.destaques.length;
         track.style.transform = `translateX(-${cur * 100}%)`;
     }
 }, 4000);
 </script>
-
 </body>
 </html>
