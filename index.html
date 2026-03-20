@@ -40,7 +40,7 @@
         .banner-info-horiz { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
         .banner-info-horiz h2 { font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
         .banner-info-horiz .b-price { font-size: 1.5rem; color: var(--accent); font-weight: 800; margin-bottom: 25px; display: block; }
-        .banner-info-horiz .b-btn { background: #fff; color: #000; padding: 15px 30px; text-decoration: none; font-weight: 800; text-transform: uppercase; align-self: flex-start; font-size: 0.75rem; }
+        .banner-info-horiz .b-btn { background: #fff; color: #000; padding: 15px 30px; text-decoration: none; font-weight: 800; text-transform: uppercase; align-self: flex-start; font-size: 0.75rem; border:none; cursor:pointer;}
 
         /* Filtros */
         .filters { display: flex; gap: 15px; padding: 25px 5%; overflow-x: auto; scrollbar-width: none; }
@@ -62,10 +62,16 @@
         .btn-add-cart-card { width: 100%; background: #222; color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; margin-bottom: 5px; }
         .btn-order-card { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; }
 
-        /* MODAL (POP-UP) */
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
-        .modal.active { display: flex; }
-        .modal-content { background: #111; width: 100%; max-width: 400px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; display: flex; flex-direction: column; }
+        /* MODAIS */
+        .modal, .popup-form, .modal-pix, .modal-thanks { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal.active, .modal-pix.active, .modal-thanks.active { display: flex; }
+        .modal-content, .form-content { background: #111; width: 100%; max-width: 400px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; display: flex; flex-direction: column; }
+        
+        /* Estilos específicos para o PIX e Agradecimento */
+        .modal-body-pix { padding: 30px; text-align: center; }
+        .qr-code-img { width: 200px; height: 200px; margin: 20px auto; background: #fff; padding: 10px; border-radius: 8px; }
+        .pix-key { background: #222; padding: 10px; border-radius: 4px; font-size: 0.75rem; word-break: break-all; margin: 10px 0; border: 1px dashed #444; }
+
         .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #fff; z-index: 10; cursor: pointer; background: rgba(0,0,0,0.5); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
         
         .modal-img-container { width: 100%; height: 350px; background: #000; display: flex; align-items: center; justify-content: center; }
@@ -87,16 +93,16 @@
         .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #000; z-index: 2001; transition: 0.4s; padding: 40px 20px; border-right: 1px solid #222; }
         .sidebar.active { left: 0; }
         .sidebar a { display: block; color: #ccc; text-decoration: none; padding: 15px 0; font-weight: 600; border-bottom: 1px solid #111; }
-        .cart { position: fixed; right: -100%; top: 0; width: 300px; height: 100%; background: #000; z-index: 4000; transition: 0.4s; padding: 20px; border-left: 1px solid #222; }
+        .cart { position: fixed; right: -100%; top: 0; width: 300px; height: 100%; background: #000; z-index: 4000; transition: 0.4s; padding: 20px; border-left: 1px solid #222; overflow-y: auto; }
         .cart.show { right: 0; }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 2000; }
         .overlay.active { display: block; }
 
-        /* POPUP CHECKOUT PLANILHA */
-        .popup-form { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
-        .form-content { background: #111; padding: 30px; border-radius: 8px; width: 100%; max-width: 400px; border: 1px solid var(--accent); }
+        /* Formulario de Dados */
+        .popup-form { display: none; }
+        .popup-form.active { display: flex; }
         .form-content input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; }
-        .btn-confirm { width: 100%; padding: 15px; background: var(--accent); color: #fff; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .btn-confirm { width: 100%; padding: 15px; background: var(--accent); color: #fff; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; border-radius:4px; }
 
         @media (min-width: 1024px) {
             .grid-fixed { grid-template-columns: repeat(4, 1fr); }
@@ -111,14 +117,37 @@
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
 <div class="popup-form" id="popupCheckout">
-    <div class="form-content">
-        <h3>Dados de Entrega</h3>
+    <div class="form-content" style="padding: 30px;">
+        <h3 style="margin-bottom:20px; text-align:center;">Dados de Entrega</h3>
         <input type="text" id="cli-nome" placeholder="Nome Completo">
         <input type="text" id="cli-end" placeholder="Endereço de Envio">
         <input type="text" id="cli-tel" placeholder="Número de Telefone">
         <input type="email" id="cli-email" placeholder="E-mail">
         <button class="btn-confirm" onclick="finalizarPedidoPlanilha()">Confirmar Pedido</button>
         <p onclick="closeAll()" style="text-align:center; margin-top:15px; font-size:0.7rem; cursor:pointer; color:#888;">CANCELAR</p>
+    </div>
+</div>
+
+<div class="modal-pix" id="modalPix">
+    <div class="form-content modal-body-pix">
+        <h3>PAGAMENTO VIA PIX</h3>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Escaneie o código abaixo para pagar:</p>
+        <img src="qrcode.jpg" class="qr-code-img" alt="QR Code PIX">
+        <p style="font-size: 0.7rem; text-transform: uppercase; color: #aaa;">Chave PIX (telefone):</p>
+        <div class="pix-key">19989620949</div>
+        <button class="btn-buy" onclick="abrirAgradecimento()">JÁ PAGUEI</button>
+    </div>
+</div>
+
+<div class="modal-thanks" id="modalThanks">
+    <div class="form-content" style="padding: 40px; text-align: center;">
+        <img src="logo3.png" alt="B2 Street" style="width: 180px; margin: 0 auto 20px auto;">
+        <h2 style="font-size: 1.2rem; color: var(--accent);">PEDIDO RECEBIDO!</h2>
+        <p style="margin: 20px 0; font-size: 0.9rem; line-height: 1.5; color: #ccc;">A equipe B2 Street agradece sua compra! Em breve você receberá as atualizações do seu pedido.</p>
+        <div class="modal-actions">
+            <button class="btn-whatsapp-modal" onclick="window.open('https://wa.me/5519989620949', '_blank')">SUPORTE WHATSAPP</button>
+            <button class="btn-buy" style="background:#fff; color:#000;" onclick="closeAll()">CONTINUAR COMPRANDO</button>
+        </div>
     </div>
 </div>
 
@@ -134,7 +163,7 @@
 </header>
 
 <nav class="sidebar" id="sidebar">
-    <h2>CATEGORIAS</h2>
+    <h2 style="margin-bottom: 20px; font-size: 1rem; color: var(--accent);">CATEGORIAS</h2>
     <a href="#" onclick="renderAll(); toggleSidebar()">🏠 Home</a>
     <a href="#" onclick="renderByCategory('tenis'); toggleSidebar()">👟 Tênis</a>
     <a href="#" onclick="renderByCategory('camisas'); toggleSidebar()">👕 Camisas</a>
@@ -151,7 +180,7 @@
     <div class="video-content">
         <img src="logo3.png" alt="B2 Street Logo" style="max-width: 250px; width: 80%; margin-bottom: 20px;">
         <p>O estilo das ruas elevado ao topo.</p>
-        <a href="https://wa.me/5519989620949" target="_blank" class="b-btn" style="background:var(--accent); color:#fff; text-decoration:none; padding: 12px 25px; border-radius:2px; font-weight:800; font-size: 0.7rem;">CHAMAR NO WHATS</a>
+        <a href="https://wa.me/5519989620949" target="_blank" class="b-btn" style="background:var(--accent); color:#fff; text-decoration:none; padding: 12px 25px; border-radius:2px; font-weight:800; font-size: 0.7rem; margin-top:15px;">CHAMAR NO WHATS</a>
     </div>
 </div>
 
@@ -164,7 +193,7 @@
     <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
     <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
     <div class="filter-btn" onclick="renderByBrand('rolex')"><img src="rolex1.jpg"><span>Rolex</span></div>
-    <div class="filter-btn" onclick="renderByBrand('patek philippe')"><img src="patek philippe logo.jpg"><span>Patek</span></div>
+    <div class="filter-btn" onclick="renderByBrand('patek')"><img src="patek philippe logo.jpg"><span>Patek</span></div>
     <div class="filter-btn" onclick="renderByBrand('cartier')"><img src="cartier1.jpg"><span>Cartier</span></div>
     <div class="filter-btn" onclick="renderByBrand('tag heuer')"><img src="tag heuer1.jpg"><span>Tag Heuer</span></div>
 </div>
@@ -364,20 +393,24 @@ const pastas = {
     ]
 };
 
-// LÓGICA DE PRODUTOS
 let products = [];
-Object.keys(pastas).forEach(cat => { if(cat !== 'destaques') pastas[cat].forEach(p => products.push([...p, cat])); });
+Object.keys(pastas).forEach(cat => { 
+    if(cat !== 'destaques') pastas[cat].forEach(p => products.push([...p, cat])); 
+});
 
 let cartItems = [];
 
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 function toggleCart() { document.getElementById('cart').classList.toggle('show'); document.getElementById('overlay').classList.toggle('active'); }
+
 function closeAll() { 
     document.getElementById('sidebar').classList.remove('active'); 
     document.getElementById('cart').classList.remove('show'); 
     document.getElementById('productModal').classList.remove('active'); 
     document.getElementById('overlay').classList.remove('active'); 
-    document.getElementById('popupCheckout').style.display = 'none';
+    document.getElementById('popupCheckout').classList.remove('active');
+    document.getElementById('modalPix').classList.remove('active');
+    document.getElementById('modalThanks').classList.remove('active');
 }
 
 function openModal(index) {
@@ -386,7 +419,8 @@ function openModal(index) {
     document.getElementById('modalTitle').innerText = p[1];
     document.getElementById('modalPrice').innerText = `R$ ${p[2].toFixed(2).replace('.',',')}`;
     
-    let sizes = (p[3] === 'tenis' || p[3] === 'calcas') ? ['38','39','40','41','42','43'] : (['joias','relogios'].includes(p[3]) ? ['Único'] : ['P','M','G','GG']);
+    // CORREÇÃO DOS TAMANHOS: Calças agora usam P,M,G,GG
+    let sizes = (p[3] === 'tenis') ? ['38','39','40','41','42','43'] : (['joias','relogios'].includes(p[3]) ? ['Único'] : ['P','M','G','GG']);
     document.getElementById('modalSizes').innerHTML = sizes.map(s => `<input type="radio" name="sz" id="s${s}" value="${s}"><label for="s${s}">${s}</label>`).join('');
     
     document.getElementById('modalWhatsAppBtn').onclick = () => {
@@ -437,7 +471,8 @@ function checkoutWhatsApp() {
 
 function abrirCheckout() {
     if(cartItems.length === 0) return alert("Carrinho vazio!");
-    document.getElementById('popupCheckout').style.display = 'flex';
+    document.getElementById('popupCheckout').classList.add('active');
+    document.getElementById('overlay').classList.add('active');
 }
 
 async function finalizarPedidoPlanilha() {
@@ -450,11 +485,21 @@ async function finalizarPedidoPlanilha() {
         total: cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2)
     };
     if(!dados.nome || !dados.endereco) return alert("Preencha os campos!");
+    
+    // Mostra o PIX antes de tudo
+    document.getElementById('popupCheckout').classList.remove('active');
+    document.getElementById('modalPix').classList.add('active');
+
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
-        alert("Pedido concluído! Enviaremos atualizações via e-mail ou WhatsApp.");
-        cartItems = []; updateCart(); closeAll();
-    } catch (e) { alert("Erro ao enviar."); }
+    } catch (e) { console.log("Erro ao enviar para planilha."); }
+}
+
+function abrirAgradecimento() {
+    document.getElementById('modalPix').classList.remove('active');
+    document.getElementById('modalThanks').classList.add('active');
+    cartItems = []; 
+    updateCart();
 }
 
 function renderSection(title, list) {
@@ -468,7 +513,7 @@ function renderSection(title, list) {
 function renderAll() {
     const content = document.getElementById('main-content');
     content.innerHTML = renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
-    content.innerHTML += `<div class="featured-container"><div class="banner-track">${pastas.destaques.map(b => `<div class="banner-slide"><div class="banner-img-horiz"><img src="${b[0]}"></div><div class="banner-info-horiz"><h2>${b[1]}</h2><span class="b-price">R$ ${b[2].toFixed(2).replace('.',',')}</span><a href="#" class="b-btn" onclick="openModalByName('${b[1]}')">GARANTIR</a></div></div>`).join('')}</div></div>`;
+    content.innerHTML += `<div class="featured-container"><div class="banner-track">${pastas.destaques.map(b => `<div class="banner-slide"><div class="banner-img-horiz"><img src="${b[0]}"></div><div class="banner-info-horiz"><h2>${b[1]}</h2><span class="b-price">R$ ${b[2].toFixed(2).replace('.',',')}</span><button class="b-btn" onclick="openModalByName('${b[1]}')">GARANTIR</button></div></div>`).join('')}</div></div>`;
     content.innerHTML += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
     content.innerHTML += renderSection("Calças", products.filter(p => p[3] === 'calcas'));
     content.innerHTML += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
@@ -476,15 +521,29 @@ function renderAll() {
     content.innerHTML += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
 }
 
-function renderByCategory(cat) { document.getElementById('main-content').innerHTML = renderSection(cat.toUpperCase(), products.filter(p => p[3] === cat)); }
-function renderByBrand(brand) { document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), products.filter(p => p[0].toLowerCase().includes(brand.toLowerCase()))); }
+function renderByCategory(cat) { 
+    document.getElementById('main-content').innerHTML = renderSection(cat.toUpperCase(), products.filter(p => p[3] === cat)); 
+}
+
+function renderByBrand(brand) { 
+    const filtered = products.filter(p => p[1].toLowerCase().includes(brand.toLowerCase()) || p[0].toLowerCase().includes(brand.toLowerCase()));
+    document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), filtered); 
+}
+
 function closeModal() { document.getElementById('productModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
 function openModalByName(n) { const idx = products.findIndex(p => p[1] === n); if(idx !== -1) openModal(idx); }
 
 renderAll();
 
 let cur = 0;
-setInterval(() => { const track = document.querySelector('.banner-track'); if(track) { cur = (cur + 1) % pastas.destaques.length; track.style.transform = `translateX(-${cur * 100}%)`; } }, 5000);
+setInterval(() => {
+    const track = document.querySelector('.banner-track');
+    if(track) {
+        cur = (cur + 1) % pastas.destaques.length;
+        track.style.transform = `translateX(-${cur * 100}%)`;
+    }
+}, 4000);
 </script>
+
 </body>
 </html>
