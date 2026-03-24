@@ -57,8 +57,8 @@
         .btn-add-cart-card { width: 100%; background: #222; color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; margin-bottom: 5px; }
         .btn-order-card { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; }
 
-        .modal, .popup-form, .modal-pix, .modal-thanks { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
-        .modal.active, .modal-pix.active, .modal-thanks.active { display: flex; }
+        .modal, .popup-form, .modal-pix, .modal-thanks { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+        .modal.active, .popup-form.active, .modal-pix.active, .modal-thanks.active { display: flex; }
         .modal-content, .form-content { background: #111; width: 100%; max-width: 400px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; display: flex; flex-direction: column; }
         
         .modal-body-pix { padding: 30px; text-align: center; }
@@ -90,8 +90,6 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 2000; }
         .overlay.active { display: block; }
 
-        .popup-form { display: none; }
-        .popup-form.active { display: flex; }
         .form-content input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; }
         .btn-confirm { width: 100%; padding: 15px; background: var(--accent); color: #fff; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; border-radius:4px; }
 
@@ -159,7 +157,6 @@
     <a href="#" onclick="renderAll(); toggleSidebar()">🏠 Home</a>
     <a href="#" onclick="renderByCategory('tenis'); toggleSidebar()">👟 Tênis</a>
     <a href="#" onclick="renderByCategory('camisas'); toggleSidebar()">👕 Camisas</a>
-    <a href="#" onclick="renderByCategory('calcas'); toggleSidebar()">👖 Calças</a>
     <a href="#" onclick="renderByCategory('shorts'); toggleSidebar()">🩳 Shorts</a>
     <a href="#" onclick="renderByCategory('joias'); toggleSidebar()">💎 Joias</a>
     <a href="#" onclick="renderByCategory('relogios'); toggleSidebar()">⌚ Relógios</a>
@@ -180,7 +177,6 @@
     <div class="filter-btn" onclick="renderAll()"><div class="filter-all-icon" style="background:#fff; color:#000; font-weight:800; font-size:0.7rem; display:flex; align-items:center; justify-content:center;">ALL</div><span>Todos</span></div>
     <div class="filter-btn" onclick="renderByCategory('tenis')"><img src="tenis.webp"><span>Tênis</span></div>
     <div class="filter-btn" onclick="renderByCategory('camisas')"><img src="roupas.jfif"><span>Camisas</span></div>
-    <div class="filter-btn" onclick="renderByCategory('calcas')"><img src="calcas1.webp"><span>Calças</span></div>
     <div class="filter-btn" onclick="renderByCategory('shorts')"><img src="shorts1.avif"><span>Shorts</span></div>
     <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
     <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
@@ -479,6 +475,11 @@ function checkoutWhatsApp() {
 
 function abrirCheckout() {
     if(cartItems.length === 0) return alert("Carrinho vazio!");
+    
+    // CORREÇÃO: Fecha o carrinho e o modal de produto antes de abrir o formulário
+    document.getElementById('cart').classList.remove('show');
+    document.getElementById('productModal').classList.remove('active');
+    
     document.getElementById('popupCheckout').classList.add('active');
     document.getElementById('overlay').classList.add('active');
 }
@@ -558,10 +559,8 @@ function renderAll() {
     html += renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
     html += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
     
-    // Banner adicionado aqui embaixo das camisas
     html += renderBannerDestaques();
 
-    html += renderSection("Calças", products.filter(p => p[3] === 'calcas'));
     html += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
     html += renderSection("Joias", products.filter(p => p[3] === 'joias'));
     html += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
