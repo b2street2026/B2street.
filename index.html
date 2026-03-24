@@ -55,6 +55,7 @@
         .price { font-weight: 800; font-size: 0.85rem; color: #fff; display: block; margin-bottom: 10px; }
         
         .btn-add-cart-card { width: 100%; background: #222; color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; margin-bottom: 5px; }
+        .btn-order-card { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; }
 
         .modal, .popup-form, .modal-pix, .modal-thanks { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
         .modal.active, .popup-form.active, .modal-pix.active, .modal-thanks.active { display: flex; }
@@ -112,7 +113,7 @@
         <input type="text" id="cli-end" placeholder="Endereço de Envio">
         <input type="text" id="cli-tel" placeholder="Número de Telefone">
         <input type="email" id="cli-email" placeholder="E-mail">
-        <button class="btn-confirm" onclick="finalizarPedidoWhatsApp()">Confirmar Pedido</button>
+        <button class="btn-confirm" onclick="finalizarPedidoPlanilha()">Confirmar Pedido</button>
         <p onclick="closeAll()" style="text-align:center; margin-top:15px; font-size:0.7rem; cursor:pointer; color:#888;">CANCELAR</p>
     </div>
 </div>
@@ -179,13 +180,17 @@
     <div class="filter-btn" onclick="renderByCategory('shorts')"><img src="shorts1.avif"><span>Shorts</span></div>
     <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
     <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
+    <div class="filter-btn" onclick="renderByBrand('rolex')"><img src="rolex1.jpg"><span>Rolex</span></div>
+    <div class="filter-btn" onclick="renderByBrand('patek')"><img src="patek philippe logo.jpg"><span>Patek</span></div>
+    <div class="filter-btn" onclick="renderByBrand('cartier')"><img src="cartier1.jpg"><span>Cartier</span></div>
+    <div class="filter-btn" onclick="renderByBrand('tag heuer')"><img src="tag heuer1.jpg"><span>Tag Heuer</span></div>
 </div>
 
 <div id="main-content"></div>
 
 <div class="modal" id="productModal">
     <div class="modal-content">
-        <span class="close-modal" onclick="closeAll()">&times;</span>
+        <span class="close-modal" onclick="closeModal()">&times;</span>
         <div class="modal-img-container">
             <img src="" id="modalImg" class="modal-img">
         </div>
@@ -194,8 +199,8 @@
             <span id="modalPrice" style="color:var(--accent); font-weight:800; font-size:1.5rem; margin:10px 0; display:block;"></span>
             <div class="modal-sizes" id="modalSizes"></div>
             <div class="modal-actions">
-                <button class="btn-buy" id="modalOrderBtn">COMPRAR AGORA</button>
-                <button class="btn-whatsapp-modal" id="modalWhatsAppBtn">PEDIR PELO WHATSAPP</button>
+                <button class="btn-buy" id="modalOrderBtn">FECHAR PEDIDO</button>
+                <button class="btn-whatsapp-modal" id="modalWhatsAppBtn">FECHAR WHATSAPP</button>
                 <button class="btn-cart-modal" id="modalAddCartBtn">ADICIONAR AO CARRINHO</button>
             </div>
         </div>
@@ -208,193 +213,387 @@
     <div style="margin-top:20px; border-top:1px solid #222; padding-top:15px">
         <p>Total: <span id="cartTotal">R$ 0,00</span></p>
         <button onclick="abrirCheckout()" class="btn-buy" style="margin-top:10px;">FECHAR PEDIDO</button>
+        <button onclick="checkoutWhatsApp()" class="btn-whatsapp-modal" style="margin-top:10px; width: 100%;">FECHAR WHATSAPP</button>
     </div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<script>
+const WHATS = "5519989620949";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6SZzQoxkCZW08tL1SelX2Fb55OeAJsjjwTueWOlrTzDOKgCPJH1d0SZHYihAsqX8/exec"; 
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyAjYdiwcC8ie585dpGV7xQCfS2M4Cpe0Rc",
-        authDomain: "b2-street.firebaseapp.com",
-        projectId: "b2-street",
-        storageBucket: "b2-street.firebasestorage.app",
-        messagingSenderId: "290829019791",
-        appId: "1:290829019791:web:a66f91ddbe4b4904529efa"
-    };
+const pastas = {
+    destaques: [
+        ["destaques/rolex daytona 3.jpg", "Rolex daytona", 599.90],
+        ["destaques/lacosteslide.jpg", "Lacoste Slide Sport", 199.90],
+        ["destaques/conjunto syna amarelo.png", "Conjunto Syna Amarelo", 129.90]
+    ],
+     tenis: [
+        ["tenis/nocta hot step 2.jpg","Nike NOCTA Hot Step 2 White",630.00],
+        ["tenis/air max95 x corteiz.jpg","Air max 95 x Corteiz",379.90],
+        ["tenis/nike DN white.jpg","Nike DN white",354.90],
+        ["tenis/nike-dn-preto.jpg","Nike DN black",354.90],
+        ["tenis/nocta glide.jpg","Nike nocta glide",359.90],
+        ["tenis/lacosteslide.jpg","Lacoste Slide Sport",199.90],
+        ["tenis/nike-air-force.jpg","Nike air force black",249.90],
+        ["tenis/bota timberland.jpg","Bota Timberland",359.90],
+        ["tenis/Asics gel NYC.jpg","Asics gel NYC",449.90],
+        ["tenis/Nike TN.jpg","Nike TN",329.90]
+    ],
+    camisas: [
+        ["camisas/camisa canelada preta.jpg","Camisa Canelada Preta",79.90],
+        ["camisas/camisa canelada branca.jpg","Camisa Canelada Branca",79.90],
+        ["camisas/regata canelada preta.jpg","Regata Canelada Preta",79.90],
+        ["camisas/regata canelada branca.jpg","Regata Canelada Branca",79.90],
+        ["camisas/kit syna world.jpg","Kit Syna World",149.90],
+        ["camisas/kit corteiz.jpg","Kit Corteiz",159.90],
+        ["shorts/conjunto denim tears preto.jpg","conjunto denim tears preto",119.90],
+        ["shorts/conjunto denim tears cinza.jpg","conjunto denim tears cinza",119.90],
+        ["camisas/nike tech flecee branca 1.jpg","nike tech flecee branca",384.90],
+        ["camisas/nike tech flecee gray 1.jpg","nike tech flecee cinza",384.90],
+        ["camisas/nike tech flecee preta 1.jpg","nike tech flecee preta",384.90],
+        ["camisas/regata corteiz.jpg","Regatas Corteiz",94.90],
+        ["camisas/camisa corteiz basica.jpg","Camisa Corteiz Básica",89.90],
+        ["camisas/camisa corteiz brasil.jpg","Camisa Corteiz Brasil",89.90],
+        ["camisas/camisa corteiz oversized.jpg","Camisa Corteiz Oversized",89.90],
+        ["camisas/corteiz rules the world.jpg","Corteiz Rules The World",76.90],
+        ["camisas/conjunto syna amarelo.png","conjunto syna amarelo",129.90],
+        ["camisas/moletom nocta.png","moletom nocta",94.90],
+        ["camisas/moletom syna.png","moletom syna",129.90]
+    ],
+    joias: [
+        ["brincos e joias/brinco argola cravejada.jpg", "Brinco Argola Cravejada", 49.90],
+        ["brincos e joias/brinco cravejado quadrado.jpg", "Brinco Cravejado Quadrado", 59.90],
+        ["brincos e joias/brinco ice cravejado.jpg", "Brinco Ice Cravejado", 49.90],
+        ["brincos e joias/brinco ponto de luz.jpg", "Brinco Ponto de Luz", 24.90],
+        ["brincos e joias/brinco ponto de luz quadrado.jpg", "Brinco Ponto de Luz Quadrado", 49.90],
+        ["brincos e joias/colar van cleef.jpg", "Colar Van Cleef", 89.90],
+        ["brincos e joias/corrente ice cravejada.jpg", "Corrente Ice Cravejada", 84.90],
+        ["brincos e joias/corrente ice.jpg", "Corrente Ice", 34.90],
+        ["brincos e joias/pulseira ice cravejada.jpg", "Pulseira Ice Cravejada", 49.90],
+        ["brincos e joias/pulseira van cleef.jpg", "Pulseira Van Cleef", 64.90]
+    ],
+    calças: [
+        ["calcas/calça cargo corteiz 1.jpg","calça cargo corteiz",249.90],
+        ["calcas/calça cargo corteiz 2.jpg","calça cargo corteiz grey",249.90],
+        ["calcas/nike tech flecee branca 2.jpg","nike tech flecee calça branca",325.90],
+        ["calcas/nike tech flecee gray 2.jpg","nike tech flecee calça cinza",325.90],
+        ["calcas/nike tech flecee preta 2.jpg","nike tech flecee calça preta",325.90],
+        ["calcas/syna x nike tech fleece 2.jpg","syna x nike tech fleece calça",329.90],
+        ["calcas/minus two1.jpg","minus two blue",225.90],
+        ["calcas/minus two 2.jpg","minus two yellow",225.90],
+        ["calcas/minus two 3.jpg","minus two pink",225.90],
+        ["calcas/minus two 4.jpg","minus two red",225.90]
+    ],
+    shorts: [
+        ["shorts/hellstar 1.jpg","hellstar black",285.90],
+        ["shorts/hellstar 2.jpg","hellstar white",285.90],
+        ["shorts/hellstar 3.jpg","hellstar red",285.90],   
+        ["shorts/shorts cargo corteiz 1.jpg","shorts cargo corteiz",199.90],
+        ["shorts/shorts cargo corteiz 2.jpg","shorts cargo corteiz green",199.90],
+        ["shorts/shorts cargo corteiz 3.jpg","shorts cargo corteiz blue",199.90],
+        ["shorts/syna shorts 1.jpg","syna shorts pink",284.90],
+        ["shorts/syna shorts 2.jpg","syna shorts black",284.90],
+        ["shorts/shorts corteiz moletom basico.jpg","Shorts Corteiz Moletom Básico",74.90],
+        ["shorts/denim tears 1.jpg","denim tears black",269.90],
+        ["shorts/denim tears 2.jpg","denim tears grey",269.90],
+    ],
+    relogios: [
+        // PATEK PHILIPPE
+        ["patek philippe/patek philippe 1.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 2.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 3.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 4.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 5.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 6.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 7.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 8.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 9.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 10.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 11.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 12.jpg", "Patek Philippe", 180.00],
+        ["patek philippe/patek philippe 13.jpg", "Patek Philippe", 180.00],
+        
+        // ROLEX
+        ["rolex/rolex datejust 1.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 2.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 3.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 5.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 6.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 7.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 8.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust 9.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex datejust4.jpg", "Rolex Datejust", 149.90],
+        ["rolex/rolex daytona 2.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona 3.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona 4.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona 5.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona 6.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona 7.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona 8.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex daytona.jpg", "Rolex Daytona", 599.90],
+        ["rolex/rolex oyster perpetual 2.jpg", "Rolex Oyster Perpetual", 139.90],
+        ["rolex/rolex oyster perpetual 3.jpg", "Rolex Oyster Perpetual", 139.90],
+        ["rolex/rolex oyster perpetual 4.jpg", "Rolex Oyster Perpetual", 139.90],
+        ["rolex/rolex oyster perpetual 5.jpg", "Rolex Oyster Perpetual", 139.90],
+        ["rolex/rolex oyster perpetual.jpg", "Rolex Oyster Perpetual", 139.90],
+        ["rolex/rolex submariner 2.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 3.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 4.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 5.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 6.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 7.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 8.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 9.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 10.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 11.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 12.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner 13.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex submariner.jpg", "Rolex Submariner", 149.90],
+        ["rolex/rolex daydate 3.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 4.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 5.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 6.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 7.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 8.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 9.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate 10.jpg", "Rolex Daydate", 149.90],
+        ["rolex/rolex daydate.jpg", "Rolex Daydate", 149.90],
+        
+        // TAG HEUER
+        ["tag heuer/tag heuer 2.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 3.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 4.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 5.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 6.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 7.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer 8.jpg", "Tag Heuer", 199.90],
+        ["tag heuer/tag heuer.jpg", "Tag Heuer", 199.90],
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+        // CARTIER
+        ["cartier/cartier funcional 2.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional 3.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional 4.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional 5.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional 6.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional 7.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional 8.jpg", "Cartier Funcional", 219.90],
+        ["cartier/cartier funcional.jpg", "Cartier Funcional", 219.90]
+    ]
+};
 
-    const WHATS = "5519989620949";
-    let products = [];
-    let cartItems = [];
-
-    // Carregar do Firebase
-    onSnapshot(collection(db, "produtos"), (snapshot) => {
-        products = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            products.push([data.img, data.nome, data.preco, data.cat]);
+let products = [];
+Object.keys(pastas).forEach(cat => { 
+    if(cat !== 'destaques') {
+        pastas[cat].forEach(p => {
+            products.push([...p, cat]);
         });
-        renderAll();
-    });
+    }
+});
 
-    // Globais para interface
-    window.toggleSidebar = () => { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); };
-    window.toggleCart = () => { document.getElementById('cart').classList.toggle('show'); document.getElementById('overlay').classList.toggle('active'); };
+let cartItems = [];
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
+function toggleCart() { document.getElementById('cart').classList.toggle('show'); document.getElementById('overlay').classList.toggle('active'); }
+
+function closeAll() { 
+    document.getElementById('sidebar').classList.remove('active'); 
+    document.getElementById('cart').classList.remove('show'); 
+    document.getElementById('productModal').classList.remove('active'); 
+    document.getElementById('overlay').classList.remove('active'); 
+    document.getElementById('popupCheckout').classList.remove('active');
+    document.getElementById('modalPix').classList.remove('active');
+    document.getElementById('modalThanks').classList.remove('active');
+}
+
+function openModal(index) {
+    const p = products[index];
+    const categoria = p[3];
+
+    document.getElementById('modalImg').src = p[0];
+    document.getElementById('modalTitle').innerText = p[1];
+    document.getElementById('modalPrice').innerText = `R$ ${p[2].toFixed(2).replace('.',',')}`;
     
-    window.closeAll = () => { 
-        document.getElementById('sidebar').classList.remove('active'); 
-        document.getElementById('cart').classList.remove('show'); 
-        document.getElementById('productModal').classList.remove('active'); 
-        document.getElementById('overlay').classList.remove('active'); 
-        document.getElementById('popupCheckout').classList.remove('active');
-        document.getElementById('modalPix').classList.remove('active');
-        document.getElementById('modalThanks').classList.remove('active');
-    };
+    let sizes = [];
+    if(categoria === 'tenis') {
+        sizes = ['38','39','40','41','42','43'];
+    } else if (['joias', 'relogios'].includes(categoria)) {
+        sizes = ['Único'];
+    } else {
+        sizes = ['P','M','G','GG'];
+    }
 
-    window.openModal = (index) => {
-        const p = products[index];
-        const categoria = p[3];
-        document.getElementById('modalImg').src = p[0];
-        document.getElementById('modalTitle').innerText = p[1];
-        document.getElementById('modalPrice').innerText = `R$ ${p[2].toFixed(2).replace('.',',')}`;
-        
-        let sizes = categoria === 'tenis' ? ['38','39','40','41','42','43'] : (['joias', 'relogios'].includes(categoria) ? ['Único'] : ['P','M','G','GG']);
-        document.getElementById('modalSizes').innerHTML = sizes.map(s => `<input type="radio" name="sz" id="s${s}" value="${s}"><label for="s${s}">${s}</label>`).join('');
-        
-        document.getElementById('modalOrderBtn').onclick = () => {
-            const sz = document.querySelector('input[name="sz"]:checked');
-            if(!sz) return alert("Selecione o tamanho");
-            addToCart(index);
-            abrirCheckout();
-        };
-
-        document.getElementById('modalWhatsAppBtn').onclick = () => {
-            const sz = document.querySelector('input[name="sz"]:checked');
-            if(!sz) return alert("Selecione o tamanho");
-            window.open(`https://wa.me/${WHATS}?text=Quero o ${p[1]} tam ${sz.value}`, "_blank");
-        };
-
-        document.getElementById('modalAddCartBtn').onclick = () => addToCart(index);
-        document.getElementById('productModal').classList.add('active');
-        document.getElementById('overlay').classList.add('active');
-    };
-
-    window.addToCart = (index) => {
-        const p = products[index];
+    document.getElementById('modalSizes').innerHTML = sizes.map(s => `
+        <input type="radio" name="sz" id="s${s}" value="${s}">
+        <label for="s${s}">${s}</label>
+    `).join('');
+    
+    document.getElementById('modalWhatsAppBtn').onclick = () => {
         const sz = document.querySelector('input[name="sz"]:checked');
-        const sizeValue = sz ? sz.value : "Padrão";
-        cartItems.push({ name: p[1], price: p[2], size: sizeValue });
-        updateCart();
-        closeAll();
+        if(!sz) return alert("Selecione o tamanho");
+        window.open(`https://wa.me/${WHATS}?text=Quero o ${p[1]} tam ${sz.value}`, "_blank");
     };
 
-    function updateCart() {
-        const container = document.getElementById('cartItems');
-        container.innerHTML = cartItems.map((item, i) => `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.8rem; border-bottom:1px solid #222; padding-bottom:5px;"><span>${item.name} (${item.size})</span><span>R$ ${item.price.toFixed(2)} <i class="fas fa-trash" onclick="removeItem(${i})" style="margin-left:10px; cursor:pointer; color:#ff4444"></i></span></div>`).join('');
-        const total = cartItems.reduce((acc, item) => acc + item.price, 0);
-        document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2).replace('.',',')}`;
-        document.getElementById('count').innerText = cartItems.length;
-    }
-
-    window.removeItem = (i) => { cartItems.splice(i, 1); updateCart(); };
-
-    window.abrirCheckout = () => {
-        if(cartItems.length === 0) return alert("Carrinho vazio!");
-        document.getElementById('popupCheckout').classList.add('active');
-        document.getElementById('overlay').classList.add('active');
+    document.getElementById('modalOrderBtn').onclick = () => {
+        const sz = document.querySelector('input[name="sz"]:checked');
+        if(!sz) return alert("Selecione o tamanho");
+        cartItems = [{ name: p[1], price: p[2], size: sz.value }]; 
+        abrirCheckout();
     };
 
-    window.finalizarPedidoWhatsApp = () => {
-        const nome = document.getElementById('cli-nome').value;
-        const end = document.getElementById('cli-end').value;
-        if(!nome || !end) return alert("Preencha os dados de entrega!");
+    document.getElementById('modalAddCartBtn').onclick = () => addToCart(index);
+    document.getElementById('productModal').classList.add('active');
+    document.getElementById('overlay').classList.add('active');
+}
 
-        let texto = `*NOVO PEDIDO - B2 STREET*\n\n`;
-        texto += `*Cliente:* ${nome}\n`;
-        texto += `*Endereço:* ${end}\n\n`;
-        texto += `*PRODUTOS:*\n`;
-        cartItems.forEach(item => {
-            texto += `- ${item.name} (${item.size}): R$ ${item.price.toFixed(2)}\n`;
-        });
-        const total = cartItems.reduce((acc, item) => acc + item.price, 0);
-        texto += `\n*TOTAL: R$ ${total.toFixed(2)}*`;
+function addToCart(index) {
+    const p = products[index];
+    const sz = document.querySelector('input[name="sz"]:checked');
+    if(!sz && document.getElementById('productModal').classList.contains('active')) return alert("Selecione o tamanho primeiro!");
+    const sizeValue = sz ? sz.value : "Padrão";
+    cartItems.push({ name: p[1], price: p[2], size: sizeValue });
+    updateCart();
+    if(document.getElementById('productModal').classList.contains('active')) closeModal();
+}
 
-        window.open(`https://wa.me/${WHATS}?text=${encodeURIComponent(texto)}`, "_blank");
-        document.getElementById('modalPix').classList.add('active');
+function updateCart() {
+    const container = document.getElementById('cartItems');
+    container.innerHTML = cartItems.map((item, i) => `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.8rem; border-bottom:1px solid #111; padding-bottom:5px;"><span>${item.name} (${item.size})</span><span>R$ ${item.price.toFixed(2)} <i class="fas fa-trash" onclick="removeItem(${i})" style="margin-left:10px; cursor:pointer; color:#ff4444"></i></span></div>`).join('');
+    const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+    document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2).replace('.',',')}`;
+    document.getElementById('count').innerText = cartItems.length;
+}
+
+function removeItem(i) { cartItems.splice(i, 1); updateCart(); }
+
+function checkoutWhatsApp() {
+    if(cartItems.length === 0) return alert("Carrinho vazio!");
+    let text = "Novo Pedido B2 Street:\n";
+    cartItems.forEach(item => text += `- ${item.name} (Tam: ${item.size}) - R$ ${item.price.toFixed(2)}\n`);
+    text += `\nTotal: R$ ${cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2)}`;
+    window.open(`https://wa.me/${WHATS}?text=${encodeURIComponent(text)}`, "_blank");
+}
+
+function abrirCheckout() {
+    if(cartItems.length === 0) return alert("Carrinho vazio!");
+    
+    // CORREÇÃO: Fecha o carrinho e o modal de produto antes de abrir o formulário
+    document.getElementById('cart').classList.remove('show');
+    document.getElementById('productModal').classList.remove('active');
+    
+    document.getElementById('popupCheckout').classList.add('active');
+    document.getElementById('overlay').classList.add('active');
+}
+
+async function finalizarPedidoPlanilha() {
+    const dados = {
+        nome: document.getElementById('cli-nome').value,
+        endereco: document.getElementById('cli-end').value,
+        telefone: document.getElementById('cli-tel').value,
+        email: document.getElementById('cli-email').value,
+        itens: cartItems.map(i => `${i.name} (${i.size})`).join(', '),
+        total: cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2)
     };
+    if(!dados.nome || !dados.endereco) return alert("Preencha os campos!");
+    
+    document.getElementById('popupCheckout').classList.remove('active');
+    document.getElementById('modalPix').classList.add('active');
 
-    window.abrirAgradecimento = () => {
-        document.getElementById('modalPix').classList.remove('active');
-        document.getElementById('modalThanks').classList.add('active');
-        cartItems = [];
-        updateCart();
-    };
+    try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
+    } catch (e) { console.log("Erro na planilha."); }
+}
 
-    window.renderAll = () => {
-        const content = document.getElementById('main-content');
-        const destaques = products.filter(p => p[3] === 'destaques');
-        let html = "";
-        html += renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
-        html += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
-        if(destaques.length > 0) html += renderBannerDestaques(destaques);
-        html += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
-        html += renderSection("Joias", products.filter(p => p[3] === 'joias'));
-        html += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
-        content.innerHTML = html;
-    };
+function abrirAgradecimento() {
+    document.getElementById('modalPix').classList.remove('active');
+    document.getElementById('modalThanks').classList.add('active');
+    cartItems = []; 
+    updateCart();
+}
 
-    function renderSection(title, list) {
-        if(list.length === 0) return "";
-        return `
-            <div class="category-row">
-                <h2 class="category-title">${title}</h2>
-                <div class="grid-fixed">
-                    ${list.map(p => {
-                        const idx = products.indexOf(p);
-                        return `
-                            <div class="product">
-                                <div onclick="openModal(${idx})">
-                                    <div class="product-img-container"><img src="${p[0]}"></div>
-                                    <h3>${p[1]}</h3>
-                                    <span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
-                                </div>
-                                <button class="btn-add-cart-card" onclick="addToCart(${idx})">🛒 CARRINHO</button>
-                            </div>`;
-                    }).join('')}
-                </div>
-            </div>`;
-    }
-
-    function renderBannerDestaques(list) {
-        return `
-            <div class="featured-container">
-                <div class="banner-track">
-                    ${list.map(d => `
-                        <div class="banner-slide">
-                            <div class="banner-img-horiz"><img src="${d[0]}"></div>
-                            <div class="banner-info-horiz">
-                                <h2>${d[1]}</h2>
-                                <span class="b-price">R$ ${d[2].toFixed(2).replace('.',',')}</span>
-                                <button class="b-btn" onclick="openModal(${products.indexOf(d)})">VER DETALHES</button>
+function renderSection(title, list) {
+    if(list.length === 0) return "";
+    return `
+        <div class="category-row">
+            <h2 class="category-title">${title}</h2>
+            <div class="grid-fixed">
+                ${list.map(p => {
+                    const idx = products.findIndex(pr => pr[1] === p[1] && pr[0] === p[0]);
+                    return `
+                        <div class="product">
+                            <div onclick="openModal(${idx})">
+                                <div class="product-img-container"><img src="${p[0]}"></div>
+                                <h3>${p[1]}</h3>
+                                <span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
                             </div>
-                        </div>`).join('')}
-                </div>
-            </div>`;
+                            <button class="btn-add-cart-card" onclick="addToCart(${idx})">🛒 CARRINHO</button>
+                            <button class="btn-order-card" onclick="openModal(${idx})">📦 PEDIDO</button>
+                        </div>`;
+                }).join('')}
+            </div>
+        </div>`;
+}
+
+function renderBannerDestaques() {
+    return `
+        <div class="featured-container">
+            <div class="banner-track">
+                ${pastas.destaques.map(d => `
+                    <div class="banner-slide">
+                        <div class="banner-img-horiz">
+                            <img src="${d[0]}" alt="${d[1]}">
+                        </div>
+                        <div class="banner-info-horiz">
+                            <h2>${d[1]}</h2>
+                            <span class="b-price">R$ ${d[2].toFixed(2).replace('.',',')}</span>
+                            <button class="b-btn" onclick="openModalByName('${d[1]}')">VER DETALHES</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>`;
+}
+
+function renderAll() {
+    const content = document.getElementById('main-content');
+    let html = "";
+    html += renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
+    html += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
+    
+    html += renderBannerDestaques();
+
+    html += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
+    html += renderSection("Joias", products.filter(p => p[3] === 'joias'));
+    html += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
+    content.innerHTML = html;
+}
+
+function renderByCategory(cat) { 
+    document.getElementById('main-content').innerHTML = renderSection(cat.toUpperCase(), products.filter(p => p[3] === cat)); 
+}
+
+function renderByBrand(brand) { 
+    const filtered = products.filter(p => p[1].toLowerCase().includes(brand.toLowerCase()));
+    document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), filtered); 
+}
+
+function closeModal() { document.getElementById('productModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
+
+function openModalByName(name) {
+    const idx = products.findIndex(p => p[1] === name);
+    if(idx !== -1) openModal(idx);
+    else alert("Produto não encontrado na lista atual.");
+}
+
+renderAll();
+
+let cur = 0;
+setInterval(() => {
+    const track = document.querySelector('.banner-track');
+    if(track && track.children.length > 0) {
+        cur = (cur + 1) % pastas.destaques.length;
+        track.style.transform = `translateX(-${cur * 100}%)`;
     }
-
-    window.renderByCategory = (cat) => { 
-        document.getElementById('main-content').innerHTML = renderSection(cat.toUpperCase(), products.filter(p => p[3] === cat)); 
-    };
-
-    window.renderByBrand = (brand) => { 
-        const filtered = products.filter(p => p[1].toLowerCase().includes(brand.toLowerCase()));
-        document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), filtered); 
-    };
-
+}, 4000);
 </script>
 </body>
 </html>
