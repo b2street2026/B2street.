@@ -1,599 +1,666 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2 Street | Urban Premium</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Área 037 | Streetwear Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <style>
-        :root {
-            --primary: #fff;
-            --accent: #25D366;
-            --bg-dark: #000;
-            --card-bg: #111;
-            --border-val: 4px;
+        :root { 
+            --bg-site: #f4f4f4;
+            --bg-card: #ffffff;
+            --text-main: #111111; 
+            --text-muted: #666666;
+            --primary: #000000; 
+            --accent: #00e676; /* Verde Premium do seu site original */
+            --border-color: #e5e5e5;
+            --transition: all 0.3s ease;
         }
 
-        *{margin:0;padding:0;box-sizing:border-box;font-family: 'Plus Jakarta Sans', sans-serif}
-        body{ background: var(--bg-dark); color: #fff; overflow-x: hidden; }
-        
-        header { background: #000; padding: 15px 5%; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
-        .header-main { display: flex; align-items: center; justify-content: space-between; position: relative; }
-        .menu-toggle { font-size: 1.3rem; cursor: pointer; color: #fff; z-index: 10; }
-        header .logo-centrada { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 28px; }
-
-        .video-banner { width: 100%; height: 65vh; overflow: hidden; position: relative; background: #000; }
-        .video-banner video { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .video-content { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.4), #000); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; z-index: 2; }
-
-        .featured-container { width: 100%; margin: 40px 0; position: relative; overflow: hidden; border-top: 1px solid #111; border-bottom: 1px solid #111; }
-        .banner-track { display: flex; transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1); }
-        .banner-slide { min-width: 100%; height: 400px; display: flex; align-items: center; background: #080808; overflow: hidden; }
-        .banner-img-horiz { flex: 0 0 45%; height: 100%; display: flex; align-items: center; justify-content: center; background: #080808; }
-        .banner-img-horiz img { width: 100%; height: 100%; object-fit: cover; mask-image: linear-gradient(to right, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%); }
-        .banner-info-horiz { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
-        .banner-info-horiz h2 { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
-        .banner-info-horiz .b-price { font-size: 1.5rem; color: var(--accent); font-weight: 800; margin-bottom: 25px; display: block; }
-        .banner-info-horiz .b-btn { background: #fff; color: #000; padding: 15px 30px; text-decoration: none; font-weight: 800; text-transform: uppercase; align-self: flex-start; font-size: 0.75rem; border:none; cursor:pointer;}
-
-        .filters { display: flex; gap: 15px; padding: 25px 5%; overflow-x: auto; scrollbar-width: none; }
-        .filters::-webkit-scrollbar { display: none; }
-        .filter-btn { flex: 0 0 auto; cursor: pointer; text-align: center; width: 65px; }
-        .filter-btn img, .filter-all-icon { width: 60px; height: 60px; border-radius: 8px; border: 1px solid #222; object-fit: cover; margin-bottom: 8px; }
-        .filter-btn span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; display: block; color: #888; }
-
-        .category-row { margin-bottom: 40px; }
-        .category-title { font-size: 0.9rem; margin: 0 5% 15px 5%; text-transform: uppercase; border-left: 4px solid var(--accent); padding-left: 10px; font-weight: 800; }
-        .grid-fixed { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 5%; }
-        .product { background: var(--card-bg); border: 1px solid #1a1a1a; padding: 10px; border-radius: var(--border-val); cursor: pointer; position: relative; }
-        .product-img-container { width: 100%; aspect-ratio: 1/1; overflow: hidden; margin-bottom: 8px; }
-        .product img { width: 100%; height: 100%; object-fit: cover; }
-        .product h3 { font-size: 0.7rem; color: #888; margin-bottom: 5px; height: 32px; overflow: hidden; }
-        .price { font-weight: 800; font-size: 0.85rem; color: #fff; display: block; margin-bottom: 10px; }
-        
-        .btn-add-cart-card { width: 100%; background: #222; color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; margin-bottom: 5px; }
-        .btn-order-card { width: 100%; background: var(--accent); color: #fff; border: none; padding: 8px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; border-radius: 2px; cursor: pointer; }
-
-        .modal, .popup-form, .modal-pix, .modal-thanks { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
-        .modal.active, .popup-form.active, .modal-pix.active, .modal-thanks.active { display: flex; }
-        .modal-content, .form-content { background: #111; width: 100%; max-width: 400px; border-radius: 8px; overflow: hidden; position: relative; border: 1px solid #333; display: flex; flex-direction: column; }
-        
-        .modal-body-pix { padding: 30px; text-align: center; }
-        .qr-code-img { width: 200px; height: 200px; margin: 20px auto; background: #fff; padding: 10px; border-radius: 8px; }
-        .pix-key { background: #222; padding: 10px; border-radius: 4px; font-size: 0.75rem; word-break: break-all; margin: 10px 0; border: 1px dashed #444; }
-
-        .close-modal { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #fff; z-index: 10; cursor: pointer; background: rgba(0,0,0,0.5); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        
-        .modal-img-container { width: 100%; height: 350px; background: #000; display: flex; align-items: center; justify-content: center; }
-        .modal-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-        .modal-body { padding: 25px; background: #111; text-align: center; }
-        .modal-body h2 { font-size: 1.2rem; margin-bottom: 5px; text-transform: uppercase; }
-        .modal-sizes { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; justify-content: center; }
-        .modal-sizes input { display: none; }
-        .modal-sizes label { padding: 10px 15px; border: 1px solid #333; cursor: pointer; font-size: 0.8rem; border-radius: 4px; min-width: 45px; }
-        .modal-sizes input:checked + label { background: #fff; color: #000; border-color: #fff; }
-        
-        .modal-actions { display: flex; flex-direction: column; gap: 10px; }
-        .btn-buy { width: 100%; padding: 18px; background: var(--accent); color: #fff; border: none; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
-        .btn-cart-modal { width: 100%; padding: 15px; background: #222; color: #fff; border: 1px solid #333; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
-        .btn-whatsapp-modal { width: 100%; padding: 15px; background: transparent; color: #fff; border: 1px solid #25D366; font-weight: 800; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
-
-        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: #000; z-index: 2001; transition: 0.4s; padding: 40px 20px; border-right: 1px solid #222; }
-        .sidebar.active { left: 0; }
-        .sidebar a { display: block; color: #ccc; text-decoration: none; padding: 15px 0; font-weight: 600; border-bottom: 1px solid #111; }
-        .cart { position: fixed; right: -100%; top: 0; width: 300px; height: 100%; background: #000; z-index: 4000; transition: 0.4s; padding: 20px; border-left: 1px solid #222; overflow-y: auto; }
-        .cart.show { right: 0; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; z-index: 2000; }
-        .overlay.active { display: block; }
-
-        .form-content input { width: 100%; padding: 12px; margin-bottom: 10px; background: #222; border: 1px solid #333; color: #fff; border-radius: 4px; }
-        .btn-confirm { width: 100%; padding: 15px; background: var(--accent); color: #fff; border: none; font-weight: 800; cursor: pointer; text-transform: uppercase; border-radius:4px; }
-
-        @media (min-width: 1024px) {
-            .grid-fixed { grid-template-columns: repeat(4, 1fr); }
-            .modal-content { max-width: 800px; flex-direction: row; height: 500px; }
-            .modal-img-container { width: 50%; height: 100%; border-right: 1px solid #222; }
-            .modal-body { width: 50%; justify-content: center; text-align: left; }
-            .banner-slide { height: 450px; }
+        body.dark-mode { 
+            --bg-site: #0b0b0c;
+            --bg-card: #141416;
+            --text-main: #ffffff; 
+            --text-muted: #aaaaaa;
+            --border-color: #222224;
         }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background: var(--bg-site); color: var(--text-main); overflow-x: hidden; min-height: 100vh; }
+        
+        /* Splash Screen */
+        #splashScreen {
+            position: fixed; inset: 0; background: #ffffff; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        #splashScreen img { width: 180px; animation: pulse 1.5s infinite ease-in-out; }
+        @keyframes pulse {
+            0% { transform: scale(0.96); opacity: 0.8; }
+            50% { transform: scale(1.04); opacity: 1; }
+            100% { transform: scale(0.96); opacity: 0.8; }
+        }
+
+        /* Top Announcement Bar */
+        .top-promo-bar {
+            background-color: var(--accent);
+            color: #000000;
+            text-align: center;
+            padding: 10px 5%;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        header { 
+            position: sticky; top: 0; width: 100%; height: 70px; 
+            background: var(--bg-card); 
+            display: flex; align-items: center; 
+            justify-content: space-between; padding: 0 4%; z-index: 1000; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+
+        .header-left, .header-right { display: flex; align-items: center; gap: 18px; }
+
+        .icon-btn { font-size: 1.25rem; cursor: pointer; color: var(--text-main); transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; position: relative; }
+        .icon-btn:hover { color: var(--text-muted); }
+
+        /* Barra de Pesquisa Fixa */
+        .search-section {
+            background: var(--bg-card);
+            padding: 12px 4%;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .search-wrapper input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-site);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            border-radius: 4px;
+            outline: none;
+            font-weight: 500;
+        }
+        .search-wrapper i {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            font-size: 1.1rem; color: var(--text-main); pointer-events: none;
+        }
+
+        /* Floating WhatsApp Button */
+        .wa-float { position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; z-index: 999; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: var(--transition); }
+        .wa-float:hover { transform: scale(1.05); }
+
+        /* Hero Video Section com Logo Centralizada de Volta */
+        .london-hero { width: 100%; height: 55vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; background: #000; }
+        .hero-video-bg { 
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.7;
+        }
+        .london-hero img { width: 220px; z-index: 2; position: relative; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); }
+
+        /* Manifesto */
+        .hero-manifesto { padding: 40px 6%; text-align: center; background: var(--bg-card); border-bottom: 1px solid var(--border-color); }
+        .hero-manifesto p { max-width: 800px; margin: 0 auto 15px; font-size: 0.95rem; font-weight: 600; line-height: 1.7; color: var(--text-main); }
+
+        /* Vitrine e Seções */
+        .brand-title { font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin: 35px 4% 20px; letter-spacing: 0.5px; }
+        
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 4% 30px; }
+        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+        
+        /* Card de Produto Profissional */
+        .p-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); position: relative; }
+        .p-card:hover { border-color: #999; }
+        .p-card-img-box { width: 100%; aspect-ratio: 1/1; background: #fdfdfd; display: flex; align-items: center; justify-content: center; padding: 10px; border-bottom: 1px solid var(--border-color); }
+        .p-card-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .p-card-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+        .p-card-title { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px; text-transform: capitalize; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px; }
+        .p-card-rating { color: #ccc; font-size: 0.75rem; margin-bottom: 10px; }
+        .p-card-rating .active-star { color: var(--accent); }
+        .p-card-price { font-size: 1.15rem; font-weight: 900; color: var(--text-main); margin-bottom: 4px; }
+        .p-card-pix { font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .p-card-parcel { font-size: 0.75rem; color: #b5b5b5; font-weight: 500; margin-bottom: 15px; }
+        
+        .btn-card-buy { width: 100%; padding: 12px; background: var(--accent); color: #000; border: none; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; transition: var(--transition); letter-spacing: 0.5px; border-radius: 2px; }
+        .btn-card-buy:hover { filter: brightness(0.9); }
+
+        /* Banners */
+        .carousel-container { width: 92%; max-width: 1200px; margin: 30px auto; border-radius: 4px; overflow: hidden; background: #000; border: 1px solid var(--border-color); }
+        .carousel-track { display: flex; transition: 0.9s cubic-bezier(0.25, 1, 0.5, 1); }
+        .carousel-track img { width: 100%; height: auto; object-fit: cover; }
+
+        /* Sidebars Laterais Corrigidas */
+        .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--bg-card); border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); z-index: 5000; transition: var(--transition); padding: 30px; box-shadow: 0 0 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: space-between; }
+        #filterSide { left: -320px; } 
+        #filterSide.active { left: 0; }
+        #cartSide { right: -320px; } 
+        #cartSide.active { right: 0; }
+
+        /* Modal do Produto */
+        #productPage { 
+            position: fixed; inset: 0; background: var(--bg-site); z-index: 2000; 
+            display: none; overflow-y: auto; padding: 40px 4%;
+        }
+        .product-page-content { 
+            background: var(--bg-card); width: 100%; max-width: 1100px; margin: 20px auto 0; border-radius: 4px; 
+            display: grid; grid-template-columns: 1fr; border: 1px solid var(--border-color);
+        }
+        @media(min-width: 768px) { .product-page-content { grid-template-columns: 1.1fr 0.9fr; } }
+
+        .gallery-container { display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 20px; border-right: 1px solid var(--border-color); }
+        .main-img-wrapper { background: #fff; display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 1/1; border: 1px solid var(--border-color); }
+        .thumb-list { display: flex; gap: 10px; justify-content: center; overflow-x: auto; padding-top: 5px; }
+        .thumb-img { width: 60px; height: 60px; object-fit: contain; border-radius: 4px; cursor: pointer; border: 1px solid var(--border-color); transition: var(--transition); background: #fff; }
+        .thumb-img.active { border-color: var(--accent); border-width: 2px; }
+
+        .product-details-side { padding: 40px 30px; display: flex; flex-direction: column; justify-content: flex-start; }
+        .product-details-side h2 { font-weight: 900; text-transform: uppercase; font-size: 1.6rem; letter-spacing: 0.5px; line-height: 1.2; margin-bottom: 10px; }
+        .product-details-side h3 { margin: 10px 0 20px; color: var(--text-main); font-weight: 900; font-size: 1.8rem; }
+
+        .size-btn { padding: 12px; border: 1px solid var(--border-color); background: var(--bg-site); text-align: center; cursor: pointer; border-radius: 4px; font-weight: 700; font-size: 0.85rem; transition: var(--transition); color: var(--text-main); }
+        .size-btn:hover { border-color: var(--text-main); }
+        .size-btn.selected { background: var(--primary); color: #fff !important; border-color: var(--primary); }
+        
+        .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; border-radius: 4px; cursor: pointer; margin-top: 25px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; }
+        .btn-buy-modal:hover { filter: brightness(0.9); }
+
+        .info-accordion { margin-top: 15px; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; background: var(--bg-card); }
+        .accordion-header { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid transparent; }
+        .info-accordion.active .accordion-header { border-bottom-color: var(--border-color); background: var(--bg-site); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+        .info-accordion.active .accordion-content { padding: 15px 20px; max-height: 200px; }
+
+        /* Rodapé */
+        footer { background: #000000; color: #ffffff; padding: 50px 4% 30px; text-align: center; border-top: 4px solid var(--accent); }
+        .footer-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-bottom: 40px; text-align: left; }
+        @media(min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+        .footer-col h4 { font-size: 1rem; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; color: var(--accent); }
+        .footer-col p, .footer-col a { font-size: 0.85rem; color: #bbbbbb; text-decoration: none; margin-bottom: 10px; display: block; }
+        .footer-col a:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-<div class="overlay" id="overlay" onclick="closeAll()"></div>
-
-<div class="popup-form" id="popupCheckout">
-    <div class="form-content" style="padding: 30px;">
-        <h3 style="margin-bottom:20px; text-align:center;">Dados de Entrega</h3>
-        <input type="text" id="cli-nome" placeholder="Nome Completo">
-        <input type="text" id="cli-end" placeholder="Endereço de Envio">
-        <input type="text" id="cli-tel" placeholder="Número de Telefone">
-        <input type="email" id="cli-email" placeholder="E-mail">
-        <button class="btn-confirm" onclick="finalizarPedidoPlanilha()">Confirmar Pedido</button>
-        <p onclick="closeAll()" style="text-align:center; margin-top:15px; font-size:0.7rem; cursor:pointer; color:#888;">CANCELAR</p>
-    </div>
+<!-- TELA DE CARREGAMENTO -->
+<div id="splashScreen">
+    <img src="logo2.png" alt="Logo">
 </div>
 
-<div class="modal-pix" id="modalPix">
-    <div class="form-content modal-body-pix">
-        <h3>PAGAMENTO VIA PIX</h3>
-        <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Escaneie o código abaixo para pagar:</p>
-        <img src="qrcode.jpg" class="qr-code-img" alt="QR Code PIX">
-        <p style="font-size: 0.7rem; text-transform: uppercase; color: #aaa;">Chave PIX (telefone):</p>
-        <div class="pix-key">19989620949</div>
-        <button class="btn-buy" onclick="abrirAgradecimento()">JÁ PAGUEI</button>
-    </div>
-</div>
-
-<div class="modal-thanks" id="modalThanks">
-    <div class="form-content" style="padding: 40px; text-align: center;">
-        <img src="logo3.png" alt="B2 Street" style="width: 180px; margin: 0 auto 20px auto;">
-        <h2 style="font-size: 1.2rem; color: var(--accent);">PEDIDO RECEBIDO!</h2>
-        <p style="margin: 20px 0; font-size: 0.9rem; line-height: 1.5; color: #ccc;">A equipe B2 Street agradece sua compra! Em breve você receberá as atualizações do seu pedido.</p>
-        <div class="modal-actions">
-            <button class="btn-whatsapp-modal" onclick="window.open('https://wa.me/5519989620949', '_blank')">SUPORTE WHATSAPP</button>
-            <button class="btn-buy" style="background:#fff; color:#000;" onclick="closeAll()">CONTINUAR COMPRANDO</button>
-        </div>
-    </div>
+<!-- FAIXA PROMO TOP -->
+<div class="top-promo-bar">
+    🔥 Aproveite: Compre acima de R$ 399,00 e ganhe FRETE GRÁTIS na sua compra! 📦
 </div>
 
 <header>
-    <div class="header-main">
-        <div class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        <img src="logo.jpg" class="logo-centrada" alt="B2 STREET">
-        <div onclick="toggleCart()" style="cursor:pointer; position:relative; font-size: 1.1rem; z-index: 10;">
-            <i class="fas fa-shopping-cart"></i>
-            <span id="count" style="position:absolute; top:-7px; right:-9px; background:var(--accent); font-size:0.55rem; padding:2px 5px; border-radius:10px; font-weight:800;">0</span>
+    <div class="header-left">
+        <i class="fas fa-bars icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        <a href="https://wa.me/5537998744383" target="_blank" class="fab fa-whatsapp icon-btn"></a>
+    </div>
+    
+    <img src="logo2.png" style="height:42px; cursor:pointer;" onclick="window.location.reload()">
+    
+    <div class="header-right">
+        <a href="https://instagram.com/area.037" target="_blank" class="fab fa-instagram icon-btn"></a>
+        <i id="themeIcon" class="fas fa-moon icon-btn" onclick="toggleTheme()"></i>
+        <div class="icon-btn" onclick="toggleSidebar('cartSide')">
+            <i class="fas fa-shopping-bag"></i>
+            <span id="cartCount" style="position:absolute; top:-6px; right:-8px; background:#000; color:#fff; border: 1px solid var(--accent); font-size:0.65rem; width:16px; height:16px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:700;">0</span>
         </div>
     </div>
 </header>
 
-<nav class="sidebar" id="sidebar">
-    <h2 style="margin-bottom: 20px; font-size: 1rem; color: var(--accent);">CATEGORIAS</h2>
-    <a href="#" onclick="renderAll(); toggleSidebar()">🏠 Home</a>
-    <a href="#" onclick="renderByCategory('tenis'); toggleSidebar()">👟 Tênis</a>
-    <a href="#" onclick="renderByCategory('camisas'); toggleSidebar()">👕 Camisas</a>
-    <a href="#" onclick="renderByCategory('shorts'); toggleSidebar()">🩳 Shorts</a>
-    <a href="#" onclick="renderByCategory('joias'); toggleSidebar()">💎 Joias</a>
-    <a href="#" onclick="renderByCategory('relogios'); toggleSidebar()">⌚ Relógios</a>
-</nav>
-
-<div class="video-banner">
-    <video autoplay loop muted playsinline>
-        <source src="YTDown.com_YouTube_Central-Cee-x-Dave-Sprinter-Music-Video_Media_pSY3i5XHHXo_001_1080p.mov" type="video/mp4">
-    </video>
-    <div class="video-content">
-        <img src="logo3.png" alt="B2 Street Logo" style="max-width: 250px; width: 80%; margin-bottom: 20px;">
-        <p>O estilo das ruas elevado ao topo.</p>
-        <a href="https://wa.me/5519989620949" target="_blank" class="b-btn" style="background:var(--accent); color:#fff; text-decoration:none; padding: 12px 25px; border-radius:2px; font-weight:800; font-size: 0.7rem; margin-top:15px;">CHAMAR NO WHATS</a>
+<!-- BARRA DE PESQUISA FIXA -->
+<div class="search-section">
+    <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="O que você está buscando?" oninput="realTimeSearch()">
+        <i class="fas fa-search"></i>
     </div>
 </div>
 
-<div class="filters">
-    <div class="filter-btn" onclick="renderAll()"><div class="filter-all-icon" style="background:#fff; color:#000; font-weight:800; font-size:0.7rem; display:flex; align-items:center; justify-content:center;">ALL</div><span>Todos</span></div>
-    <div class="filter-btn" onclick="renderByCategory('tenis')"><img src="tenis.webp"><span>Tênis</span></div>
-    <div class="filter-btn" onclick="renderByCategory('camisas')"><img src="roupas.jfif"><span>Camisas</span></div>
-    <div class="filter-btn" onclick="renderByCategory('shorts')"><img src="shorts1.avif"><span>Shorts</span></div>
-    <div class="filter-btn" onclick="renderByCategory('joias')"><img src="brincos.jpg"><span>Joias</span></div>
-    <div class="filter-btn" onclick="renderByCategory('relogios')"><img src="relogios.jfif"><span>Relógios</span></div>
-    <div class="filter-btn" onclick="renderByBrand('rolex')"><img src="rolex1.jpg"><span>Rolex</span></div>
-    <div class="filter-btn" onclick="renderByBrand('patek')"><img src="patek philippe logo.jpg"><span>Patek</span></div>
-    <div class="filter-btn" onclick="renderByBrand('cartier')"><img src="cartier1.jpg"><span>Cartier</span></div>
-    <div class="filter-btn" onclick="renderByBrand('tag heuer')"><img src="tag heuer1.jpg"><span>Tag Heuer</span></div>
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/5537998744383" target="_blank" class="wa-float"><i class="fab fa-whatsapp"></i></a>
+
+<!-- MENU LATERAL ESQUERDO (MARCAS) -->
+<div id="filterSide" class="sidebar">
+    <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 style="font-weight:900; font-size:1.2rem; letter-spacing: 1px;">MARCAS</h2>
+            <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
+        </div>
+        <div id="filterList">
+            <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">NIKE</p>
+            <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">MIZUNO</p>
+            <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">ADIDAS</p>
+            <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">PUMA</p>
+            <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">NEW BALANCE</p>
+            <hr style="border: none; height: 1px; background: var(--border-color); margin: 20px 0;">
+            <div id="dynamicBrands"></div>
+        </div>
+    </div>
+    <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+        <p onclick="scrollToQuemSomos()" style="cursor:pointer; font-weight:700; font-size:0.9rem; margin-bottom:10px;"><i class="fas fa-users"></i> Quem Somos</p>
+    </div>
 </div>
 
-<div id="main-content"></div>
-
-<div class="modal" id="productModal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <div class="modal-img-container">
-            <img src="" id="modalImg" class="modal-img">
+<!-- CARRINHO -->
+<div id="cartSide" class="sidebar">
+    <div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 style="font-weight:900; font-size:1.2rem; letter-spacing: 1px;">SEU CARRINHO</h2>
+            <i class="fas fa-times icon-btn" onclick="toggleSidebar('cartSide')"></i>
         </div>
-        <div class="modal-body">
-            <h2 id="modalTitle"></h2>
-            <span id="modalPrice" style="color:var(--accent); font-weight:800; font-size:1.5rem; margin:10px 0; display:block;"></span>
-            <div class="modal-sizes" id="modalSizes"></div>
-            <div class="modal-actions">
-                <button class="btn-buy" id="modalOrderBtn">FECHAR PEDIDO</button>
-                <button class="btn-whatsapp-modal" id="modalWhatsAppBtn">FECHAR WHATSAPP</button>
-                <button class="btn-cart-modal" id="modalAddCartBtn">ADICIONAR AO CARRINHO</button>
+        <div id="cartItems" style="margin-top:25px; max-height: 60vh; overflow-y: auto;"></div>
+    </div>
+    <div style="border-top:1px solid var(--border-color); padding-top:20px; margin-top:20px">
+        <p style="display:flex; justify-content:space-between; font-weight: 700; font-size:1rem; margin-bottom:15px;">TOTAL: <span id="cartTotal" style="font-weight: 900;">R$ 0,00</span></p>
+        <button class="btn-buy-modal" onclick="sendToWhatsApp()" style="margin-top:0;">FINALIZAR PEDIDO</button>
+    </div>
+</div>
+
+<!-- VITRINE PRINCIPAL -->
+<div id="storefrontView">
+    <section class="london-hero">
+        <video autoplay muted loop playsinline class="hero-video-bg">
+            <source src="video.mov" type="video/mp4">
+        </video>
+        <!-- Logo de volta ao meio do vídeo -->
+        <img src="logo2.png" alt="Logo Área 037">
+    </section>
+
+    <section class="hero-manifesto">
+        <p>A ÁREA 037 é referência para quem busca sneakers de qualidade e vive o streetwear todos os dias. Desde 2022 no corre entregando style e autenticidade para todo o Brasil.</p>
+    </section>
+
+    <!-- PRODUTOS EM GRIDS -->
+    <div>
+        <h2 class="brand-title">Lançamentos em Destaque</h2>
+        <div class="grid" id="featuredProducts"></div>
+
+        <div id="nikeSections"></div>
+        <div id="mizunoSections"></div>
+        
+        <div class="carousel-container" id="mainBanner">
+            <div class="carousel-track" id="track"></div>
+        </div>
+        
+        <div id="othersWrapper"></div>
+    </div>
+</div>
+
+<!-- PÁGINA DO PRODUTO (MODAL EXPANDIDO) -->
+<div id="productPage">
+    <div style="max-width: 1100px; margin: 0 auto;">
+        <span onclick="closeProductPage()" style="cursor:pointer; font-weight:700; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.85rem;"><i class="fas fa-arrow-left"></i> Voltar para a loja</span>
+    </div>
+    
+    <div class="product-page-content">
+        <div class="gallery-container">
+            <div class="main-img-wrapper">
+                <img id="modalImg" style="max-width:90%; max-height:380px; object-fit:contain;">
+            </div>
+            <div class="thumb-list" id="thumbList"></div>
+        </div>
+        
+        <div class="product-details-side">
+            <h2 id="modalName"></h2>
+            <h3 id="modalPrice"></h3>
+            
+            <p style="margin-bottom:12px; font-weight:700; font-size:0.75rem; color:var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;">Selecione o Tamanho:</p>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:15px;" id="sizes">
+                <div class="size-btn" onclick="selectSize(this)">38</div>
+                <div class="size-btn" onclick="selectSize(this)">39</div>
+                <div class="size-btn" onclick="selectSize(this)">40</div>
+                <div class="size-btn" onclick="selectSize(this)">41</div>
+                <div class="size-btn" onclick="selectSize(this)">42</div>
+                <div class="size-btn" onclick="selectSize(this)">43</div>
+            </div>
+
+            <button class="btn-buy-modal" onclick="confirmCart()">Adicionar ao Carrinho</button>
+
+            <div class="info-accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Formas de Envio</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>📦 <b>Correios (Sedex / PAC):</b> Enviamos código de rastreio via WhatsApp imediatamente após postagem.</p>
+                    <p style="margin-top:6px;">🚀 <b>Motoboy:</b> Entrega rápida na sua região (consulte taxas locais).</p>
+                </div>
+            </div>
+
+            <div class="info-accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Formas de Pagamento</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>⚡ <b>Pix:</b> Pagamento simplificado com aprovação instantânea.</p>
+                    <p style="margin-top:6px;">💳 <b>Cartão de Crédito:</b> Parcelamento facilitado via link seguro de pagamento.</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="cart" id="cart">
-    <h2 style="margin-bottom:20px">CARRINHO</h2>
-    <div id="cartItems"></div>
-    <div style="margin-top:20px; border-top:1px solid #222; padding-top:15px">
-        <p>Total: <span id="cartTotal">R$ 0,00</span></p>
-        <button onclick="abrirCheckout()" class="btn-buy" style="margin-top:10px;">FECHAR PEDIDO</button>
-        <button onclick="checkoutWhatsApp()" class="btn-whatsapp-modal" style="margin-top:10px; width: 100%;">FECHAR WHATSAPP</button>
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Área 037</h4>
+            <p>Referência para quem vive a cultura urbana e busca os sneakers mais exclusivos do mercado com autenticidade garantida desde 2022.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Navegação</h4>
+            <a href="#" onclick="window.location.reload()">Início</a>
+            <a href="#featuredProducts">Lançamentos</a>
+            <a href="https://instagram.com/area.037" target="_blank">Nosso Instagram</a>
+        </div>
+        <div class="footer-col">
+            <h4>Suporte & Atendimento</h4>
+            <p><i class="fab fa-whatsapp"></i> (37) 99874-4383</p>
+            <p><i class="fas fa-envelope"></i> contato@area037.com</p>
+        </div>
     </div>
-</div>
+    <p style="font-size:0.75rem; color:#777777; border-top:1px solid #222; padding-top:20px;">&copy; 2026 Área 037 Streetwear. Todos os direitos reservados.</p>
+</footer>
 
 <script>
-const WHATS = "5519989620949";
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6SZzQoxkCZW08tL1SelX2Fb55OeAJsjjwTueWOlrTzDOKgCPJH1d0SZHYihAsqX8/exec"; 
+    // Remove o Splash Screen pós-carregamento
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splashScreen');
+            if(splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; }
+        }, 1200);
+    });
 
-const pastas = {
-    destaques: [
-        ["destaques/rolex daytona 3.jpg", "Rolex daytona", 599.90],
-        ["destaques/lacosteslide.jpg", "Lacoste Slide Sport", 199.90],
-        ["destaques/conjunto syna amarelo.png", "Conjunto Syna Amarelo", 129.90]
-    ],
-     tenis: [
-        ["tenis/nocta hot step 2.jpg","Nike NOCTA Hot Step 2 White",630.00],
-        ["tenis/air max95 x corteiz.jpg","Air max 95 x Corteiz",379.90],
-        ["tenis/nike DN white.jpg","Nike DN white",354.90],
-        ["tenis/nike-dn-preto.jpg","Nike DN black",354.90],
-        ["tenis/nocta glide.jpg","Nike nocta glide",359.90],
-        ["tenis/lacosteslide.jpg","Lacoste Slide Sport",199.90],
-        ["tenis/nike-air-force.jpg","Nike air force black",249.90],
-        ["tenis/bota timberland.jpg","Bota Timberland",359.90],
-        ["tenis/Asics gel NYC.jpg","Asics gel NYC",449.90],
-        ["tenis/Nike TN.jpg","Nike TN",329.90]
-    ],
-    camisas: [
-        ["camisas/camisa canelada preta.jpg","Camisa Canelada Preta",79.90],
-        ["camisas/camisa canelada branca.jpg","Camisa Canelada Branca",79.90],
-        ["camisas/regata canelada preta.jpg","Regata Canelada Preta",79.90],
-        ["camisas/regata canelada branca.jpg","Regata Canelada Branca",79.90],
-        ["camisas/kit syna world.jpg","Kit Syna World",149.90],
-        ["camisas/kit corteiz.jpg","Kit Corteiz",159.90],
-        ["shorts/conjunto denim tears preto.jpg","conjunto denim tears preto",119.90],
-        ["shorts/conjunto denim tears cinza.jpg","conjunto denim tears cinza",119.90],
-        ["camisas/nike tech flecee branca 1.jpg","nike tech flecee branca",384.90],
-        ["camisas/nike tech flecee gray 1.jpg","nike tech flecee cinza",384.90],
-        ["camisas/nike tech flecee preta 1.jpg","nike tech flecee preta",384.90],
-        ["camisas/regata corteiz.jpg","Regatas Corteiz",94.90],
-        ["camisas/camisa corteiz basica.jpg","Camisa Corteiz Básica",89.90],
-        ["camisas/camisa corteiz brasil.jpg","Camisa Corteiz Brasil",89.90],
-        ["camisas/camisa corteiz oversized.jpg","Camisa Corteiz Oversized",89.90],
-        ["camisas/corteiz rules the world.jpg","Corteiz Rules The World",76.90],
-        ["camisas/conjunto syna amarelo.png","conjunto syna amarelo",129.90],
-        ["camisas/moletom nocta.png","moletom nocta",94.90],
-        ["camisas/moletom syna.png","moletom syna",129.90]
-    ],
-    joias: [
-        ["brincos e joias/brinco argola cravejada.jpg", "Brinco Argola Cravejada", 49.90],
-        ["brincos e joias/brinco cravejado quadrado.jpg", "Brinco Cravejado Quadrado", 59.90],
-        ["brincos e joias/brinco ice cravejado.jpg", "Brinco Ice Cravejado", 49.90],
-        ["brincos e joias/brinco ponto de luz.jpg", "Brinco Ponto de Luz", 24.90],
-        ["brincos e joias/brinco ponto de luz quadrado.jpg", "Brinco Ponto de Luz Quadrado", 49.90],
-        ["brincos e joias/colar van cleef.jpg", "Colar Van Cleef", 89.90],
-        ["brincos e joias/corrente ice cravejada.jpg", "Corrente Ice Cravejada", 84.90],
-        ["brincos e joias/corrente ice.jpg", "Corrente Ice", 34.90],
-        ["brincos e joias/pulseira ice cravejada.jpg", "Pulseira Ice Cravejada", 49.90],
-        ["brincos e joias/pulseira van cleef.jpg", "Pulseira Van Cleef", 64.90]
-    ],
-    calças: [
-        ["calcas/calça cargo corteiz 1.jpg","calça cargo corteiz",249.90],
-        ["calcas/calça cargo corteiz 2.jpg","calça cargo corteiz grey",249.90],
-        ["calcas/nike tech flecee branca 2.jpg","nike tech flecee calça branca",325.90],
-        ["calcas/nike tech flecee gray 2.jpg","nike tech flecee calça cinza",325.90],
-        ["calcas/nike tech flecee preta 2.jpg","nike tech flecee calça preta",325.90],
-        ["calcas/syna x nike tech fleece 2.jpg","syna x nike tech fleece calça",329.90],
-        ["calcas/minus two1.jpg","minus two blue",225.90],
-        ["calcas/minus two 2.jpg","minus two yellow",225.90],
-        ["calcas/minus two 3.jpg","minus two pink",225.90],
-        ["calcas/minus two 4.jpg","minus two red",225.90]
-    ],
-    shorts: [
-        ["shorts/hellstar 1.jpg","hellstar black",285.90],
-        ["shorts/hellstar 2.jpg","hellstar white",285.90],
-        ["shorts/hellstar 3.jpg","hellstar red",285.90],   
-        ["shorts/shorts cargo corteiz 1.jpg","shorts cargo corteiz",199.90],
-        ["shorts/shorts cargo corteiz 2.jpg","shorts cargo corteiz green",199.90],
-        ["shorts/shorts cargo corteiz 3.jpg","shorts cargo corteiz blue",199.90],
-        ["shorts/syna shorts 1.jpg","syna shorts pink",284.90],
-        ["shorts/syna shorts 2.jpg","syna shorts black",284.90],
-        ["shorts/shorts corteiz moletom basico.jpg","Shorts Corteiz Moletom Básico",74.90],
-        ["shorts/denim tears 1.jpg","denim tears black",269.90],
-        ["shorts/denim tears 2.jpg","denim tears grey",269.90],
-    ],
-    relogios: [
-        // PATEK PHILIPPE
-        ["patek philippe/patek philippe 1.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 2.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 3.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 4.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 5.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 6.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 7.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 8.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 9.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 10.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 11.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 12.jpg", "Patek Philippe", 180.00],
-        ["patek philippe/patek philippe 13.jpg", "Patek Philippe", 180.00],
-        
-        // ROLEX
-        ["rolex/rolex datejust 1.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 2.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 3.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 5.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 6.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 7.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 8.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust 9.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex datejust4.jpg", "Rolex Datejust", 149.90],
-        ["rolex/rolex daytona 2.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona 3.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona 4.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona 5.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona 6.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona 7.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona 8.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex daytona.jpg", "Rolex Daytona", 599.90],
-        ["rolex/rolex oyster perpetual 2.jpg", "Rolex Oyster Perpetual", 139.90],
-        ["rolex/rolex oyster perpetual 3.jpg", "Rolex Oyster Perpetual", 139.90],
-        ["rolex/rolex oyster perpetual 4.jpg", "Rolex Oyster Perpetual", 139.90],
-        ["rolex/rolex oyster perpetual 5.jpg", "Rolex Oyster Perpetual", 139.90],
-        ["rolex/rolex oyster perpetual.jpg", "Rolex Oyster Perpetual", 139.90],
-        ["rolex/rolex submariner 2.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 3.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 4.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 5.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 6.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 7.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 8.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 9.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 10.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 11.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 12.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner 13.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex submariner.jpg", "Rolex Submariner", 149.90],
-        ["rolex/rolex daydate 3.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 4.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 5.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 6.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 7.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 8.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 9.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate 10.jpg", "Rolex Daydate", 149.90],
-        ["rolex/rolex daydate.jpg", "Rolex Daydate", 149.90],
-        
-        // TAG HEUER
-        ["tag heuer/tag heuer 2.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer 3.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer 4.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer 5.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer 6.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer 7.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer 8.jpg", "Tag Heuer", 199.90],
-        ["tag heuer/tag heuer.jpg", "Tag Heuer", 199.90],
-
-        // CARTIER
-        ["cartier/cartier funcional 2.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional 3.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional 4.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional 5.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional 6.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional 7.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional 8.jpg", "Cartier Funcional", 219.90],
-        ["cartier/cartier funcional.jpg", "Cartier Funcional", 219.90]
-    ]
-};
-
-let products = [];
-Object.keys(pastas).forEach(cat => { 
-    if(cat !== 'destaques') {
-        pastas[cat].forEach(p => {
-            products.push([...p, cat]);
-        });
-    }
-});
-
-let cartItems = [];
-
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-function toggleCart() { document.getElementById('cart').classList.toggle('show'); document.getElementById('overlay').classList.toggle('active'); }
-
-function closeAll() { 
-    document.getElementById('sidebar').classList.remove('active'); 
-    document.getElementById('cart').classList.remove('show'); 
-    document.getElementById('productModal').classList.remove('active'); 
-    document.getElementById('overlay').classList.remove('active'); 
-    document.getElementById('popupCheckout').classList.remove('active');
-    document.getElementById('modalPix').classList.remove('active');
-    document.getElementById('modalThanks').classList.remove('active');
-}
-
-function openModal(index) {
-    const p = products[index];
-    const categoria = p[3];
-
-    document.getElementById('modalImg').src = p[0];
-    document.getElementById('modalTitle').innerText = p[1];
-    document.getElementById('modalPrice').innerText = `R$ ${p[2].toFixed(2).replace('.',',')}`;
-    
-    let sizes = [];
-    if(categoria === 'tenis') {
-        sizes = ['38','39','40','41','42','43'];
-    } else if (['joias', 'relogios'].includes(categoria)) {
-        sizes = ['Único'];
-    } else {
-        sizes = ['P','M','G','GG'];
+    // Função de alternar Menu Lateral Corrigida
+    function toggleSidebar(id) {
+        const sidebar = document.getElementById(id);
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
     }
 
-    document.getElementById('modalSizes').innerHTML = sizes.map(s => `
-        <input type="radio" name="sz" id="s${s}" value="${s}">
-        <label for="s${s}">${s}</label>
-    `).join('');
-    
-    document.getElementById('modalWhatsAppBtn').onclick = () => {
-        const sz = document.querySelector('input[name="sz"]:checked');
-        if(!sz) return alert("Selecione o tamanho");
-        window.open(`https://wa.me/${WHATS}?text=Quero o ${p[1]} tam ${sz.value}`, "_blank");
-    };
-
-    document.getElementById('modalOrderBtn').onclick = () => {
-        const sz = document.querySelector('input[name="sz"]:checked');
-        if(!sz) return alert("Selecione o tamanho");
-        cartItems = [{ name: p[1], price: p[2], size: sz.value }]; 
-        abrirCheckout();
-    };
-
-    document.getElementById('modalAddCartBtn').onclick = () => addToCart(index);
-    document.getElementById('productModal').classList.add('active');
-    document.getElementById('overlay').classList.add('active');
-}
-
-function addToCart(index) {
-    const p = products[index];
-    const sz = document.querySelector('input[name="sz"]:checked');
-    if(!sz && document.getElementById('productModal').classList.contains('active')) return alert("Selecione o tamanho primeiro!");
-    const sizeValue = sz ? sz.value : "Padrão";
-    cartItems.push({ name: p[1], price: p[2], size: sizeValue });
-    updateCart();
-    if(document.getElementById('productModal').classList.contains('active')) closeModal();
-}
-
-function updateCart() {
-    const container = document.getElementById('cartItems');
-    container.innerHTML = cartItems.map((item, i) => `<div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:0.8rem; border-bottom:1px solid #111; padding-bottom:5px;"><span>${item.name} (${item.size})</span><span>R$ ${item.price.toFixed(2)} <i class="fas fa-trash" onclick="removeItem(${i})" style="margin-left:10px; cursor:pointer; color:#ff4444"></i></span></div>`).join('');
-    const total = cartItems.reduce((acc, item) => acc + item.price, 0);
-    document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2).replace('.',',')}`;
-    document.getElementById('count').innerText = cartItems.length;
-}
-
-function removeItem(i) { cartItems.splice(i, 1); updateCart(); }
-
-function checkoutWhatsApp() {
-    if(cartItems.length === 0) return alert("Carrinho vazio!");
-    let text = "Novo Pedido B2 Street:\n";
-    cartItems.forEach(item => text += `- ${item.name} (Tam: ${item.size}) - R$ ${item.price.toFixed(2)}\n`);
-    text += `\nTotal: R$ ${cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2)}`;
-    window.open(`https://wa.me/${WHATS}?text=${encodeURIComponent(text)}`, "_blank");
-}
-
-function abrirCheckout() {
-    if(cartItems.length === 0) return alert("Carrinho vazio!");
-    
-    // CORREÇÃO: Fecha o carrinho e o modal de produto antes de abrir o formulário
-    document.getElementById('cart').classList.remove('show');
-    document.getElementById('productModal').classList.remove('active');
-    
-    document.getElementById('popupCheckout').classList.add('active');
-    document.getElementById('overlay').classList.add('active');
-}
-
-async function finalizarPedidoPlanilha() {
-    const dados = {
-        nome: document.getElementById('cli-nome').value,
-        endereco: document.getElementById('cli-end').value,
-        telefone: document.getElementById('cli-tel').value,
-        email: document.getElementById('cli-email').value,
-        itens: cartItems.map(i => `${i.name} (${i.size})`).join(', '),
-        total: cartItems.reduce((acc, item) => acc + item.price, 0).toFixed(2)
-    };
-    if(!dados.nome || !dados.endereco) return alert("Preencha os campos!");
-    
-    document.getElementById('popupCheckout').classList.remove('active');
-    document.getElementById('modalPix').classList.add('active');
-
-    try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(dados) });
-    } catch (e) { console.log("Erro na planilha."); }
-}
-
-function abrirAgradecimento() {
-    document.getElementById('modalPix').classList.remove('active');
-    document.getElementById('modalThanks').classList.add('active');
-    cartItems = []; 
-    updateCart();
-}
-
-function renderSection(title, list) {
-    if(list.length === 0) return "";
-    return `
-        <div class="category-row">
-            <h2 class="category-title">${title}</h2>
-            <div class="grid-fixed">
-                ${list.map(p => {
-                    const idx = products.findIndex(pr => pr[1] === p[1] && pr[0] === p[0]);
-                    return `
-                        <div class="product">
-                            <div onclick="openModal(${idx})">
-                                <div class="product-img-container"><img src="${p[0]}"></div>
-                                <h3>${p[1]}</h3>
-                                <span class="price">R$ ${p[2].toFixed(2).replace('.',',')}</span>
-                            </div>
-                            <button class="btn-add-cart-card" onclick="addToCart(${idx})">🛒 CARRINHO</button>
-                            <button class="btn-order-card" onclick="openModal(${idx})">📦 PEDIDO</button>
-                        </div>`;
-                }).join('')}
-            </div>
-        </div>`;
-}
-
-function renderBannerDestaques() {
-    return `
-        <div class="featured-container">
-            <div class="banner-track">
-                ${pastas.destaques.map(d => `
-                    <div class="banner-slide">
-                        <div class="banner-img-horiz">
-                            <img src="${d[0]}" alt="${d[1]}">
-                        </div>
-                        <div class="banner-info-horiz">
-                            <h2>${d[1]}</h2>
-                            <span class="b-price">R$ ${d[2].toFixed(2).replace('.',',')}</span>
-                            <button class="b-btn" onclick="openModalByName('${d[1]}')">VER DETALHES</button>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        </div>`;
-}
-
-function renderAll() {
-    const content = document.getElementById('main-content');
-    let html = "";
-    html += renderSection("Tênis Premium", products.filter(p => p[3] === 'tenis'));
-    html += renderSection("Camisas", products.filter(p => p[3] === 'camisas'));
-    
-    html += renderBannerDestaques();
-
-    html += renderSection("Shorts", products.filter(p => p[3] === 'shorts'));
-    html += renderSection("Joias", products.filter(p => p[3] === 'joias'));
-    html += renderSection("Relógios", products.filter(p => p[3] === 'relogios'));
-    content.innerHTML = html;
-}
-
-function renderByCategory(cat) { 
-    document.getElementById('main-content').innerHTML = renderSection(cat.toUpperCase(), products.filter(p => p[3] === cat)); 
-}
-
-function renderByBrand(brand) { 
-    const filtered = products.filter(p => p[1].toLowerCase().includes(brand.toLowerCase()));
-    document.getElementById('main-content').innerHTML = renderSection(brand.toUpperCase(), filtered); 
-}
-
-function closeModal() { document.getElementById('productModal').classList.remove('active'); document.getElementById('overlay').classList.remove('active'); }
-
-function openModalByName(name) {
-    const idx = products.findIndex(p => p[1] === name);
-    if(idx !== -1) openModal(idx);
-    else alert("Produto não encontrado na lista atual.");
-}
-
-renderAll();
-
-let cur = 0;
-setInterval(() => {
-    const track = document.querySelector('.banner-track');
-    if(track && track.children.length > 0) {
-        cur = (cur + 1) % pastas.destaques.length;
-        track.style.transform = `translateX(-${cur * 100}%)`;
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.getElementById('themeIcon');
+        if(document.body.classList.contains('dark-mode')) {
+            icon.className = 'fas fa-sun icon-btn';
+        } else {
+            icon.className = 'fas fa-moon icon-btn';
+        }
     }
-}, 4000);
+
+    function toggleAccordion(el) {
+        el.parentElement.classList.toggle('active');
+    }
+
+    function selectSize(btn) {
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+    }
 </script>
 </body>
 </html>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splashScreen');
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+        }, 2000);
+    });
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBgjv7At7-QVc6zw0_oLtTxrzSK7nY6Cug",
+        authDomain: "area-037.firebaseapp.com",
+        databaseURL: "https://area-037-default-rtdb.firebaseio.com",
+        projectId: "area-037",
+        storageBucket: "area-037.firebasestorage.app",
+        messagingSenderId: "509994998279",
+        appId: "1:509994998279:web:3024b345e27de5ab0aa8a2"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let allProducts = [], cart = [], selectedSize = null, selectedProduct = null;
+
+    // SISTEMA DE REGISTRO DE ACESSOS CORRIGIDO SEM TRAVAMENTO DE SESSIONSTORAGE
+    function trackPageView() {
+        const agora = Date.now();
+        const ultimoAcesso = localStorage.getItem('area037_last_visit');
+        
+        // Permite múltiplos aparelhos entrarem livremente. 
+        // No mesmo aparelho ele só barra temporariamente (5 min) se o cliente ficar atualizando a página direto (evita inflar o banco)
+        if (!ultimoAcesso || (agora - Number(ultimoAcesso) > 5 * 60 * 1000)) {
+            db.ref("acessos").push({
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            }).then(() => {
+                localStorage.setItem('area037_last_visit', agora.toString());
+            }).catch(err => console.log("Erro rastreio:", err));
+        }
+    }
+    trackPageView();
+
+    const nikeCategories = [
+        { key: "SHOX", label: "NIKE SHOX" },
+        { key: "DUNK", label: "NIKE DUNK" },
+        { key: "NOCTA", label: "NIKE NOCTA" },
+        { key: "JORDAN", label: "AIR JORDAN" },
+        { key: "AIR MAX", label: "NIKE AIR MAX" },
+        { key: "AIR FORCE", label: "NIKE AIR FORCE" },
+        { key: "DN", label: "NIKE DN" },
+        { key: "TN", label: "NIKE TN / PLUS" }
+    ];
+
+    db.ref("banners").on("value", snap => {
+        const b = snap.val();
+        if(b) document.getElementById('track').innerHTML = `<img src="${b.link1}"><img src="${b.link2}"><img src="${b.link3}">`;
+    });
+
+    db.ref("produtos").on("value", snap => {
+        const data = snap.val();
+        allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
+        organizeGrid(allProducts);
+        renderDynamicFilters();
+    });
+
+    function organizeGrid(list) {
+        const nikeSections = document.getElementById('nikeSections');
+        const mizunoSections = document.getElementById('mizunoSections');
+        const othersWrapper = document.getElementById('othersWrapper');
+        
+        nikeSections.innerHTML = ''; mizunoSections.innerHTML = ''; othersWrapper.innerHTML = '';
+
+        const cleanList = list.map(p => ({
+            ...p,
+            brandClean: p.brand.trim().toUpperCase(),
+            nameUpper: p.name.toUpperCase()
+        })).sort((a, b) => a.nameUpper.localeCompare(b.nameUpper));
+
+        let nikeProducts = cleanList.filter(p => p.brandClean === 'NIKE');
+        nikeCategories.forEach(cat => {
+            const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
+            if(filtered.length > 0) {
+                nikeSections.innerHTML += `<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
+                nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
+            }
+        });
+        if(nikeProducts.length > 0) {
+            nikeSections.innerHTML += `<h2 class="brand-title">OUTROS MODELOS NIKE</h2><div class="grid">${nikeProducts.map(p => card(p)).join('')}</div>`;
+        }
+
+        let mizunoProducts = cleanList.filter(p => p.brandClean === 'MIZUNO');
+        if(mizunoProducts.length > 0) {
+            mizunoSections.innerHTML += `<h2 class="brand-title">MIZUNO</h2><div class="grid">${mizunoProducts.map(p => card(p)).join('')}</div>`;
+        }
+
+        const otherBrands = [...new Set(cleanList.map(p => p.brandClean))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+        
+        ['ADIDAS','PUMA','NEW BALANCE'].forEach(brandName => {
+            const bProducts = cleanList.filter(p => p.brandClean === brandName);
+            if(bProducts.length > 0) othersWrapper.innerHTML += `<h2 class="brand-title">${brandName}</h2><div class="grid">${bProducts.map(p => card(p)).join('')}</div>`;
+        });
+
+        otherBrands.forEach(brand => {
+            const brandProducts = cleanList.filter(p => p.brandClean === brand);
+            othersWrapper.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">${brandProducts.map(p => card(p)).join('')}</div>`;
+        });
+    }
+
+    function card(p) {
+        return `
+            <div class="p-card" onclick="openProductPage('${p.id}')">
+                <img src="${p.img}" style="width:100%; aspect-ratio:1/1; object-fit:cover;">
+                <div style="padding:20px">
+                    <p style="font-weight:700; font-size:0.9rem; height:42px; overflow:hidden; text-transform:uppercase; color:var(--text);">${p.name}</p>
+                    <p style="font-weight:900; font-size:1.15rem; margin-top:12px; color:var(--accent)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
+                </div>
+            </div>`;
+    }
+
+    function renderDynamicFilters() {
+        const container = document.getElementById('dynamicBrands');
+        const brands = [...new Set(allProducts.map(p => p.brand.trim().toUpperCase()))].filter(b => !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
+        container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700; margin-bottom:12px">${b}</p>`).join('');
+    }
+
+    function filterBy(brand) {
+        if(brand === 'ALL') organizeGrid(allProducts);
+        else organizeGrid(allProducts.filter(p => p.brand.trim().toUpperCase() === brand));
+        toggleSidebar('filterSide');
+        closeProductPage();
+        window.scrollTo({top: 500, behavior: 'smooth'});
+    }
+
+    function scrollToQuemSomos() {
+        toggleSidebar('filterSide');
+        closeProductPage();
+        document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function openProductPage(id) {
+        selectedProduct = allProducts.find(p => p.id === id);
+        
+        const mainImg = document.getElementById('modalImg');
+        mainImg.src = selectedProduct.img;
+        
+        document.getElementById('modalName').innerText = selectedProduct.name;
+        document.getElementById('modalPrice').innerText = "R$ " + Number(selectedProduct.price).toLocaleString('pt-br', {minimumFractionDigits:2});
+        
+        const thumbList = document.getElementById('thumbList');
+        thumbList.innerHTML = '';
+        
+        const photoKeys = ['img', 'img2', 'img3', 'img4', 'img5'];
+        let validPhotos = [];
+        
+        photoKeys.forEach(key => {
+            if(selectedProduct[key] && selectedProduct[key].trim() !== "") {
+                validPhotos.push(selectedProduct[key]);
+            }
+        });
+        
+        if(validPhotos.length > 1) {
+            validPhotos.forEach((photoUrl, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                thumbList.innerHTML += `<img src="${photoUrl}" class="thumb-img ${isActive}" onclick="changeProductPhoto(this, '${photoUrl}')">`;
+            });
+        }
+        
+        document.getElementById('storefrontView').style.display = 'none';
+        document.getElementById('productPage').style.display = 'block';
+        window.scrollTo(0,0);
+    }
+
+    function changeProductPhoto(element, url) {
+        document.getElementById('modalImg').src = url;
+        document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    function closeProductPage() { 
+        document.getElementById('productPage').style.display = 'none'; 
+        document.getElementById('storefrontView').style.display = 'block';
+        selectedSize = null; 
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+        document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
+    }
+    
+    function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
+
+    function confirmCart() {
+        if(!selectedSize) return alert("Selecione o tamanho!");
+        cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
+        updateCart();
+        closeProductPage();
+        toggleSidebar('cartSide');
+    }
+
+    function updateCart() {
+        document.getElementById('cartCount').innerText = cart.length;
+        const div = document.getElementById('cartItems');
+        div.innerHTML = cart.map((item, i) => `
+            <div style="display:flex; gap:12px; margin-bottom:15px; background:var(--gray); padding:12px; border: 1px solid var(--glass-border); border-radius:14px;">
+                <img src="${item.img}" style="width:55px; height:55px; object-fit:cover; border-radius:8px;">
+                <div style="flex:1">
+                    <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text);">${item.name}</p>
+                    <p style="font-size:0.65rem; margin-top:2px; font-weight:700; opacity:0.6;">TAM: ${item.size}</p>
+                    <p style="font-weight:900; font-size:0.85rem; margin-top:4px; color:var(--accent)">R$ ${item.price}</p>
+                    <span class="btn-remove" onclick="removeFromCart(${i})">Remover</span>
+                </div>
+            </div>`).join('');
+        const total = cart.reduce((s, i) => s + Number(i.price), 0);
+        document.getElementById('cartTotal').innerText = "R$ " + total.toLocaleString('pt-br', {minimumFractionDigits:2});
+    }
+
+    function removeFromCart(index) { cart.splice(index, 1); updateCart(); }
+
+    function sendToWhatsApp() {
+        if(!cart.length) return;
+        let msg = "🛒 *NOVO PEDIDO ÁREA 037*\n\n";
+        cart.forEach(i => msg += `• ${i.name} (${i.size}) - R$ ${i.price}\n`);
+        msg += `\n*TOTAL: ${document.getElementById('cartTotal').innerText}*`;
+        window.open(`https://wa.me/5537998744383?text=${encodeURIComponent(msg)}`);
+    }
+
+    function toggleAccordion(header) {
+        const accordion = header.parentElement;
+        const content = accordion.querySelector('.accordion-content');
+        accordion.classList.toggle('active');
+        if (accordion.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+            content.style.maxHeight = null;
+        }
+    }
+
+    // Chamadas globais de interface
+    function toggleSidebar(id) { document.getElementById(id).classList.toggle('active'); }
+    function toggleSearch() { document.getElementById('searchBar').classList.toggle('active'); }
+    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+
+    function realTimeSearch() {
+        const term = document.getElementById('searchInput').value.toUpperCase();
+        const filtered = allProducts.filter(p => p.name.toUpperCase().includes(term) || p.brand.toUpperCase().includes(term));
+        organizeGrid(filtered);
+    }
+
+    let slide = 0;
+    setInterval(() => {
+        slide = (slide + 1) % 3;
+        const t = document.getElementById('track');
+        if(t) t.style.transform = `translateX(-${slide * 100}%)`;
+    }, 5000);
+</script>
