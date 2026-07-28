@@ -164,7 +164,7 @@
             object-fit: cover;
         }
 
-        /* BANNER MODERNO E PROFISSIONAL (CARROSSEL DE DESTAQUES) */
+        /* BANNER MODERNO E PROFISSIONAL */
         .carousel-container { 
             width: 92%; 
             max-width: 1200px; 
@@ -267,7 +267,6 @@
             transform: scale(1.05) rotate(-3deg);
         }
 
-        /* Indicadores do Carrossel */
         .carousel-dots {
             position: absolute;
             bottom: 12px;
@@ -309,7 +308,7 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 4% 30px; }
         @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
         
-        /* Card de Produto Profissional - Fotos Sem Bordas e Padronizadas */
+        /* Card de Produto */
         .p-card { 
             background: var(--bg-card); 
             border: 1px solid var(--border-color); 
@@ -345,25 +344,46 @@
             transform: scale(1.04);
         }
 
-        /* Sidebars Laterais Corrigidas */
+        /* Sidebars Laterais */
         .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--bg-card); border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); z-index: 5000; transition: var(--transition); padding: 30px; box-shadow: 0 0 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: space-between; }
         #filterSide { left: -320px; } 
         #filterSide.active { left: 0; }
         #cartSide { right: -320px; } 
         #cartSide.active { right: 0; }
 
-        /* Modal do Produto (Foto do produto ampliada) */
+        /* PÁGINA DO PRODUTO OTIMIZADA PARA MOBILE E DESKTOP */
         #productPage { 
-            position: fixed; inset: 0; background: var(--bg-site); z-index: 2000; 
-            display: none; overflow-y: auto; padding: 30px 4%;
+            position: fixed; 
+            inset: 0; 
+            background: var(--bg-site); 
+            z-index: 2000; 
+            display: none; 
+            overflow-y: auto; 
+            padding: 20px 4% 40px;
+            -webkit-overflow-scrolling: touch;
         }
         .product-page-content { 
-            background: var(--bg-card); width: 100%; max-width: 1100px; margin: 15px auto 0; border-radius: 8px; 
-            display: grid; grid-template-columns: 1fr; border: 1px solid var(--border-color);
+            background: var(--bg-card); 
+            width: 100%; 
+            max-width: 1100px; 
+            margin: 15px auto 0; 
+            border-radius: 8px; 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            border: 1px solid var(--border-color);
         }
-        @media(min-width: 768px) { .product-page-content { grid-template-columns: 1.1fr 0.9fr; } }
+        @media(min-width: 768px) { 
+            .product-page-content { grid-template-columns: 1.1fr 0.9fr; } 
+        }
 
-        .gallery-container { display: flex; flex-direction: column; gap: 15px; width: 100%; padding: 20px; border-right: 1px solid var(--border-color); }
+        .gallery-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            width: 100%; 
+            padding: 15px; 
+            border-right: 1px solid var(--border-color); 
+        }
         .main-img-wrapper { 
             background: #ffffff; 
             display: flex; 
@@ -371,7 +391,6 @@
             justify-content: center; 
             width: 100%; 
             aspect-ratio: 1/1; 
-            min-height: 400px;
             border: 1px solid var(--border-color); 
             border-radius: 6px;
             overflow: hidden;
@@ -382,18 +401,20 @@
             object-fit: cover;
         }
         .thumb-list { display: flex; gap: 10px; justify-content: center; overflow-x: auto; padding-top: 5px; }
-        .thumb-img { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid var(--border-color); transition: var(--transition); background: #fff; }
+        .thumb-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; cursor: pointer; border: 1px solid var(--border-color); transition: var(--transition); background: #fff; flex-shrink: 0; }
         .thumb-img.active { border-color: var(--accent); border-width: 2px; }
 
-        .product-details-side { padding: 40px 30px; display: flex; flex-direction: column; justify-content: flex-start; }
-        .product-details-side h2 { font-weight: 900; text-transform: uppercase; font-size: 1.6rem; letter-spacing: 0.5px; line-height: 1.2; margin-bottom: 10px; }
-        .product-details-side h3 { margin: 10px 0 20px; color: var(--text-main); font-weight: 900; font-size: 1.8rem; }
+        .product-details-side { padding: 25px 20px; display: flex; flex-direction: column; justify-content: flex-start; }
+        .product-details-side h2 { font-weight: 900; text-transform: uppercase; font-size: 1.3rem; letter-spacing: 0.5px; line-height: 1.3; margin-bottom: 8px; }
+        @media(min-width: 768px) { .product-details-side h2 { font-size: 1.6rem; } }
+        
+        .product-details-side h3 { margin: 8px 0 15px; color: var(--text-main); font-weight: 900; font-size: 1.5rem; }
 
-        .size-btn { padding: 12px; border: 1px solid var(--border-color); background: var(--bg-site); text-align: center; cursor: pointer; border-radius: 4px; font-weight: 700; font-size: 0.85rem; transition: var(--transition); color: var(--text-main); }
+        .size-btn { padding: 12px 5px; border: 1px solid var(--border-color); background: var(--bg-site); text-align: center; cursor: pointer; border-radius: 4px; font-weight: 700; font-size: 0.85rem; transition: var(--transition); color: var(--text-main); }
         .size-btn:hover { border-color: var(--text-main); }
         .size-btn.selected { background: var(--primary); color: #fff !important; border-color: var(--primary); }
         
-        .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; border-radius: 4px; cursor: pointer; margin-top: 25px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; }
+        .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; border-radius: 4px; cursor: pointer; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; }
         .btn-buy-modal:hover { filter: brightness(0.9); }
 
         .info-accordion { margin-top: 15px; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; background: var(--bg-card); }
@@ -449,14 +470,14 @@
     </div>
 </div>
 
-<!-- BARRA DE SELEÇÃO DE MODELOS (ABAIHO DO HEADER) -->
+<!-- BARRA DE SELEÇÃO DE MODELOS (AIR MAX EM PRIMEIRO LUGAR) -->
 <div class="models-bar-container">
     <div class="models-wrapper">
         <div class="model-chip" onclick="filterByKeyword('')"><i class="fas fa-fire"></i> Todos</div>
+        <div class="model-chip" onclick="filterByKeyword('AIR MAX')"><i class="fas fa-shoe-prints"></i> Air Max 95</div>
+        <div class="model-chip" onclick="filterByKeyword('SHOX')"><i class="fas fa-shoe-prints"></i> Shox</div>
         <div class="model-chip" onclick="filterByKeyword('DUNK')"><i class="fas fa-shoe-prints"></i> Dunk</div>
         <div class="model-chip" onclick="filterByKeyword('AIR FORCE')"><i class="fas fa-shoe-prints"></i> Air Force</div>
-        <div class="model-chip" onclick="filterByKeyword('SHOX')"><i class="fas fa-shoe-prints"></i> Shox</div>
-        <div class="model-chip" onclick="filterByKeyword('AIR MAX')"><i class="fas fa-shoe-prints"></i> Air Max</div>
         <div class="model-chip" onclick="filterByKeyword('JORDAN')"><i class="fas fa-shoe-prints"></i> Jordan</div>
         <div class="model-chip" onclick="filterByKeyword('TN')"><i class="fas fa-shoe-prints"></i> Nike TN</div>
         <div class="model-chip" onclick="filterByKeyword('MIZUNO')"><i class="fas fa-shoe-prints"></i> Mizuno</div>
@@ -530,10 +551,10 @@
     </div>
 </div>
 
-<!-- PÁGINA DO PRODUTO (MODAL EXPANDIDO) -->
+<!-- PÁGINA DO PRODUTO (MODAL EXPANDIDO E TOTALMENTE ADAPTADO PARA MOBILE) -->
 <div id="productPage">
     <div style="max-width: 1100px; margin: 0 auto;">
-        <button onclick="closeProductPage()" style="background:none; border:none; color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.85rem; padding: 5px 0;">
+        <button onclick="closeProductPage()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <i class="fas fa-arrow-left"></i> Voltar para a loja
         </button>
     </div>
@@ -551,7 +572,7 @@
             <h3 id="modalPrice"></h3>
             
             <p style="margin-bottom:12px; font-weight:700; font-size:0.75rem; color:var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;">Selecione o Tamanho:</p>
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:15px;" id="sizes">
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:15px;" id="sizes">
                 <div class="size-btn" onclick="selectSize(this)">38</div>
                 <div class="size-btn" onclick="selectSize(this)">39</div>
                 <div class="size-btn" onclick="selectSize(this)">40</div>
@@ -646,12 +667,13 @@
     }
     trackPageView();
 
+    // AIR MAX 95 COLOCADO NO TOPO DAS CATEGORIAS DA NIKE
     const nikeCategories = [
+        { key: "AIR MAX", label: "NIKE AIR MAX (95 / OUTROS)" },
         { key: "SHOX", label: "NIKE SHOX" },
         { key: "DUNK", label: "NIKE DUNK" },
         { key: "NOCTA", label: "NIKE NOCTA" },
         { key: "JORDAN", label: "AIR JORDAN" },
-        { key: "AIR MAX", label: "NIKE AIR MAX" },
         { key: "AIR FORCE", label: "NIKE AIR FORCE" },
         { key: "DN", label: "NIKE DN" },
         { key: "TN", label: "NIKE TN / PLUS" }
@@ -666,7 +688,6 @@
         renderDynamicFilters();
     });
 
-    // Renderiza Banners de alta conversão visual
     function renderProductBanners(products) {
         const track = document.getElementById('track');
         const dotsContainer = document.getElementById('carouselDots');
@@ -794,12 +815,12 @@
         document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    /* ABRIR E FECHAR A PÁGINA DO PRODUTO (SEM RECARREGAR O SITE) */
+    /* ABRIR E FECHAR A PÁGINA DO PRODUTO */
     function openProductPage(id) {
         selectedProduct = allProducts.find(p => p.id === id);
         if(!selectedProduct) return;
         
-        lastScrollPosition = window.scrollY; // Guarda a posição de rolagem atual
+        lastScrollPosition = window.scrollY;
         
         const mainImg = document.getElementById('modalImg');
         mainImg.src = selectedProduct.img;
@@ -828,6 +849,10 @@
         
         document.getElementById('storefrontView').style.display = 'none';
         document.getElementById('productPage').style.display = 'block';
+        
+        // Garante que a página do produto abra no topo correto
+        const productModal = document.getElementById('productPage');
+        productModal.scrollTop = 0;
         window.scrollTo(0, 0);
     }
 
@@ -838,7 +863,6 @@
         document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
         document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
         
-        // Retorna para o scroll de onde o cliente clicou no produto
         window.scrollTo(0, lastScrollPosition);
     }
 
