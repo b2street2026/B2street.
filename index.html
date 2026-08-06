@@ -739,7 +739,7 @@
     <div class="product-page-content">
         <div class="gallery-container">
             <div class="main-img-wrapper" id="modalImgWrapper">
-                <img id="modalImg">
+                <img id="modalImg" alt="Imagem do produto">
             </div>
             <div class="thumb-list" id="thumbList"></div>
         </div>
@@ -917,7 +917,6 @@
         renderDynamicFilters();
     });
 
-    // TRATAMENTO DA TAG INDEPENDENTE DE MAIÚSCULAS OU MINÚSCULAS
     function getTagHTML(tagRaw) {
         if (!tagRaw || tagRaw === 'nenhuma' || tagRaw === 'none') return '';
         
