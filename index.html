@@ -457,14 +457,20 @@
             z-index: 2000; 
             display: none; 
             overflow-y: auto; 
-            padding: 20px 4% 40px;
+            padding: 20px 0 0;
             -webkit-overflow-scrolling: touch;
+        }
+
+        .product-page-container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 4%;
         }
 
         .product-page-content { 
             background: var(--bg-card); 
             width: 100%; 
-            max-width: 1100px; 
             margin: 15px auto 0; 
             border-radius: 12px; 
             display: grid; 
@@ -523,6 +529,13 @@
         .accordion-header { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; transition: var(--transition); }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
         .info-accordion.active .accordion-content { padding: 15px 20px; max-height: 200px; }
+
+        /* SEÇÃO DE SUGESTÕES / VEJA TAMBÉM */
+        .related-products-section {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            width: 100%;
+        }
 
         /* RODAPÉ */
         footer {
@@ -694,63 +707,141 @@
 
 <!-- PÁGINA DO PRODUTO -->
 <div id="productPage">
-    <div style="max-width: 1100px; margin: 0 auto;">
+    <div class="product-page-container">
         <button onclick="closeProductPage()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: var(--transition);">
             <i class="fas fa-arrow-left"></i> Voltar para a loja
         </button>
-    </div>
-    
-    <div class="product-page-content">
-        <div class="gallery-container">
-            <div class="main-img-wrapper" id="modalImgWrapper">
-                <img id="modalImg" alt="Imagem do produto">
-            </div>
-            <div class="thumb-list" id="thumbList"></div>
-        </div>
         
-        <div class="product-details-side">
-            <h2 id="modalName"></h2>
-            <h3 id="modalPrice"></h3>
+        <div class="product-page-content">
+            <div class="gallery-container">
+                <div class="main-img-wrapper" id="modalImgWrapper">
+                    <img id="modalImg" alt="Imagem do produto">
+                </div>
+                <div class="thumb-list" id="thumbList"></div>
+            </div>
             
-            <p style="margin-bottom:12px; font-weight:700; font-size:0.75rem; color:var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;">Selecione o Tamanho:</p>
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:15px;" id="sizes">
-                <div class="size-btn" onclick="selectSize(this)">38</div>
-                <div class="size-btn" onclick="selectSize(this)">39</div>
-                <div class="size-btn" onclick="selectSize(this)">40</div>
-                <div class="size-btn" onclick="selectSize(this)">41</div>
-                <div class="size-btn" onclick="selectSize(this)">42</div>
-                <div class="size-btn" onclick="selectSize(this)">43</div>
-            </div>
-
-            <button class="btn-buy-modal" id="btnAddToCart" onclick="confirmCart()">Adicionar ao Carrinho</button>
-
-            <div class="info-accordion">
-                <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>Formas de Envio</span>
-                    <i class="fas fa-chevron-down"></i>
+            <div class="product-details-side">
+                <h2 id="modalName"></h2>
+                <h3 id="modalPrice"></h3>
+                
+                <p style="margin-bottom:12px; font-weight:700; font-size:0.75rem; color:var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;">Selecione o Tamanho:</p>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:15px;" id="sizes">
+                    <div class="size-btn" onclick="selectSize(this)">38</div>
+                    <div class="size-btn" onclick="selectSize(this)">39</div>
+                    <div class="size-btn" onclick="selectSize(this)">40</div>
+                    <div class="size-btn" onclick="selectSize(this)">41</div>
+                    <div class="size-btn" onclick="selectSize(this)">42</div>
+                    <div class="size-btn" onclick="selectSize(this)">43</div>
                 </div>
-                <div class="accordion-content">
-                    <p>📦 <b>Correios (Sedex / PAC):</b> Enviamos código de rastreio via WhatsApp imediatamente após postagem.</p>
-                    <p style="margin-top:6px;">🚀 <b>Motoboy:</b> Entrega rápida na sua região (consulte taxas locais).</p>
-                </div>
-            </div>
 
-            <div class="info-accordion">
-                <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>Formas de Pagamento</span>
-                    <i class="fas fa-chevron-down"></i>
+                <button class="btn-buy-modal" id="btnAddToCart" onclick="confirmCart()">Adicionar ao Carrinho</button>
+
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Formas de Envio</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>📦 <b>Correios (Sedex / PAC):</b> Enviamos código de rastreio via WhatsApp imediatamente após postagem.</p>
+                        <p style="margin-top:6px;">🚀 <b>Motoboy:</b> Entrega rápida na sua região (consulte taxas locais).</p>
+                    </div>
                 </div>
-                <div class="accordion-content">
-                    <p>⚡ <b>Pix:</b> Pagamento simplificado com aprovação instantânea.</p>
-                    <p style="margin-top:6px;">💳 <b>Cartão de Crédito:</b> Parcelamento facilitado via link seguro de pagamento.</p>
+
+                <div class="info-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Formas de Pagamento</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <p>⚡ <b>Pix:</b> Pagamento simplificado com aprovação instantânea.</p>
+                        <p style="margin-top:6px;">💳 <b>Cartão de Crédito:</b> Parcelamento facilitado via link seguro de pagamento.</p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- SEÇÃO DE SUGESTÕES DE PRODUTOS NA PÁGINA DO PRODUTO -->
+        <div class="related-products-section">
+            <h2 class="brand-title scroll-reveal">QUEM VIU, VIU TAMBÉM</h2>
+            <div class="grid" id="relatedProductsGrid"></div>
+        </div>
     </div>
+
+    <!-- RODAPÉ NA PÁGINA DO PRODUTO -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="logo2.png" alt="Área 037 Logo" style="height: 45px; filter: brightness(0) invert(1);">
+                    <p>Referência no streetwear e cultura sneakerhead. Desde 2022 entregando estilo, exclusividade e qualidade com envio rápido para todo o Brasil.</p>
+                    <div class="footer-socials">
+                        <a href="https://instagram.com/area.037" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5537998744383" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <ul class="footer-links">
+                        <li><a href="javascript:void(0)" onclick="closeProductPage(); scrollToTop();"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Início</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterByKeyword('AIR MAX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Max 95</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterByKeyword('SHOX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Nike Shox</a></li>
+                        <li><a href="javascript:void(0)" onclick="filterByKeyword('JORDAN')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Jordan</a></li>
+                        <li><a href="javascript:void(0)" onclick="scrollToQuemSomos()"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Quem Somos</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Atendimento</h4>
+                    <div class="footer-contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <strong style="color:#fff; display:block;">WhatsApp:</strong>
+                            <a href="https://wa.me/5537998744383" target="_blank" style="color:#a1a1aa; text-decoration:none;">(37) 99874-4383</a>
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong style="color:#fff; display:block;">E-mail:</strong>
+                            <span>contato@area037.com</span>
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong style="color:#fff; display:block;">Horário:</strong>
+                            <span>Seg a Sáb: 09h às 20h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Garantia & Envio</h4>
+                    <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 15px;">Compra 100% segura com rastreamento direto e suporte dedicado.</p>
+                    <div class="footer-badges">
+                        <span class="badge-pill"><i class="fas fa-truck" style="color:var(--accent);"></i> Envios Brasil</span>
+                        <span class="badge-pill"><i class="fas fa-shield-alt" style="color:var(--accent);"></i> 100% Seguro</span>
+                        <span class="badge-pill"><i class="fas fa-bolt" style="color:var(--accent);"></i> Pix Instantâneo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Área 037 Streetwear. Todos os direitos reservados.</p>
+                <div class="footer-payments">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fas fa-pix" title="Pix"></i>
+                    <i class="fas fa-barcode" title="Boleto"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
 
-<!-- RODAPÉ -->
-<footer>
+<!-- RODAPÉ PRINCIPAL (DA VITRINE) -->
+<footer id="mainFooter">
     <div class="footer-container">
         <div class="footer-grid">
             <div class="footer-brand">
@@ -1042,6 +1133,29 @@
         document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
+    /* RENDERIZAR SUGESTÕES DE PRODUTOS */
+    function renderRelatedProducts(currentProduct) {
+        const container = document.getElementById('relatedProductsGrid');
+        if(!container) return;
+
+        // Filtra para não incluir o produto que já está aberto
+        let related = allProducts.filter(p => p.id !== currentProduct.id);
+
+        // Tenta buscar da mesma marca/categoria primeiro
+        let sameBrand = related.filter(p => p.brand && currentProduct.brand && p.brand.trim().toUpperCase() === currentProduct.brand.trim().toUpperCase());
+        
+        let displayList = [];
+        if(sameBrand.length >= 4) {
+            displayList = sameBrand.sort(() => 0.5 - Math.random()).slice(0, 4);
+        } else {
+            // Se tiver menos de 4 da mesma marca, completa com outros produtos aleatórios
+            let remaining = related.filter(p => !sameBrand.includes(p)).sort(() => 0.5 - Math.random());
+            displayList = [...sameBrand, ...remaining].slice(0, 4);
+        }
+
+        container.innerHTML = displayList.map(p => card(p)).join('');
+    }
+
     function openProductPage(id) {
         selectedProduct = allProducts.find(p => p.id === id);
         if(!selectedProduct) return;
@@ -1091,18 +1205,25 @@
                 thumbList.innerHTML += `<img src="${photoUrl}" class="thumb-img ${isActive}" onclick="changeProductPhoto(this, '${photoUrl}')">`;
             });
         }
+
+        // Renderiza sugestões de produtos na página do produto
+        renderRelatedProducts(selectedProduct);
         
         document.getElementById('storefrontView').style.display = 'none';
+        document.getElementById('mainFooter').style.display = 'none';
         document.getElementById('productPage').style.display = 'block';
         
         const productModal = document.getElementById('productPage');
         productModal.scrollTop = 0;
         window.scrollTo(0, 0);
+
+        setTimeout(handleScrollAnimations, 50);
     }
 
     function closeProductPage() { 
         document.getElementById('productPage').style.display = 'none'; 
         document.getElementById('storefrontView').style.display = 'block';
+        document.getElementById('mainFooter').style.display = 'block';
         selectedSize = null; 
         document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
         document.querySelectorAll('.info-accordion').forEach(a => { a.classList.remove('active'); a.querySelector('.accordion-content').style.maxHeight = null; });
@@ -1243,7 +1364,7 @@
         });
 
         const backBtn = document.getElementById('backToTop');
-        if(window.scrollY > 400) {
+        if(window.scrollY > 400 || (document.getElementById('productPage').style.display === 'block' && document.getElementById('productPage').scrollTop > 400)) {
             backBtn.classList.add('visible');
         } else {
             backBtn.classList.remove('visible');
@@ -1251,10 +1372,15 @@
     }
 
     function scrollToTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if(document.getElementById('productPage').style.display === 'block') {
+            document.getElementById('productPage').scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
 
     window.addEventListener('scroll', handleScrollAnimations);
+    document.getElementById('productPage').addEventListener('scroll', handleScrollAnimations);
 </script>
 </body>
 </html>
