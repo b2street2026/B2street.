@@ -161,31 +161,30 @@
         }
         .wa-float:hover { transform: scale(1.1) rotate(8deg); }
 
-      /* Hero com Imagem Responsive (Mobile vs Desktop) */
+   /* Hero Container Responsivo */
 .london-hero { 
     width: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    position: relative; 
-    overflow: hidden; 
     background: #000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+/* Regra Geral da Imagem */
 .hero-img-bg { 
     width: 100%;
     height: auto;
     display: block;
+    object-fit: contain;
     transition: transform 0.5s ease;
 }
 
-/* Configuração para PC */
+/* Configuração para Desktop (PC) */
 .hero-img-desktop { 
     display: block; 
     width: 100%;
-    max-width: 750px; /* Limita o tamanho no monitor grande */
-    max-height: 80vh;
-    object-fit: contain;
+    max-width: 900px; /* Largura ideal para não ocupar a tela toda nem ficar minúscula */
+    height: auto;
     margin: 0 auto;
 }
 
@@ -201,11 +200,8 @@
     
     .hero-img-mobile { 
         display: block !important; 
-        width: 100% !important;     /* Força a largura total da tela do celular */
-        max-width: 100% !important;
-        height: auto !important;    /* Garante que a altura cresça sem cortar */
-        max-height: none !important;/* Remove a restrição de altura que encolhia a imagem */
-        object-fit: contain;
+        width: 100% !important;
+        height: auto !important;
     }
 }
 
