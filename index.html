@@ -161,7 +161,7 @@
         }
         .wa-float:hover { transform: scale(1.1) rotate(8deg); }
 
-       /* Hero com Imagem Responsive (Mobile vs Desktop) */
+      /* Hero com Imagem Responsive (Mobile vs Desktop) */
 .london-hero { 
     width: 100%; 
     display: flex; 
@@ -175,29 +175,37 @@
 .hero-img-bg { 
     width: 100%;
     height: auto;
-    max-height: 80vh;
     display: block;
-    object-fit: contain; /* Alterado de cover para contain */
-    object-position: center;
     transition: transform 0.5s ease;
 }
 
+/* Configuração para PC */
 .hero-img-desktop { 
     display: block; 
     width: 100%;
-    max-width: 750px; /* Limita a largura no PC para a imagem quadrada não ocupar a tela inteira */
+    max-width: 750px; /* Limita o tamanho no monitor grande */
+    max-height: 80vh;
+    object-fit: contain;
     margin: 0 auto;
 }
 
+/* Configuração para Mobile */
 .hero-img-mobile { 
     display: none; 
 }
 
 @media(max-width: 768px) {
-    .hero-img-desktop { display: none !important; }
+    .hero-img-desktop { 
+        display: none !important; 
+    }
+    
     .hero-img-mobile { 
         display: block !important; 
-        max-width: 100%;
+        width: 100% !important;     /* Força a largura total da tela do celular */
+        max-width: 100% !important;
+        height: auto !important;    /* Garante que a altura cresça sem cortar */
+        max-height: none !important;/* Remove a restrição de altura que encolhia a imagem */
+        object-fit: contain;
     }
 }
 
