@@ -161,49 +161,46 @@
         }
         .wa-float:hover { transform: scale(1.1) rotate(8deg); }
 
-     /* Hero Container Responsivo */
-.london-hero { 
-    width: 100%; 
-    background: #000; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        /* Hero Container Responsivo */
+        .london-hero { 
+            width: 100%; 
+            background: #000; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-/* Regra Geral da Imagem */
-.hero-img-bg { 
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    transition: transform 0.5s ease;
-}
+        .hero-img-bg { 
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
 
-/* Configuração para Desktop (PC) */
-.hero-img-desktop { 
-    display: block; 
-    width: 100%;
-    max-width: 900px; /* Largura ideal para não ocupar a tela toda nem ficar minúscula */
-    height: auto;
-    margin: 0 auto;
-}
+        .hero-img-desktop { 
+            display: block; 
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            margin: 0 auto;
+        }
 
-/* Configuração para Mobile */
-.hero-img-mobile { 
-    display: none; 
-}
+        .hero-img-mobile { 
+            display: none; 
+        }
 
-@media(max-width: 768px) {
-    .hero-img-desktop { 
-        display: none !important; 
-    }
-    
-    .hero-img-mobile { 
-        display: block !important; 
-        width: 100% !important;
-        height: auto !important;
-    }
-}
+        @media(max-width: 768px) {
+            .hero-img-desktop { 
+                display: none !important; 
+            }
+            
+            .hero-img-mobile { 
+                display: block !important; 
+                width: 100% !important;
+                height: auto !important;
+            }
+        }
 
         /* BANNER MODERNO E PROFISSIONAL */
         .carousel-container { 
@@ -339,7 +336,7 @@
             .banner-price { font-size: 1.2rem; }
         }
 
-        /* Manifesto com Animação Scroll */
+        /* Manifesto */
         .hero-manifesto { 
             padding: 45px 6%; 
             text-align: center; 
@@ -386,7 +383,7 @@
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 4% 30px; }
         @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 22px; } }
         
-        /* Card de Produto - Efeito Degradê / Fade-in Rápido no Scroll */
+        /* Card de Produto */
         .p-card { 
             background: var(--bg-card); 
             border: 1px solid var(--border-color); 
@@ -397,8 +394,6 @@
             justify-content: space-between; 
             position: relative; 
             cursor: pointer; 
-            
-            /* Animação Inicial de Transição ao Rolar (Degradê de Opacidade Rápido) */
             opacity: 0;
             transform: translateY(25px) scale(0.98);
             transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
@@ -438,38 +433,47 @@
             transform: scale(1.08);
         }
 
-        /* ESTILOS DAS TAGS / BADGES */
+        /* ESTILOS DE TAGS COM CORES REFORÇADAS */
         .product-tag {
             position: absolute;
             top: 10px;
             left: 10px;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             font-size: 0.65rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             z-index: 5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
         }
-        .tag-mais_pedido { background: #000000; color: #ffffff; }
-        .tag-esgotado { background: #e53935; color: #ffffff; }
-        .tag-novidade { background: var(--accent); color: #000000; }
+        .tag-mais_vendido, .tag-mais_pedido { 
+            background: #00e676 !important; 
+            color: #000000 !important; 
+        }
+        .tag-esgotado { 
+            background: #d32f2f !important; 
+            color: #ffffff !important; 
+        }
+        .tag-novidade { 
+            background: #29b6f6 !important; 
+            color: #ffffff !important; 
+        }
 
-        /* Sidebars Laterais com Animações */
+        /* Sidebars Laterais */
         .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--bg-card); border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); z-index: 5000; transition: var(--transition); padding: 30px; box-shadow: 0 0 40px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: space-between; }
         #filterSide { left: -340px; } 
         #filterSide.active { left: 0; }
         #cartSide { right: -340px; } 
         #cartSide.active { right: 0; }
 
-        /* Overlay para Sidebars */
+        /* Overlay */
         .sidebar-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 4999; opacity: 0; visibility: hidden; transition: var(--transition);
         }
         .sidebar-overlay.active { opacity: 1; visibility: visible; }
 
-        /* PÁGINA DO PRODUTO OTIMIZADA PARA MOBILE E DESKTOP */
+        /* PÁGINA DO PRODUTO */
         #productPage { 
             position: fixed; 
             inset: 0; 
@@ -545,7 +549,7 @@
         
         .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,230,118,0.3); }
         .btn-buy-modal:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,230,118,0.4); }
-        .btn-buy-modal:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; transform: none; }
+        .btn-buy-modal:disabled { background: #d32f2f !important; color: #ffffff !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; opacity: 0.9; }
 
         .info-accordion { margin-top: 15px; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: var(--bg-card); transition: var(--transition); }
         .accordion-header { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; transition: var(--transition); }
@@ -553,7 +557,7 @@
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
         .info-accordion.active .accordion-content { padding: 15px 20px; max-height: 200px; }
 
-        /* RODAPÉ MODERNO, BONITO E FUNCIONAL */
+        /* RODAPÉ */
         footer {
             background: #09090b;
             color: #ffffff;
@@ -563,198 +567,38 @@
             overflow: hidden;
         }
 
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .footer-container { max-width: 1200px; margin: 0 auto; }
+        .footer-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 40px; margin-bottom: 45px; text-align: left; }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 40px;
-            margin-bottom: 45px;
-            text-align: left;
-        }
+        @media(min-width: 600px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media(min-width: 992px) { .footer-grid { grid-template-columns: 1.4fr 0.8fr 1fr 1fr; } }
 
-        @media(min-width: 600px) {
-            .footer-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media(min-width: 992px) {
-            .footer-grid { grid-template-columns: 1.4fr 0.8fr 1fr 1fr; }
-        }
+        .footer-brand p { font-size: 0.88rem; color: #a1a1aa; line-height: 1.6; margin-top: 15px; margin-bottom: 20px; }
+        .footer-socials { display: flex; gap: 12px; }
+        .footer-socials a { width: 38px; height: 38px; border-radius: 50%; background: #18181b; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: var(--transition); font-size: 1.1rem; border: 1px solid #27272a; }
+        .footer-socials a:hover { background: var(--accent); color: #000000; transform: translateY(-3px); border-color: var(--accent); }
 
-        .footer-brand p {
-            font-size: 0.88rem;
-            color: #a1a1aa;
-            line-height: 1.6;
-            margin-top: 15px;
-            margin-bottom: 20px;
-        }
+        .footer-col h4 { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; margin-bottom: 20px; position: relative; padding-bottom: 8px; }
+        .footer-col h4::after { content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 2px; background: var(--accent); }
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { font-size: 0.85rem; color: #a1a1aa; text-decoration: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
+        .footer-links a:hover { color: var(--accent); transform: translateX(5px); }
 
-        .footer-socials {
-            display: flex;
-            gap: 12px;
-        }
+        .footer-contact-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.85rem; color: #a1a1aa; margin-bottom: 14px; line-height: 1.4; }
+        .footer-contact-item i { color: var(--accent); font-size: 1.1rem; margin-top: 2px; }
 
-        .footer-socials a {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #18181b;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 1.1rem;
-            border: 1px solid #27272a;
-        }
+        .footer-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .badge-pill { background: #18181b; border: 1px solid #27272a; padding: 6px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; color: #d4d4d8; display: inline-flex; align-items: center; gap: 6px; }
 
-        .footer-socials a:hover {
-            background: var(--accent);
-            color: #000000;
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
+        .footer-bottom { border-top: 1px solid #18181b; padding-top: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.78rem; color: #71717a; }
+        @media(min-width: 768px) { .footer-bottom { flex-direction: row; } }
 
-        .footer-col h4 {
-            font-size: 0.95rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #ffffff;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 8px;
-        }
+        .footer-payments { display: flex; gap: 12px; font-size: 1.4rem; color: #a1a1aa; }
 
-        .footer-col h4::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 30px;
-            height: 2px;
-            background: var(--accent);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            font-size: 0.85rem;
-            color: #a1a1aa;
-            text-decoration: none;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-            transform: translateX(5px);
-        }
-
-        .footer-contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-size: 0.85rem;
-            color: #a1a1aa;
-            margin-bottom: 14px;
-            line-height: 1.4;
-        }
-
-        .footer-contact-item i {
-            color: var(--accent);
-            font-size: 1.1rem;
-            margin-top: 2px;
-        }
-
-        .footer-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .badge-pill {
-            background: #18181b;
-            border: 1px solid #27272a;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #d4d4d8;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #18181b;
-            padding-top: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            font-size: 0.78rem;
-            color: #71717a;
-        }
-
-        @media(min-width: 768px) {
-            .footer-bottom {
-                flex-direction: row;
-            }
-        }
-
-        .footer-payments {
-            display: flex;
-            gap: 12px;
-            font-size: 1.4rem;
-            color: #a1a1aa;
-        }
-
-        .back-to-top {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--bg-card);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 990;
-            opacity: 0;
-            visibility: hidden;
-            transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .back-to-top:hover {
-            background: var(--accent);
-            color: #000000;
-            border-color: var(--accent);
-            transform: translateY(-4px);
-        }
+        .back-to-top { position: fixed; bottom: 25px; right: 25px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; visibility: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { background: var(--accent); color: #000000; border-color: var(--accent); transform: translateY(-4px); }
     </style>
 </head>
 <body>
@@ -795,7 +639,7 @@
     </div>
 </div>
 
-<!-- BARRA DE SELEÇÃO DE MODELOS (AIR MAX EM PRIMEIRO LUGAR) -->
+<!-- BARRA DE SELEÇÃO DE MODELOS -->
 <div class="models-bar-container">
     <div class="models-wrapper">
         <div class="model-chip" onclick="filterByKeyword('')"><i class="fas fa-fire"></i> Todos</div>
@@ -859,13 +703,13 @@
 
 <!-- VITRINE PRINCIPAL -->
 <div id="storefrontView">
-    <!-- IMAGEM DO TOPO (HERO RESPONSIVO) -->
+    <!-- HERO RESPONSIVO -->
     <section class="london-hero">
         <img src="area037.jpg" alt="Banner Área 037 - Computador" class="hero-img-bg hero-img-desktop">
         <img src="banner2.jpg" alt="Banner Área 037 - Celular" class="hero-img-bg hero-img-mobile">
     </section>
 
-    <!-- CARROSSEL BANNERS DE PRODUTOS REDESENHADO & MODERNO -->
+    <!-- CARROSSEL BANNERS DE PRODUTOS -->
     <div class="carousel-container" id="mainBanner">
         <div class="carousel-track" id="track"></div>
         <div class="carousel-dots" id="carouselDots"></div>
@@ -884,7 +728,7 @@
     </div>
 </div>
 
-<!-- PÁGINA DO PRODUTO (MODAL EXPANDIDO E TOTALMENTE ADAPTADO PARA MOBILE) -->
+<!-- PÁGINA DO PRODUTO -->
 <div id="productPage">
     <div style="max-width: 1100px; margin: 0 auto;">
         <button onclick="closeProductPage()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: var(--transition);">
@@ -941,11 +785,10 @@
     </div>
 </div>
 
-<!-- RODAPÉ COMPLETO, MODERNO E FUNCIONAL -->
+<!-- RODAPÉ -->
 <footer>
     <div class="footer-container">
         <div class="footer-grid">
-            <!-- COLUNA 1: MARCA & SOBRE -->
             <div class="footer-brand">
                 <img src="logo2.png" alt="Área 037 Logo" style="height: 45px; filter: brightness(0) invert(1);">
                 <p>Referência no streetwear e cultura sneakerhead. Desde 2022 entregando estilo, exclusividade e qualidade com envio rápido para todo o Brasil.</p>
@@ -955,7 +798,6 @@
                 </div>
             </div>
 
-            <!-- COLUNA 2: NAVEGAÇÃO RÁPIDA -->
             <div class="footer-col">
                 <h4>Navegação</h4>
                 <ul class="footer-links">
@@ -967,7 +809,6 @@
                 </ul>
             </div>
 
-            <!-- COLUNA 3: ATENDIMENTO & CONTATO -->
             <div class="footer-col">
                 <h4>Atendimento</h4>
                 <div class="footer-contact-item">
@@ -993,7 +834,6 @@
                 </div>
             </div>
 
-            <!-- COLUNA 4: SEGURANÇA & GARANTIA -->
             <div class="footer-col">
                 <h4>Garantia & Envio</h4>
                 <p style="font-size: 0.82rem; color: #a1a1aa; margin-bottom: 15px;">Compra 100% segura com rastreamento direto e suporte dedicado.</p>
@@ -1005,7 +845,6 @@
             </div>
         </div>
 
-        <!-- LINHA INFERIOR DO FOOTER -->
         <div class="footer-bottom">
             <p>&copy; 2026 Área 037 Streetwear. Todos os direitos reservados.</p>
             <div class="footer-payments">
@@ -1027,7 +866,6 @@
             if(splash) { splash.style.opacity = '0'; splash.style.visibility = 'hidden'; }
         }, 1200);
         
-        // Executa verificação inicial de animações no scroll
         handleScrollAnimations();
     });
 
@@ -1059,7 +897,6 @@
     }
     trackPageView();
 
-    // AIR MAX 95 COLOCADO NO TOPO DAS CATEGORIAS DA NIKE
     const nikeCategories = [
         { key: "AIR MAX", label: "NIKE AIR MAX (95 / OUTROS)" },
         { key: "SHOX", label: "NIKE SHOX" },
@@ -1080,16 +917,35 @@
         renderDynamicFilters();
     });
 
-    function getTagHTML(tag) {
-        if (!tag || tag === 'nenhuma') return '';
+    // TRATAMENTO DA TAG INDEPENDENTE DE MAIÚSCULAS OU MINÚSCULAS
+    function getTagHTML(tagRaw) {
+        if (!tagRaw || tagRaw === 'nenhuma' || tagRaw === 'none') return '';
         
+        const tag = String(tagRaw).toLowerCase().trim().replace(' ', '_');
         let label = '';
-        if (tag === 'mais_pedido') label = 'Mais Pedido';
-        else if (tag === 'esgotado') label = 'Esgotado';
-        else if (tag === 'novidade') label = 'Novidade';
-        else label = tag;
+        let tagClass = '';
 
-        return `<span class="product-tag tag-${tag}">${label}</span>`;
+        if (tag === 'mais_vendido' || tag === 'mais_pedido') {
+            label = 'Mais Vendido';
+            tagClass = 'tag-mais_vendido';
+        } else if (tag === 'esgotado') {
+            label = 'Esgotado';
+            tagClass = 'tag-esgotado';
+        } else if (tag === 'novidade') {
+            label = 'Novidade';
+            tagClass = 'tag-novidade';
+        } else {
+            label = tagRaw;
+            tagClass = `tag-${tag}`;
+        }
+
+        return `<span class="product-tag ${tagClass}">${label}</span>`;
+    }
+
+    function isProductEsgotado(p) {
+        if(!p || !p.tag) return false;
+        const tag = String(p.tag).toLowerCase().trim();
+        return tag === 'esgotado';
     }
 
     function renderProductBanners(products) {
@@ -1162,7 +1018,6 @@
             othersWrapper.innerHTML += `<h2 class="brand-title">${brand}</h2><div class="grid">${brandProducts.map(p => card(p)).join('')}</div>`;
         });
 
-        // Trigger para recalcular visibilidade do scroll dos novos cards
         setTimeout(handleScrollAnimations, 50);
     }
 
@@ -1223,7 +1078,6 @@
         document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    /* ABRIR E FECHAR A PÁGINA DO PRODUTO */
     function openProductPage(id) {
         selectedProduct = allProducts.find(p => p.id === id);
         if(!selectedProduct) return;
@@ -1242,11 +1096,13 @@
         }
 
         const btnBuy = document.getElementById('btnAddToCart');
-        if (selectedProduct.tag === 'esgotado') {
+        if (isProductEsgotado(selectedProduct)) {
             btnBuy.innerText = 'Produto Esgotado';
+            btnBuy.setAttribute('disabled', 'true');
             btnBuy.disabled = true;
         } else {
             btnBuy.innerText = 'Adicionar ao Carrinho';
+            btnBuy.removeAttribute('disabled');
             btnBuy.disabled = false;
         }
         
@@ -1300,7 +1156,9 @@
     function selectSize(btn) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedSize = btn.innerText; }
 
     function confirmCart() {
-        if(selectedProduct && selectedProduct.tag === 'esgotado') return alert("Este produto está esgotado!");
+        if(selectedProduct && isProductEsgotado(selectedProduct)) {
+            return alert("Este produto está esgotado e não pode ser adicionado ao carrinho!");
+        }
         if(!selectedSize) return alert("Selecione o tamanho!");
         cart.push({...selectedProduct, size: selectedSize, cartId: Date.now()});
         updateCart();
@@ -1381,7 +1239,6 @@
         organizeGrid(filtered);
     }
 
-    /* Controle do Carrossel de Banners */
     let slide = 0;
     function goToSlide(index) {
         slide = index;
@@ -1402,11 +1259,9 @@
         }
     }, 5000);
 
-    /* ANIMAÇÃO DE SCROLL (DEGRADÊ E FADE-IN RÁPIDO DOS PRODUTOS) */
     function handleScrollAnimations() {
         const triggerBottom = window.innerHeight * 0.92;
 
-        // Cards de Produtos
         const cards = document.querySelectorAll('.p-card');
         cards.forEach(card => {
             const cardTop = card.getBoundingClientRect().top;
@@ -1415,7 +1270,6 @@
             }
         });
 
-        // Títulos de Seção e Manifesto
         const animElements = document.querySelectorAll('.brand-title, .hero-manifesto');
         animElements.forEach(el => {
             const elTop = el.getBoundingClientRect().top;
@@ -1424,7 +1278,6 @@
             }
         });
 
-        // Botão Voltar ao Topo
         const backBtn = document.getElementById('backToTop');
         if(window.scrollY > 400) {
             backBtn.classList.add('visible');
