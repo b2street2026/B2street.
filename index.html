@@ -178,14 +178,14 @@
         }
 
         .hero-img-desktop { 
-    display: block; 
-    width: 100%;
-    max-width: 85%; /* Aumentado de 70% para 85% */
-    max-height: 550px; /* Aumentado para dar mais folga vertical */
-    object-fit: contain;
-    height: auto;
-    margin: 0 auto;
-}
+            display: block; 
+            width: 100%;
+            max-width: 85%;
+            max-height: 550px;
+            object-fit: contain;
+            height: auto;
+            margin: 0 auto;
+        }
 
         .hero-img-mobile { 
             display: none; 
@@ -203,14 +203,14 @@
             }
         }
 
-        /* BANNER DE PRODUTOS */
+        /* CARROSSEL DE BANNERS COM IMAGEM E BOTÃO "CONFIRA JÁ" */
         .carousel-container { 
             width: 92%; 
             max-width: 1200px; 
             margin: 30px auto 10px; 
             border-radius: 12px; 
             overflow: hidden; 
-            background: #0a0a0c; 
+            background: #000000; 
             border: 1px solid var(--border-color); 
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.25);
@@ -221,70 +221,53 @@
         }
         .banner-item {
             min-width: 100%;
+            position: relative;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 40px 6%;
-            background: linear-gradient(135deg, #111115 0%, #050505 100%);
+            justify-content: center;
             cursor: pointer;
-            box-sizing: border-box;
-            position: relative;
             overflow: hidden;
         }
-        .banner-info {
-            width: 50%;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .banner-badge {
-            background: var(--accent);
-            color: #000000;
-            font-size: 0.7rem;
+        .banner-item img {
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+    object-fit: fill; /* Ajusta a imagem inteira dentro do banner sem cortar */
+    display: block;
+}
+        
+        .banner-action-btn {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            background: #000000;
+            color: #ffffff;
+            border: 2px solid var(--accent);
+            padding: 12px 24px;
+            border-radius: 30px;
             font-weight: 900;
-            padding: 5px 12px;
-            border-radius: 20px;
-            margin-bottom: 12px;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-        .banner-title {
-            font-size: 1.8rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            color: #ffffff;
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-        }
-        .banner-price {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--accent);
-            margin-bottom: 18px;
-        }
-        .banner-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: #ffffff;
-            color: #000000;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
             transition: var(--transition);
+            z-index: 5;
         }
-
-        .banner-item img {
-            width: 42%;
-            max-height: 260px;
-            object-fit: contain;
-            transition: var(--transition);
-            z-index: 2;
+        .banner-action-btn i {
+            color: var(--accent);
+            transition: transform 0.3s ease;
+        }
+        .banner-item:hover .banner-action-btn {
+            background: var(--accent);
+            color: #000000;
+            transform: scale(1.05);
+        }
+        .banner-item:hover .banner-action-btn i {
+            color: #000000;
+            transform: translateX(4px);
         }
 
         .carousel-dots {
@@ -294,13 +277,13 @@
             transform: translateX(-50%);
             display: flex;
             gap: 8px;
-            z-index: 3;
+            z-index: 6;
         }
         .dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.4);
             transition: var(--transition);
             cursor: pointer;
         }
@@ -310,12 +293,43 @@
             background: var(--accent);
         }
 
+        /* BANNERS ESPECÍFICOS DE SEÇÃO */
+        .section-banner-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 35px auto 10px;
+            padding: 0 4%;
+        }
+        .section-banner-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #000;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            cursor: pointer;
+        }
+        .section-banner-card img {
+            width: 100%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: fill;
+            display: block;
+        }
+
         @media(max-width: 768px) {
-            .banner-item { flex-direction: column-reverse; text-align: center; padding: 30px 20px; }
-            .banner-item img { width: 85%; height: 180px; margin-bottom: 15px; }
-            .banner-info { width: 100%; align-items: center; }
-            .banner-title { font-size: 1.3rem; }
-            .banner-price { font-size: 1.2rem; }
+            .carousel-container { width: 95%; margin: 20px auto 10px; }
+            .banner-item img, .section-banner-card img {
+                object-fit: cover;
+                min-height: 180px;
+            }
+            .banner-action-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 16px;
+                font-size: 0.7rem;
+            }
+            .carousel-dots { bottom: 8px; }
         }
 
         /* Manifesto */
@@ -683,16 +697,45 @@
 
 <!-- VITRINE PRINCIPAL -->
 <div id="storefrontView">
-    <!-- HERO RESPONSIVO COM O BANNER MOBILE CORRIGIDO -->
+    <!-- HERO RESPONSIVO -->
     <section class="london-hero">
         <img src="area037.jpg" alt="Banner Área 037 - Computador" class="hero-img-bg hero-img-desktop">
         <img src="banner2.jpg" alt="Banner Área 037 - Celular" class="hero-img-bg hero-img-mobile">
     </section>
 
-    <!-- CARROSSEL BANNERS DE PRODUTOS -->
+    <!-- CARROSSEL PRINCIPAL COM BANNERS DE SNEAKERS & BOTÃO CONFIRA JÁ -->
     <div class="carousel-container" id="mainBanner">
-        <div class="carousel-track" id="track"></div>
-        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-track" id="track">
+            <!-- BANNER 1: AIR MAX 95 -->
+            <div class="banner-item" onclick="filterByKeyword('AIR MAX')">
+                <img src="air95banner.jpg" alt="Air Max 95 Banner">
+                <div class="banner-action-btn">
+                    <span>Confira Já</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+            <!-- BANNER 2: NOCTA -->
+            <div class="banner-item" onclick="filterByKeyword('NOCTA')">
+                <img src="noctabanner.jpg" alt="Nike Nocta Banner">
+                <div class="banner-action-btn">
+                    <span>Confira Já</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+            <!-- BANNER 3: NIKE TN -->
+            <div class="banner-item" onclick="filterByKeyword('TN')">
+                <img src="tnbanner.jpg" alt="Nike TN Banner">
+                <div class="banner-action-btn">
+                    <span>Confira Já</span>
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-dots" id="carouselDots">
+            <div class="dot active" onclick="goToSlide(0)"></div>
+            <div class="dot" onclick="goToSlide(1)"></div>
+            <div class="dot" onclick="goToSlide(2)"></div>
+        </div>
     </div>
 
     <!-- MANIFESTO -->
@@ -959,18 +1002,17 @@
         { key: "AIR MAX", label: "NIKE AIR MAX (95 / OUTROS)" },
         { key: "SHOX", label: "NIKE SHOX" },
         { key: "DUNK", label: "NIKE DUNK" },
-        { key: "NOCTA", label: "NIKE NOCTA" },
+        { key: "NOCTA", label: "NIKE NOCTA", banner: "noctabanner.jpg" },
         { key: "JORDAN", label: "AIR JORDAN" },
         { key: "AIR FORCE", label: "NIKE AIR FORCE" },
         { key: "DN", label: "NIKE DN" },
-        { key: "TN", label: "NIKE TN / PLUS" }
+        { key: "TN", label: "NIKE TN / PLUS", banner: "tnbanner.jpg" }
     ];
 
     db.ref("produtos").on("value", snap => {
         const data = snap.val();
         allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
         
-        renderProductBanners(allProducts);
         organizeGrid(allProducts);
         renderDynamicFilters();
     });
@@ -1006,33 +1048,6 @@
         return tag === 'esgotado';
     }
 
-    function renderProductBanners(products) {
-        const track = document.getElementById('track');
-        const dotsContainer = document.getElementById('carouselDots');
-        if (!products || products.length === 0) return;
-
-        const featured = products.slice(0, 3);
-        
-        track.innerHTML = featured.map((p, i) => `
-            <div class="banner-item" onclick="openProductPage('${p.id}')">
-                <div class="banner-info">
-                    <span class="banner-badge">🔥 Destaque #${i + 1}</span>
-                    <h2 class="banner-title">${p.name}</h2>
-                    <p class="banner-price">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
-                    <div class="banner-btn">
-                        <span>Garantir Agora</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-                </div>
-                <img src="${p.img}" alt="${p.name}">
-            </div>
-        `).join('');
-
-        dotsContainer.innerHTML = featured.map((_, i) => `
-            <div class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></div>
-        `).join('');
-    }
-
     function organizeGrid(list) {
         const nikeSections = document.getElementById('nikeSections');
         const mizunoSections = document.getElementById('mizunoSections');
@@ -1050,7 +1065,17 @@
         nikeCategories.forEach(cat => {
             const filtered = nikeProducts.filter(p => p.nameUpper.includes(cat.key));
             if(filtered.length > 0) {
-                nikeSections.innerHTML += `<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
+                let bannerHTML = '';
+                if(cat.banner) {
+                    bannerHTML = `
+                        <div class="section-banner-container">
+                            <div class="section-banner-card" onclick="filterByKeyword('${cat.key}')">
+                                <img src="${cat.banner}" alt="${cat.label} Banner">
+                            </div>
+                        </div>
+                    `;
+                }
+                nikeSections.innerHTML += `${bannerHTML}<h2 class="brand-title">${cat.label}</h2><div class="grid">${filtered.map(p => card(p)).join('')}</div>`;
                 nikeProducts = nikeProducts.filter(p => !filtered.includes(p));
             }
         });
@@ -1141,17 +1166,13 @@
         const container = document.getElementById('relatedProductsGrid');
         if(!container) return;
 
-        // Filtra para não incluir o produto que já está aberto
         let related = allProducts.filter(p => p.id !== currentProduct.id);
-
-        // Tenta buscar da mesma marca/categoria primeiro
         let sameBrand = related.filter(p => p.brand && currentProduct.brand && p.brand.trim().toUpperCase() === currentProduct.brand.trim().toUpperCase());
         
         let displayList = [];
         if(sameBrand.length >= 4) {
             displayList = sameBrand.sort(() => 0.5 - Math.random()).slice(0, 4);
         } else {
-            // Se tiver menos de 4 da mesma marca, completa com outros produtos aleatórios
             let remaining = related.filter(p => !sameBrand.includes(p)).sort(() => 0.5 - Math.random());
             displayList = [...sameBrand, ...remaining].slice(0, 4);
         }
@@ -1209,7 +1230,6 @@
             });
         }
 
-        // Renderiza sugestões de produtos na página do produto
         renderRelatedProducts(selectedProduct);
         
         document.getElementById('storefrontView').style.display = 'none';
