@@ -29,7 +29,7 @@
             --border-color: #222224;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; border-radius: 0 !important; }
         html { scroll-behavior: smooth; }
         body { background: var(--bg-site); color: var(--text-main); overflow-x: hidden; min-height: 100vh; }
         
@@ -59,7 +59,7 @@
         }
 
         header { 
-            position: sticky; top: 0; width: 100%; height: 70px; 
+            position: sticky; top: 0; width: 100%; height: 80px; 
             background: var(--bg-card); 
             display: flex; align-items: center; 
             justify-content: space-between; padding: 0 4%; z-index: 1000; 
@@ -72,7 +72,7 @@
         .icon-btn { font-size: 1.25rem; cursor: pointer; color: var(--text-main); transition: var(--transition); text-decoration: none; display: inline-flex; align-items: center; position: relative; }
         .icon-btn:hover { color: var(--accent); transform: translateY(-2px); }
 
-        /* Barra de Pesquisa Fixa */
+        /* Barra de Pesquisa Fixa (Arredondada) */
         .search-section {
             background: var(--bg-card);
             padding: 12px 4% 8px;
@@ -86,14 +86,14 @@
         }
         .search-wrapper input {
             width: 100%;
-            padding: 12px 45px 12px 15px;
+            padding: 12px 45px 12px 20px;
             border: 1px solid var(--border-color);
             background: var(--bg-site);
             color: var(--text-main);
             font-size: 0.9rem;
-            border-radius: 6px;
             outline: none;
             font-weight: 500;
+            border-radius: 25px !important;
             transition: var(--transition);
         }
         .search-wrapper input:focus {
@@ -101,7 +101,7 @@
             box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.15);
         }
         .search-wrapper i {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
             font-size: 1.1rem; color: var(--text-main); pointer-events: none;
         }
 
@@ -130,7 +130,6 @@
             padding: 8px 16px;
             background: var(--bg-site);
             border: 1px solid var(--border-color);
-            border-radius: 30px;
             font-size: 0.78rem;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -149,9 +148,10 @@
         }
         .model-chip i { font-size: 0.85rem; color: var(--accent); }
 
-        /* Floating WhatsApp Button */
+        /* Floating WhatsApp Button (Redondo) */
         .wa-float { 
-            position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; z-index: 999; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); transition: var(--transition); 
+            position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white; width: 55px; height: 55px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; z-index: 999; text-decoration: none; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); transition: var(--transition); 
+            border-radius: 50% !important;
             animation: pulseWa 2s infinite;
         }
         @keyframes pulseWa {
@@ -208,7 +208,6 @@
             width: 92%; 
             max-width: 1200px; 
             margin: 30px auto 10px; 
-            border-radius: 12px; 
             overflow: hidden; 
             background: #000000; 
             border: 1px solid var(--border-color); 
@@ -229,12 +228,12 @@
             overflow: hidden;
         }
         .banner-item img {
-    width: 100%;
-    height: 100%;
-    max-height: 480px;
-    object-fit: fill; /* Ajusta a imagem inteira dentro do banner sem cortar */
-    display: block;
-}
+            width: 100%;
+            height: 100%;
+            max-height: 480px;
+            object-fit: fill;
+            display: block;
+        }
         
         .banner-action-btn {
             position: absolute;
@@ -244,7 +243,6 @@
             color: #ffffff;
             border: 2px solid var(--accent);
             padding: 12px 24px;
-            border-radius: 30px;
             font-weight: 900;
             font-size: 0.85rem;
             text-transform: uppercase;
@@ -282,14 +280,12 @@
         .dot {
             width: 8px;
             height: 8px;
-            border-radius: 50%;
             background: rgba(255,255,255,0.4);
             transition: var(--transition);
             cursor: pointer;
         }
         .dot.active {
             width: 24px;
-            border-radius: 10px;
             background: var(--accent);
         }
 
@@ -302,7 +298,6 @@
         }
         .section-banner-card {
             position: relative;
-            border-radius: 12px;
             overflow: hidden;
             border: 1px solid var(--border-color);
             background: #000;
@@ -332,29 +327,12 @@
             .carousel-dots { bottom: 8px; }
         }
 
-        /* Manifesto */
-        .hero-manifesto { 
-            padding: 45px 6%; 
-            text-align: center; 
-            background: var(--bg-card); 
-            border-bottom: 1px solid var(--border-color); 
-            margin-top: 20px; 
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .hero-manifesto.scroll-reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .hero-manifesto p { max-width: 800px; margin: 0 auto; font-size: 1rem; font-weight: 600; line-height: 1.8; color: var(--text-main); }
-
         /* Vitrine e Seções */
         .brand-title { 
             font-size: 1.4rem; 
             font-weight: 900; 
             text-transform: uppercase; 
-            margin: 40px 4% 20px; 
+            margin: 25px 4% 12px; 
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
@@ -373,17 +351,26 @@
             width: 5px;
             height: 22px;
             background: var(--accent);
-            border-radius: 3px;
         }
         
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 0 4% 30px; }
-        @media(min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 22px; } }
+        /* GRID DE PRODUTOS AJUSTADO COM ESPAÇO REDUZIDO */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 6px; 
+            padding: 0 4% 20px; 
+        }
+        @media(min-width: 768px) { 
+            .grid { 
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 10px; 
+            } 
+        }
         
         /* Card de Produto */
         .p-card { 
             background: var(--bg-card); 
             border: 1px solid var(--border-color); 
-            border-radius: 10px; 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
@@ -403,8 +390,8 @@
 
         .p-card:hover { 
             border-color: var(--accent); 
-            transform: translateY(-6px) scale(1.01); 
-            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+            transform: translateY(-4px); 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         }
         
         .p-card-img-box { 
@@ -426,14 +413,13 @@
             transition: transform 0.5s ease;
         }
 
-        /* ESTILOS DE TAGS COM CORES REFORÇADAS */
+        /* TAGS */
         .product-tag {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.65rem;
+            top: 8px;
+            left: 8px;
+            padding: 4px 8px;
+            font-size: 0.6rem;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -453,12 +439,45 @@
             color: #ffffff !important; 
         }
 
-        /* Sidebars Laterais */
-        .sidebar { position: fixed; top: 0; width: 320px; height: 100%; background: var(--bg-card); border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); z-index: 5000; transition: var(--transition); padding: 30px; box-shadow: 0 0 40px rgba(0,0,0,0.25); display: flex; flex-direction: column; justify-content: space-between; }
-        #filterSide { left: -340px; } 
-        #filterSide.active { left: 0; }
-        #cartSide { right: -340px; } 
-        #cartSide.active { right: 0; }
+        /* Sidebars Laterais e Topo */
+        .sidebar { 
+            position: fixed; 
+            z-index: 5000; 
+            transition: var(--transition); 
+            background: var(--bg-card); 
+            box-shadow: 0 0 40px rgba(0,0,0,0.25); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+
+        /* MENU LATERAL ABRINDO DE CIMA PARA BAIXO */
+        #filterSide { 
+            top: -100%; 
+            left: 0; 
+            width: 100%; 
+            height: auto; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            padding: 30px; 
+            border-bottom: 2px solid var(--border-color); 
+        } 
+        #filterSide.active { 
+            top: 0; 
+        }
+
+        /* CARRINHO CONTINUA DA DIREITA PARA A ESQUERDA */
+        #cartSide { 
+            top: 0; 
+            right: -340px; 
+            width: 320px; 
+            height: 100%; 
+            border-left: 1px solid var(--border-color); 
+            padding: 30px; 
+        } 
+        #cartSide.active { 
+            right: 0; 
+        }
 
         /* Overlay */
         .sidebar-overlay {
@@ -489,7 +508,6 @@
             background: var(--bg-card); 
             width: 100%; 
             margin: 15px auto 0; 
-            border-radius: 12px; 
             display: grid; 
             grid-template-columns: 1fr; 
             border: 1px solid var(--border-color);
@@ -516,7 +534,6 @@
             width: 100%; 
             aspect-ratio: 1/1; 
             border: 1px solid var(--border-color); 
-            border-radius: 8px;
             overflow: hidden;
             position: relative;
         }
@@ -527,27 +544,108 @@
             transition: var(--transition);
         }
         .thumb-list { display: flex; gap: 10px; justify-content: center; overflow-x: auto; padding-top: 5px; }
-        .thumb-img { width: 65px; height: 65px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: var(--transition); background: #fff; flex-shrink: 0; }
+        .thumb-img { width: 65px; height: 65px; object-fit: cover; cursor: pointer; border: 2px solid transparent; transition: var(--transition); background: #fff; flex-shrink: 0; }
         .thumb-img:hover, .thumb-img.active { border-color: var(--accent); transform: translateY(-2px); }
 
         .product-details-side { padding: 30px 25px; display: flex; flex-direction: column; justify-content: flex-start; }
         .product-details-side h2 { font-weight: 900; text-transform: uppercase; font-size: 1.4rem; letter-spacing: 0.5px; line-height: 1.3; margin-bottom: 8px; }
         .product-details-side h3 { margin: 8px 0 18px; color: var(--text-main); font-weight: 900; font-size: 1.6rem; }
 
-        .size-btn { padding: 12px 5px; border: 1px solid var(--border-color); background: var(--bg-site); text-align: center; cursor: pointer; border-radius: 6px; font-weight: 700; font-size: 0.85rem; transition: var(--transition); color: var(--text-main); }
+        .size-btn { padding: 12px 5px; border: 1px solid var(--border-color); background: var(--bg-site); text-align: center; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: var(--transition); color: var(--text-main); }
         .size-btn:hover { border-color: var(--text-main); transform: translateY(-2px); }
         .size-btn.selected { background: var(--primary); color: #fff !important; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         
-        .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; border-radius: 6px; cursor: pointer; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,230,118,0.3); }
+        .btn-buy-modal { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; cursor: pointer; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition); text-align: center; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(0,230,118,0.3); }
         .btn-buy-modal:hover { background: var(--accent-hover); transform: translateY(-2px); }
         .btn-buy-modal:disabled { background: #d32f2f !important; color: #ffffff !important; cursor: not-allowed; box-shadow: none !important; transform: none !important; opacity: 0.9; }
 
-        .info-accordion { margin-top: 15px; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: var(--bg-card); transition: var(--transition); }
+        .info-accordion { margin-top: 15px; border: 1px solid var(--border-color); overflow: hidden; background: var(--bg-card); transition: var(--transition); }
         .accordion-header { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; transition: var(--transition); }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 20px; font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
         .info-accordion.active .accordion-content { padding: 15px 20px; max-height: 200px; }
 
-        /* SEÇÃO DE SUGESTÕES / VEJA TAMBÉM */
+        /* PÁGINA ESPECÍFICA QUEM SOMOS */
+        #aboutPage {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--bg-site);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 30px 4%;
+        }
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .about-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        .about-title::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 3px;
+            background: var(--accent);
+            margin: 8px auto 0;
+        }
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        .about-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        @media(min-width: 600px) {
+            .about-buttons {
+                flex-direction: row;
+            }
+        }
+        .about-btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .about-btn-wa {
+            background: #25d366;
+            color: #ffffff;
+        }
+        .about-btn-wa:hover {
+            background: #1eb854;
+        }
+        .about-btn-ig {
+            background: #e1306c;
+            color: #ffffff;
+        }
+        .about-btn-ig:hover {
+            background: #c1275b;
+        }
+
         .related-products-section {
             margin-top: 50px;
             margin-bottom: 50px;
@@ -572,7 +670,7 @@
 
         .footer-brand p { font-size: 0.88rem; color: #a1a1aa; line-height: 1.6; margin-top: 15px; margin-bottom: 20px; }
         .footer-socials { display: flex; gap: 12px; }
-        .footer-socials a { width: 38px; height: 38px; border-radius: 50%; background: #18181b; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: var(--transition); font-size: 1.1rem; border: 1px solid #27272a; }
+        .footer-socials a { width: 38px; height: 38px; background: #18181b; color: #ffffff; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: var(--transition); font-size: 1.1rem; border: 1px solid #27272a; }
 
         .footer-col h4 { font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #ffffff; margin-bottom: 20px; position: relative; padding-bottom: 8px; }
         .footer-col h4::after { content: ''; position: absolute; bottom: 0; left: 0; width: 30px; height: 2px; background: var(--accent); }
@@ -584,14 +682,14 @@
         .footer-contact-item i { color: var(--accent); font-size: 1.1rem; margin-top: 2px; }
 
         .footer-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .badge-pill { background: #18181b; border: 1px solid #27272a; padding: 6px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; color: #d4d4d8; display: inline-flex; align-items: center; gap: 6px; }
+        .badge-pill { background: #18181b; border: 1px solid #27272a; padding: 6px 12px; font-size: 0.72rem; font-weight: 700; color: #d4d4d8; display: inline-flex; align-items: center; gap: 6px; }
 
         .footer-bottom { border-top: 1px solid #18181b; padding-top: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 15px; font-size: 0.78rem; color: #71717a; }
         @media(min-width: 768px) { .footer-bottom { flex-direction: row; } }
 
         .footer-payments { display: flex; gap: 12px; font-size: 1.4rem; color: #a1a1aa; }
 
-        .back-to-top { position: fixed; bottom: 25px; right: 25px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; visibility: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+        .back-to-top { position: fixed; bottom: 25px; right: 25px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; visibility: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         .back-to-top.visible { opacity: 1; visibility: visible; }
     </style>
 </head>
@@ -613,14 +711,15 @@
         <a href="https://wa.me/5537998744383" target="_blank" class="fab fa-whatsapp icon-btn"></a>
     </div>
     
-    <img src="logo2.png" style="height:42px; cursor:pointer;" onclick="closeProductPage()">
+    <!-- Logo Maior -->
+    <img src="logo2.png" style="height:65px; max-height:80%; cursor:pointer;" onclick="closeAllPages()">
     
     <div class="header-right">
         <a href="https://instagram.com/area.037" target="_blank" class="fab fa-instagram icon-btn"></a>
         <i id="themeIcon" class="fas fa-moon icon-btn" onclick="toggleTheme()"></i>
         <div class="icon-btn" onclick="toggleSidebar('cartSide')">
             <i class="fas fa-shopping-bag"></i>
-            <span id="cartCount" style="position:absolute; top:-6px; right:-8px; background:#000; color:#fff; border: 1px solid var(--accent); font-size:0.65rem; width:16px; height:16px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:700;">0</span>
+            <span id="cartCount" style="position:absolute; top:-6px; right:-8px; background:#000; color:#fff; border: 1px solid var(--accent); font-size:0.65rem; width:16px; height:16px; display:flex; align-items:center; justify-content:center; font-weight:700;">0</span>
         </div>
     </div>
 </header>
@@ -657,26 +756,25 @@
 <!-- OVERLAY DE SIDEBAR -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeAllSidebars()"></div>
 
-<!-- MENU LATERAL ESQUERDO (MARCAS) -->
+<!-- MENU LATERAL SUPERIOR (MARCAS) - ABRE DE CIMA PRA BAIXO -->
 <div id="filterSide" class="sidebar">
     <div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 style="font-weight:900; font-size:1.2rem; letter-spacing: 1px;">MARCAS</h2>
             <i class="fas fa-times icon-btn" onclick="toggleSidebar('filterSide')"></i>
         </div>
-        <div id="filterList">
-            <p onclick="filterBy('ALL')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem; color:var(--accent);">TODAS AS MARCAS</p>
-            <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">NIKE</p>
-            <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">MIZUNO</p>
-            <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">ADIDAS</p>
-            <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">PUMA</p>
-            <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; margin-bottom:15px; font-size:0.9rem;">NEW BALANCE</p>
-            <hr style="border: none; height: 1px; background: var(--border-color); margin: 20px 0;">
-            <div id="dynamicBrands"></div>
+        <div id="filterList" style="display: flex; flex-wrap: wrap; gap: 15px 25px;">
+            <p onclick="filterBy('ALL')" style="cursor:pointer; font-weight:700; font-size:0.9rem; color:var(--accent);">TODAS AS MARCAS</p>
+            <p onclick="filterBy('NIKE')" style="cursor:pointer; font-weight:700; font-size:0.9rem;">NIKE</p>
+            <p onclick="filterBy('MIZUNO')" style="cursor:pointer; font-weight:700; font-size:0.9rem;">MIZUNO</p>
+            <p onclick="filterBy('ADIDAS')" style="cursor:pointer; font-weight:700; font-size:0.9rem;">ADIDAS</p>
+            <p onclick="filterBy('PUMA')" style="cursor:pointer; font-weight:700; font-size:0.9rem;">PUMA</p>
+            <p onclick="filterBy('NEW BALANCE')" style="cursor:pointer; font-weight:700; font-size:0.9rem;">NEW BALANCE</p>
+            <div id="dynamicBrands" style="display: flex; flex-wrap: wrap; gap: 15px 25px;"></div>
         </div>
     </div>
-    <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-        <p onclick="scrollToQuemSomos()" style="cursor:pointer; font-weight:700; font-size:0.9rem; margin-bottom:10px;"><i class="fas fa-users"></i> Quem Somos</p>
+    <div style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+        <p onclick="openAboutPage()" style="cursor:pointer; font-weight:700; font-size:0.9rem; margin-bottom:0;"><i class="fas fa-users"></i> Quem Somos</p>
     </div>
 </div>
 
@@ -703,10 +801,9 @@
         <img src="banner2.jpg" alt="Banner Área 037 - Celular" class="hero-img-bg hero-img-mobile">
     </section>
 
-    <!-- CARROSSEL PRINCIPAL COM BANNERS DE SNEAKERS & BOTÃO CONFIRA JÁ -->
+    <!-- CARROSSEL PRINCIPAL -->
     <div class="carousel-container" id="mainBanner">
         <div class="carousel-track" id="track">
-            <!-- BANNER 1: AIR MAX 95 -->
             <div class="banner-item" onclick="filterByKeyword('AIR MAX')">
                 <img src="air95banner.jpg" alt="Air Max 95 Banner">
                 <div class="banner-action-btn">
@@ -714,7 +811,6 @@
                     <i class="fas fa-arrow-right"></i>
                 </div>
             </div>
-            <!-- BANNER 2: NOCTA -->
             <div class="banner-item" onclick="filterByKeyword('NOCTA')">
                 <img src="noctabanner.jpg" alt="Nike Nocta Banner">
                 <div class="banner-action-btn">
@@ -722,7 +818,6 @@
                     <i class="fas fa-arrow-right"></i>
                 </div>
             </div>
-            <!-- BANNER 3: NIKE TN -->
             <div class="banner-item" onclick="filterByKeyword('TN')">
                 <img src="tnbanner.jpg" alt="Nike TN Banner">
                 <div class="banner-action-btn">
@@ -738,11 +833,6 @@
         </div>
     </div>
 
-    <!-- MANIFESTO -->
-    <section class="hero-manifesto" id="manifestoSection">
-        <p>A ÁREA 037 é referência para quem busca sneakers de qualidade e vive o streetwear todos os dias. Desde 2022 no corre entregando style e autenticidade para todo o Brasil.</p>
-    </section>
-
     <!-- PRODUTOS EM GRIDS -->
     <div>
         <div id="nikeSections"></div>
@@ -751,10 +841,33 @@
     </div>
 </div>
 
+<!-- PÁGINA ESPECÍFICA QUEM SOMOS -->
+<div id="aboutPage">
+    <div class="product-page-container">
+        <button onclick="closeAllPages()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; margin-bottom:20px; transition: var(--transition);">
+            <i class="fas fa-arrow-left"></i> Voltar para a loja
+        </button>
+        <div class="about-container">
+            <h1 class="about-title">QUEM SOMOS</h1>
+            <p class="about-text">
+                A ÁREA 037 é referência para quem busca sneakers de alta qualidade e vive o streetwear intensamente no dia a dia. Desde 2022 no corre, trazendo estilo, exclusividade e máxima autenticidade para amantes da cultura sneakerhead em todo o Brasil.
+            </p>
+            <div class="about-buttons">
+                <a href="https://instagram.com/area.037" target="_blank" class="about-btn about-btn-ig">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="https://wa.me/5537998744383" target="_blank" class="about-btn about-btn-wa">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- PÁGINA DO PRODUTO -->
 <div id="productPage">
     <div class="product-page-container">
-        <button onclick="closeProductPage()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: var(--transition);">
+        <button onclick="closeProductPage()" style="background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); cursor:pointer; font-weight:800; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; font-size:0.8rem; padding: 10px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: var(--transition);">
             <i class="fas fa-arrow-left"></i> Voltar para a loja
         </button>
         
@@ -806,7 +919,6 @@
             </div>
         </div>
 
-        <!-- SEÇÃO DE SUGESTÕES DE PRODUTOS NA PÁGINA DO PRODUTO -->
         <div class="related-products-section">
             <h2 class="brand-title scroll-reveal">QUEM VIU, VIU TAMBÉM</h2>
             <div class="grid" id="relatedProductsGrid"></div>
@@ -829,11 +941,11 @@
                 <div class="footer-col">
                     <h4>Navegação</h4>
                     <ul class="footer-links">
-                        <li><a href="javascript:void(0)" onclick="closeProductPage(); scrollToTop();"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Início</a></li>
+                        <li><a href="javascript:void(0)" onclick="closeAllPages(); scrollToTop();"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Início</a></li>
                         <li><a href="javascript:void(0)" onclick="filterByKeyword('AIR MAX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Max 95</a></li>
                         <li><a href="javascript:void(0)" onclick="filterByKeyword('SHOX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Nike Shox</a></li>
                         <li><a href="javascript:void(0)" onclick="filterByKeyword('JORDAN')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Jordan</a></li>
-                        <li><a href="javascript:void(0)" onclick="scrollToQuemSomos()"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Quem Somos</a></li>
+                        <li><a href="javascript:void(0)" onclick="openAboutPage()"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Quem Somos</a></li>
                     </ul>
                 </div>
 
@@ -902,11 +1014,11 @@
             <div class="footer-col">
                 <h4>Navegação</h4>
                 <ul class="footer-links">
-                    <li><a href="javascript:void(0)" onclick="closeProductPage(); scrollToTop();"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Início</a></li>
+                    <li><a href="javascript:void(0)" onclick="closeAllPages(); scrollToTop();"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Início</a></li>
                     <li><a href="javascript:void(0)" onclick="filterByKeyword('AIR MAX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Max 95</a></li>
                     <li><a href="javascript:void(0)" onclick="filterByKeyword('SHOX')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Nike Shox</a></li>
                     <li><a href="javascript:void(0)" onclick="filterByKeyword('JORDAN')"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Air Jordan</a></li>
-                    <li><a href="javascript:void(0)" onclick="scrollToQuemSomos()"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Quem Somos</a></li>
+                    <li><a href="javascript:void(0)" onclick="openAboutPage()"><i class="fas fa-chevron-right" style="font-size:0.6rem; color:var(--accent);"></i> Quem Somos</a></li>
                 </ul>
             </div>
 
@@ -1017,7 +1129,6 @@
         renderDynamicFilters();
     });
 
-    /* LÓGICA DE TRATAMENTO DE TAGS E CORES */
     function getTagHTML(tagRaw) {
         if (!tagRaw || tagRaw === 'nenhuma' || tagRaw === 'none' || tagRaw === '') return '';
         
@@ -1111,9 +1222,9 @@
                     ${getTagHTML(p.tag)}
                     <img src="${p.img}" alt="${p.name}" loading="lazy">
                 </div>
-                <div style="padding:15px">
-                    <p style="font-weight:700; font-size:0.85rem; height:38px; overflow:hidden; text-transform:uppercase; color:var(--text-main); line-height:1.3;">${p.name}</p>
-                    <p style="font-weight:900; font-size:1.15rem; margin-top:8px; color:var(--text-main)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
+                <div style="padding:10px">
+                    <p style="font-weight:700; font-size:0.8rem; height:34px; overflow:hidden; text-transform:uppercase; color:var(--text-main); line-height:1.2;">${p.name}</p>
+                    <p style="font-weight:900; font-size:1rem; margin-top:6px; color:var(--text-main)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
                 </div>
             </div>`;
     }
@@ -1121,14 +1232,14 @@
     function renderDynamicFilters() {
         const container = document.getElementById('dynamicBrands');
         const brands = [...new Set(allProducts.map(p => p.brand ? p.brand.trim().toUpperCase() : ''))].filter(b => b && !['NIKE','MIZUNO','ADIDAS','PUMA','NEW BALANCE'].includes(b)).sort();
-        container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700; margin-bottom:12px">${b}</p>`).join('');
+        container.innerHTML = brands.map(b => `<p onclick="filterBy('${b}')" style="cursor:pointer; font-weight:700;">${b}</p>`).join('');
     }
 
     function filterBy(brand) {
         if(brand === 'ALL') organizeGrid(allProducts);
         else organizeGrid(allProducts.filter(p => p.brand && p.brand.trim().toUpperCase() === brand));
         closeAllSidebars();
-        closeProductPage();
+        closeAllPages();
     }
 
     function filterByKeyword(term) {
@@ -1152,16 +1263,25 @@
             );
             organizeGrid(filtered);
         }
-        closeProductPage();
+        closeAllPages();
     }
 
-    function scrollToQuemSomos() {
+    function openAboutPage() {
         closeAllSidebars();
-        closeProductPage();
-        document.getElementById('manifestoSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('storefrontView').style.display = 'none';
+        document.getElementById('productPage').style.display = 'none';
+        document.getElementById('mainFooter').style.display = 'none';
+        document.getElementById('aboutPage').style.display = 'block';
+        window.scrollTo(0, 0);
     }
 
-    /* RENDERIZAR SUGESTÕES DE PRODUTOS */
+    function closeAllPages() {
+        document.getElementById('aboutPage').style.display = 'none';
+        document.getElementById('productPage').style.display = 'none';
+        document.getElementById('storefrontView').style.display = 'block';
+        document.getElementById('mainFooter').style.display = 'block';
+    }
+
     function renderRelatedProducts(currentProduct) {
         const container = document.getElementById('relatedProductsGrid');
         if(!container) return;
@@ -1232,6 +1352,7 @@
 
         renderRelatedProducts(selectedProduct);
         
+        document.getElementById('aboutPage').style.display = 'none';
         document.getElementById('storefrontView').style.display = 'none';
         document.getElementById('mainFooter').style.display = 'none';
         document.getElementById('productPage').style.display = 'block';
@@ -1278,8 +1399,8 @@
         document.getElementById('cartCount').innerText = cart.length;
         const div = document.getElementById('cartItems');
         div.innerHTML = cart.map((item, i) => `
-            <div style="display:flex; gap:12px; margin-bottom:15px; background:var(--bg-site); padding:12px; border: 1px solid var(--border-color); border-radius:6px; transition: var(--transition);">
-                <img src="${item.img}" style="width:55px; height:55px; object-fit:cover; border-radius:4px;">
+            <div style="display:flex; gap:12px; margin-bottom:15px; background:var(--bg-site); padding:12px; border: 1px solid var(--border-color); transition: var(--transition);">
+                <img src="${item.img}" style="width:55px; height:55px; object-fit:cover;">
                 <div style="flex:1">
                     <p style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--text-main);">${item.name}</p>
                     <p style="font-size:0.65rem; margin-top:2px; font-weight:700; opacity:0.6;">TAM: ${item.size}</p>
@@ -1378,7 +1499,7 @@
             }
         });
 
-        const animElements = document.querySelectorAll('.brand-title, .hero-manifesto');
+        const animElements = document.querySelectorAll('.brand-title');
         animElements.forEach(el => {
             const elTop = el.getBoundingClientRect().top;
             if (elTop < triggerBottom) {
@@ -1397,6 +1518,8 @@
     function scrollToTop() {
         if(document.getElementById('productPage').style.display === 'block') {
             document.getElementById('productPage').scrollTo({ top: 0, behavior: 'smooth' });
+        } else if(document.getElementById('aboutPage').style.display === 'block') {
+            document.getElementById('aboutPage').scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
