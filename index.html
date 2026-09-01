@@ -1331,6 +1331,25 @@
         document.getElementById('modalName').innerText = selectedProduct.name;
         document.getElementById('modalPrice').innerText = "R$ " + Number(selectedProduct.price).toLocaleString('pt-br', {minimumFractionDigits:2});
         
+        // --- CARREGAMENTO DINÂMICO DOS TAMANHOS ---
+        const sizesContainer = document.getElementById('sizes');
+        if (sizesContainer) {
+            sizesContainer.innerHTML = '';
+            selectedSize = null; // Reseta seleção anterior
+
+            // Pega os tamanhos salvos no Firebase; se não houver, usa o padrão (38 ao 43)
+            const tamanhosRaw = selectedProduct.tamanhos || "38, 39, 40, 41, 42, 43";
+            const listaTamanhos = tamanhosRaw.split(',').map(s => s.trim()).filter(s => s !== "");
+
+            listaTamanhos.forEach(tamanho => {
+                const btn = document.createElement('div');
+                btn.className = 'size-btn';
+                btn.innerText = tamanho;
+                btn.onclick = function() { selectSize(this); };
+                sizesContainer.appendChild(btn);
+            });
+        }
+
         const thumbList = document.getElementById('thumbList');
         thumbList.innerHTML = '';
         
