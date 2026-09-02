@@ -691,6 +691,41 @@
 
         .back-to-top { position: fixed; bottom: 25px; right: 25px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 990; opacity: 0; visibility: hidden; transition: var(--transition); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
         .back-to-top.visible { opacity: 1; visibility: visible; }
+
+/* Pop-up / Toast de Notificação */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid var(--accent);
+    padding: 12px 24px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.toast-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.toast-notification i {
+    color: var(--accent);
+    font-size: 1.1rem;
+}
     </style>
 </head>
 <body>
@@ -703,6 +738,12 @@
 <!-- FAIXA PROMO TOP -->
 <div class="top-promo-bar">
     🔥 Aproveite: Compre acima de R$ 399,00 e ganhe FRETE GRÁTIS na sua compra! 📦
+</div>
+
+<!-- POP-UP DE NOTIFICAÇÃO (TOAST) -->
+<div id="copyToast" class="toast-notification">
+    <i class="fas fa-check-circle"></i>
+    <span>Link do produto copiado com sucesso!</span>
 </div>
 
 <header>
@@ -894,6 +935,10 @@
                 </div>
 
                 <button class="btn-buy-modal" id="btnAddToCart" onclick="confirmCart()">Adicionar ao Carrinho</button>
+                
+<button onclick="copyProductLink(selectedProduct.id)" style="width:100%; padding:12px; margin-top:10px; background:transparent; border:1px solid var(--border-color); font-weight:800; cursor:pointer; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:8px; color:var(--text-main);">
+    <i class="fas fa-share-alt"></i> Compartilhar / Copiar Link
+</button>
 
                 <div class="info-accordion">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
@@ -1121,13 +1166,22 @@
         { key: "TN", label: "NIKE TN / PLUS", banner: "tnbanner.jpg" }
     ];
 
-    db.ref("produtos").on("value", snap => {
-        const data = snap.val();
-        allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
-        
-        organizeGrid(allProducts);
-        renderDynamicFilters();
-    });
+   db.ref("produtos").on("value", snap => {
+    const data = snap.val();
+    allProducts = data ? Object.keys(data).map(k => ({id:k, ...data[k]})) : [];
+    organizeGrid(allProducts);
+    renderDynamicFilters();
+
+    // --- ADICIONE ESTA PARTE ABAIXO ---
+    const urlParams = new URLSearchParams(window.location.search);
+    const productIdFromURL = urlParams.get('p');
+    if (productIdFromURL) {
+        // Aguarda carregar os produtos e abre a página do produto diretamente pelo ID
+        setTimeout(() => {
+            openProductPage(productIdFromURL);
+        }, 300);
+    }
+});
 
     function getTagHTML(tagRaw) {
         if (!tagRaw || tagRaw === 'nenhuma' || tagRaw === 'none' || tagRaw === '') return '';
@@ -1216,18 +1270,23 @@
     }
 
     function card(p) {
-        return `
-            <div class="p-card" onclick="openProductPage('${p.id}')">
-                <div class="p-card-img-box">
-                    ${getTagHTML(p.tag)}
-                    <img src="${p.img}" alt="${p.name}" loading="lazy">
-                </div>
-                <div style="padding:10px">
-                    <p style="font-weight:700; font-size:0.8rem; height:34px; overflow:hidden; text-transform:uppercase; color:var(--text-main); line-height:1.2;">${p.name}</p>
-                    <p style="font-weight:900; font-size:1rem; margin-top:6px; color:var(--text-main)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
-                </div>
-            </div>`;
-    }
+    return `
+    <div class="p-card" onclick="openProductPage('${p.id}')">
+        <div class="p-card-img-box">
+            ${getTagHTML(p.tag)}
+            <img src="${p.img}" alt="${p.name}" loading="lazy">
+        </div>
+        <div style="padding:10px; display:flex; flex-direction:column; justify-content:space-between; flex-grow:1;">
+            <div>
+                <p style="font-weight:700; font-size:0.8rem; height:34px; overflow:hidden; text-transform:uppercase; color:var(--text-main); line-height:1.2;">${p.name}</p>
+                <p style="font-weight:900; font-size:1rem; margin-top:6px; color:var(--text-main)">R$ ${Number(p.price).toLocaleString('pt-br', {minimumFractionDigits:2})}</p>
+            </div>
+            <button onclick="copyProductLink('${p.id}', event)" style="margin-top:10px; width:100%; padding:8px; background:var(--bg-site); border:1px solid var(--border-color); font-weight:700; font-size:0.75rem; cursor:pointer; text-transform:uppercase; display:flex; align-items:center; justify-content:center; gap:6px; color:var(--text-main);">
+                <i class="fas fa-link"></i> Copiar Link
+            </button>
+        </div>
+    </div>`;
+}
 
     function renderDynamicFilters() {
         const container = document.getElementById('dynamicBrands');
@@ -1544,8 +1603,52 @@
         }
     }
 
-    window.addEventListener('scroll', handleScrollAnimations);
-    document.getElementById('productPage').addEventListener('scroll', handleScrollAnimations);
+    let toastTimeout;
+
+function copyProductLink(productId, event) {
+    if (event) {
+        event.stopPropagation(); // Evita abrir a página do produto ao clicar no botão do card
+    }
+    
+    // Gera a URL com a chave ?p=ID
+    const link = window.location.origin + window.location.pathname + '?p=' + productId;
+
+    // Função interna para exibir o pop-up personalizado
+    const showToast = () => {
+        const toast = document.getElementById('copyToast');
+        if (!toast) return;
+
+        toast.classList.add('show');
+
+        // Limpa o tempo anterior para caso o usuário clique várias vezes rapidamente
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    };
+
+    // Copia o link para a área de transferência
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => {
+            showToast();
+        }).catch(() => {
+            fallbackCopy(link, showToast);
+        });
+    } else {
+        fallbackCopy(link, showToast);
+    }
+}
+
+// Fallback para navegadores mais antigos
+function fallbackCopy(text, callback) {
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    if (callback) callback();
+}
 </script>
 </body>
 </html>
