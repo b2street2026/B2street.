@@ -1602,6 +1602,9 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
+    
+    window.addEventListener('scroll', handleScrollAnimations);
+    document.getElementById('productPage').addEventListener('scroll', handleScrollAnimations);
 
     let toastTimeout;
 
