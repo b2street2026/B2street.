@@ -726,6 +726,184 @@
     color: var(--accent);
     font-size: 1.1rem;
 }
+
+/* =========================================================
+   CARROSEL DE TÊNIS (LAYOUT LIMPO SEM CAIXAS) - ÁREA 037
+   ========================================================= */
+.shoes-carousel-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto 10px;
+    padding: 0 4%;
+}
+
+.shoes-carousel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.carousel-section-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-main);
+}
+
+.carousel-section-title::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 22px;
+    background: var(--accent); /* Verde neon da Área 037 */
+}
+
+/* Indicador de Arraste (Mobile) */
+.swipe-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.swipe-hand {
+    font-size: 0.85rem;
+    color: var(--accent);
+    animation: swipeAnim 1.8s infinite ease-in-out;
+}
+
+@keyframes swipeAnim {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(8px); opacity: 1; }
+}
+
+@media (min-width: 769px) {
+    .swipe-indicator { display: none; }
+}
+
+/* Container do Carrossel */
+.carousel-container-shoes {
+    position: relative;
+    width: 100%;
+}
+
+.carousel-track-shoes {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 5px 15px;
+    scrollbar-width: none;
+}
+
+.carousel-track-shoes::-webkit-scrollbar {
+    display: none;
+}
+
+/* Item Individual Limpo (Sem Card/Caixa) */
+.carousel-slide-shoes {
+    flex: 0 0 38%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 769px) {
+    .carousel-slide-shoes {
+        flex: 0 0 15.5%;
+    }
+}
+
+.carousel-slide-shoes:hover {
+    transform: translateY(-6px);
+}
+
+/* Área da Imagem Solta */
+.slide-img-clean {
+    width: 100%;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+
+.slide-img-clean img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* Sombra suave no tênis para destacar em fundos claros e escuros */
+    filter: drop-shadow(0px 10px 14px rgba(0, 0, 0, 0.35));
+    transition: transform 0.3s ease;
+}
+
+.carousel-slide-shoes:hover .slide-img-clean img {
+    transform: scale(1.12) rotate(-3deg);
+}
+
+.carousel-slide-shoes span {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.carousel-slide-shoes:hover span {
+    color: var(--accent); /* Acende em verde neon no hover */
+}
+
+/* Setas de Navegação (PC) */
+.carousel-arrow {
+    display: none;
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.carousel-arrow:hover {
+    background: var(--accent);
+    color: #000000;
+    border-color: var(--accent);
+}
+
+.carousel-arrow.prev { left: -15px; }
+.carousel-arrow.next { right: -15px; }
+
+@media (min-width: 769px) {
+    .carousel-arrow { display: flex; }
+}
     </style>
 </head>
 <body>
@@ -873,6 +1051,97 @@
             <div class="dot" onclick="goToSlide(2)"></div>
         </div>
     </div>
+
+<!-- CARROSEL DE TÊNIS -->
+<div class="shoes-carousel-section">
+    <div class="shoes-carousel-header">
+        <h2 class="carousel-section-title">NOSSOS MODELOS</h2>
+        <div class="swipe-indicator">
+            <i class="fas fa-hand-pointer swipe-hand"></i>
+            <span>Arraste para ver mais</span>
+        </div>
+    </div>
+
+    <div class="carousel-container-shoes">
+        <!-- Seta Esquerda (PC) -->
+        <button class="carousel-arrow prev" onclick="scrollCarroselTenis(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="carousel-track-shoes" id="trackTenis">
+            
+            <!-- ITEM 1: Air Max TN -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('TN')">
+                <div class="slide-img-clean">
+                    <img src="tn.png" alt="Air Max TN">
+                </div>
+                <span>Air Max TN</span>
+            </div>
+
+            <!-- ITEM 2: Air Max 95 -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('95')">
+                <div class="slide-img-clean">
+                    <img src="airmax95.png" alt="Air Max 95">
+                </div>
+                <span>Air Max 95</span>
+            </div>
+
+            <!-- ITEM 3: Puma 180 -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('180')">
+                <div class="slide-img-clean">
+                    <img src="puma180.png" alt="Puma 180">
+                </div>
+                <span>Puma 180</span>
+            </div>
+
+            <!-- ITEM 4: Nike Shox -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('SHOX')">
+                <div class="slide-img-clean">
+                    <img src="shox.png" alt="Nike Shox">
+                </div>
+                <span>Nike Shox</span>
+            </div>
+
+            <!-- ITEM 5: Nocta -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('NOCTA')">
+                <div class="slide-img-clean">
+                    <img src="nocta.png" alt="Nocta">
+                </div>
+                <span>Nike Nocta</span>
+            </div>
+
+            <!-- ITEM 6: Air Force -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('FORCE')">
+                <div class="slide-img-clean">
+                    <img src="airforce.png" alt="Air Force">
+                </div>
+                <span>Air Force</span>
+            </div>
+
+<!-- ITEM 7: Asics gel -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('asics')">
+                <div class="slide-img-clean">
+                    <img src="asics.png" alt="Asics">
+                </div>
+                <span>Asics</span>
+            </div>
+
+<!-- ITEM 8:Mizuno -->
+            <div class="carousel-slide-shoes" onclick="filterByKeyword('mizuno')">
+                <div class="slide-img-clean">
+                    <img src="mizuno.png" alt="mizuno">
+                </div>
+                <span>Mizuno</span>
+            </div>
+
+        </div>
+
+        <!-- Seta Direita (PC) -->
+        <button class="carousel-arrow next" onclick="scrollCarroselTenis(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
 
     <!-- PRODUTOS EM GRIDS -->
     <div>
@@ -1651,6 +1920,20 @@ function fallbackCopy(text, callback) {
     document.execCommand('copy');
     document.body.removeChild(tempInput);
     if (callback) callback();
+}
+// Função para controlar a rolagem pelas setas no Carrossel de Roupas
+function scrollCarroselTenis(direcao) {
+    const track = document.getElementById('trackTenis');
+    if (track) {
+        const slide = track.querySelector('.carousel-slide-shoes');
+        if (slide) {
+            const slideWidth = slide.offsetWidth + 20; // Largura + gap
+            track.scrollBy({
+                left: direcao * slideWidth,
+                behavior: 'smooth'
+            });
+        }
+    }
 }
 </script>
 </body>
