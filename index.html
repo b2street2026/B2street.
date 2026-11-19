@@ -87,22 +87,21 @@
         .search-wrapper input {
             width: 100%;
             padding: 12px 45px 12px 20px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-site);
-            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.65);
+            color: #ffffff;
             font-size: 0.9rem;
             outline: none;
             font-weight: 500;
             border-radius: 25px !important;
             transition: var(--transition);
         }
-        .search-wrapper input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.15);
+        .search-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
         .search-wrapper i {
             position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
-            font-size: 1.1rem; color: var(--text-main); pointer-events: none;
+            font-size: 1.1rem; color: #ffffff; pointer-events: none;
         }
 
         /* SELEÇÃO DE MODELOS */
@@ -904,6 +903,76 @@
 @media (min-width: 769px) {
     .carousel-arrow { display: flex; }
 }
+/* =========================================================
+   FUNDO FIXO DA LOJA (DESFOQUE REDUZIDO)
+   ========================================================= */
+.fundo-loja-fixo {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 80px);
+    z-index: -1;
+    pointer-events: none;
+    background-image: url('fundo-pc.jpg'); /* Imagem de PC */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* 👇 Desfoque reduzido de 4px para 1.5px (bem nítido, mas sutil) */
+    filter: brightness(0.45) blur(0.5px);
+    transform: scale(1.01);
+}
+
+@media (max-width: 768px) {
+    .fundo-loja-fixo {
+        background-image: url('fundo-mobile.jpg'); /* Imagem de Celular */
+    }
+}
+
+/* Deixa as áreas transparentes */
+.search-section,
+.models-bar-container,
+.carousel-container,
+.banner-item,
+.section-banner-card,
+.shoes-carousel-section,
+.carousel-track-shoes,
+.carousel-slide-shoes {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none !important;
+}
+
+/* 👇 BOTÕES DE FILTRAGEM (CHIPS) TRANSPARENTES NO TOPO */
+.model-chip {
+    background: rgba(0, 0, 0, 0.35) !important; /* Fundo escuro bem transparente */
+    backdrop-filter: blur(4px); /* Efeito vidro sutil opcional */
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Efeito quando passa o mouse ou seleciona um botão */
+.model-chip:hover, 
+.model-chip.active {
+    background: var(--accent) !important; /* Acende no verde neon da loja */
+    color: #000000 !important;
+    border-color: var(--accent) !important;
+}
+
+.model-chip:hover i, 
+.model-chip.active i {
+    color: #000000 !important;
+}
+
+/* Garante leitura dos textos brancos sobre o fundo escuro */
+.brand-title,
+.carousel-section-title,
+.carousel-slide-shoes span,
+.swipe-indicator {
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
     </style>
 </head>
 <body>
@@ -1014,11 +1083,8 @@
 
 <!-- VITRINE PRINCIPAL -->
 <div id="storefrontView">
-    <!-- HERO RESPONSIVO -->
-    <section class="london-hero">
-        <img src="area037.png" alt="Banner Área 037 - Computador" class="hero-img-bg hero-img-desktop">
-        <img src="banner2.jpg" alt="Banner Área 037 - Celular" class="hero-img-bg hero-img-mobile">
-    </section>
+    <!-- CAMADA DO FUNDO FIXO -->
+    <div class="fundo-loja-fixo"></div>
 
     <!-- CARROSSEL PRINCIPAL -->
     <div class="carousel-container" id="mainBanner">
@@ -1144,7 +1210,7 @@
 </div>
 
     <!-- PRODUTOS EM GRIDS -->
-    <div>
+    <div class="vitrine-produtos-wrapper">
         <div id="nikeSections"></div>
         <div id="mizunoSections"></div>
         <div id="othersWrapper"></div>
